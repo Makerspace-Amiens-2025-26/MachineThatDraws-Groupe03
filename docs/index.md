@@ -5,7 +5,7 @@ title: Accueil
 permalink: /
 ---
 
-# Bienvenue sur notre documentation de Git
+***# Bienvenue sur notre documentation de Git***
 
 Bienvenue dans la documentation du projet **MachineThatDraws**. Ce site a pour but de fournir toutes les informations nécessaires pour comprendre, utiliser et reproduire efficacement notre projet.
 
@@ -15,7 +15,7 @@ Bienvenue dans la documentation du projet **MachineThatDraws**. Ce site a pour b
 <iframe height="600" width="100%" src="https://modelembedder.net/embed?did=cd4957ab8143c9ccbc75342f&wvm=v&wvmid=20891b956b641f9c2c6f7334&eid=076f8f75d53eafcee52e04bf&elementType=PARTSTUDIO" frameborder="0"></iframe>
 
 {: .warning }
-> Pour intégrer la visualisation de votre projet Onshape, utilisez le site https://modelembedder.net. Activez le partage par lien via l'outil de partage de Onshape. N'oubliez pas d'activer l'option "export". Puis complétez l'iframe ci-dessus avec le lien généré par le site https://modelembedder.net. Vous pouvez mettre à jour également le bouton avec le lien de partage de votre modèle.
+> Pour intégrer la visualisation de notre projet Onshape, nous avons utilisé le site https://modelembedder.net.
 
 ---
 
