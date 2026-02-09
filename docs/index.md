@@ -5,9 +5,9 @@ title: Accueil
 permalink: /
 ---
 
-# Bienvenue sur notre documentation de git 
+# Bienvenue sur notre documentation de Git
 
-Bienvenue dans la documentation du projet MachineThatDraws. Ce site a pour but de fournir toutes les informations nécessaires pour comprendre, utiliser et reproduire efficacement notre projet.
+Bienvenue dans la documentation du projet **MachineThatDraws**. Ce site a pour but de fournir toutes les informations nécessaires pour comprendre, utiliser et reproduire efficacement notre projet.
 
 [Notre projet sur Onshape](https://cad.onshape.com/documents/b026dd0805a94793bf314776/w/c5773ad005e9b96c1396210e/e/68d1d8dad2610a9568870a84){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [Notre repo GitHub](https://github.com/Makerspace-Amiens/2026-MachineThatDraws-Groupe03){: .btn .fs-5 .mb-4 .mb-md-0 }
@@ -15,15 +15,21 @@ Bienvenue dans la documentation du projet MachineThatDraws. Ce site a pour but d
 <iframe height="600" width="100%" src="https://modelembedder.net/embed?did=2860ed3d58f1b518e6857770&wvm=v&wvmid=6280fca954e7770df59e5a2f&eid=0cab16137cd459ee83ebe56e&elementType=ASSEMBLY" frameborder="0"></iframe>
 
 {: .warning }
->Pour intégrer la visualisation de votre projet Onshape, utilisez le site https://modelembedder.net . Activez le partage par lien via l'outil de partage de Onshape. n'oubliez pas d'activer l'option "export". Puis completez l'iframe ci-dessus avec le lien généré par le site https://modelembedder.net. Vous pouvez mettre à jour également le bouton avec le lien de partage de votre modèle.
+> Pour intégrer la visualisation de votre projet Onshape, utilisez le site https://modelembedder.net. Activez le partage par lien via l'outil de partage de Onshape. N'oubliez pas d'activer l'option "export". Puis complétez l'iframe ci-dessus avec le lien généré par le site https://modelembedder.net. Vous pouvez mettre à jour également le bouton avec le lien de partage de votre modèle.
 
+---
 
 ## À propos du Projet
 
-L'objectif de notre projet est de créer une machine à dessin automatique. Notre machine a pour but de pouvoir prendre une image en format (png, jpeg, jpg) 
-qui va ensuite être transférée dans un format gcode pour être dessinée au stylo. Cette machine n'est pas destinée à un public en particulier, elle nous a 
-surtout servi à développer nos compétences en programmation, mécanique, modélisation et électronique. Notre machine résout divers soucis, elle permet : 
-d'automatiser la confection des dessins, un gain de temps à l'utilisateur et une précision millimétrique des designs.
+L'objectif de notre projet est de créer une machine à dessin automatique. Notre machine a pour but de pouvoir prendre une image au format (png, jpeg, jpg) qui va ensuite être transférée dans un format G-code pour être dessinée au stylo.
+
+Cette machine n'est pas destinée à un public en particulier, elle nous a surtout servi à développer nos compétences en programmation, mécanique, modélisation et électronique.
+
+Notre machine résout divers soucis, elle permet :
+* D'automatiser la confection des dessins.
+* Un gain de temps pour l'utilisateur.
+* Une précision millimétrique des designs.
+
 ## Poster
 
 Ici vous publierez le poster de votre projet.
@@ -32,15 +38,14 @@ Ici vous publierez le poster de votre projet.
 
 ## Vidéo
 
-Ici vous publierez la vidéo de votre projet. 
-- 1min30 au format vertical
-- Présentation du projet 
-- Des explication du fonctionnement du projet
-- Des vues du projet / Prototype / Application etc... 
-- Des plans du fonctionnement (même basique ou des éléments séparés)
-- Une conclusion
-- Si en stockage local : <50mo
+Ici vous publierez la vidéo de votre projet.
 
-<video src="images/MACHINE_THATS_DRAWS_Loic_Tom_Islam_Louis.mp4" controls title="Title"  style="width: 100%;"></video>
+* 1min30 au format vertical.
+* Présentation du projet.
+* Des explications du fonctionnement du projet.
+* Des vues du projet / Prototype / Application, etc.
+* Des plans du fonctionnement (même basiques ou des éléments séparés).
+* Une conclusion.
+* Si en stockage local : < 50 Mo.
 
----
+<video src="images/MACHINE_THATS_DRAWS_Loic_Tom_Islam_Louis.mp4" controls title="Title" style="width: 100%;"></video>
