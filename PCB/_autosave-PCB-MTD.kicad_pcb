@@ -141,7 +141,7 @@
 		(descr "Through hole straight pin header, 1x03, 2.54mm pitch, single row")
 		(tags "Through hole pin header THT 1x03 2.54mm single row")
 		(property "Reference" "Servo-moteur1"
-			(at 2.95 1.69 0)
+			(at -0.17 12.56 0)
 			(layer "F.SilkS")
 			(uuid "d048cef9-715c-41c3-9ac4-acf23908c5b1")
 			(effects
@@ -154,6 +154,7 @@
 		(property "Value" "Conn_01x03"
 			(at 0 7.46 90)
 			(layer "F.Fab")
+			(hide yes)
 			(uuid "a540f9d4-afae-4366-929c-4cd833003c47")
 			(effects
 				(font
@@ -311,17 +312,6 @@
 			)
 			(layer "F.Fab")
 			(uuid "a6285360-a3bc-4201-8d46-46bdc862f553")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 2.54 0)
-			(layer "F.Fab")
-			(uuid "f152d9bb-4491-41eb-8fac-5f322f65ffa5")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
 		)
 		(pad "1" thru_hole rect
 			(at 0 0 90)
@@ -1297,7 +1287,7 @@
 		(property "Reference" "U1"
 			(at -1.27 -3.81 180)
 			(layer "B.SilkS")
-			(uuid "42c70052-640c-40c2-af04-2fb6b2348efc")
+			(uuid "c6b234b6-c8d6-466c-9b0e-9088e35a3d1b")
 			(effects
 				(font
 					(size 1 1)
@@ -1309,7 +1299,8 @@
 		(property "Value" "ESP32-S3-UNO"
 			(at 0 22.86 0)
 			(layer "B.Fab")
-			(uuid "34f723e9-a7dd-4480-812c-ff6f7e2be98f")
+			(hide yes)
+			(uuid "2833002a-abb7-4e2e-a82c-16443a535dad")
 			(effects
 				(font
 					(size 1 1)
@@ -1323,7 +1314,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "939ff693-e750-4da2-b332-048df63afb9c")
+			(uuid "b4024ae0-eba3-49cd-bed7-b40e4d688fbd")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1336,7 +1327,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "1fc376c7-79a7-4d43-a81f-c4073a17efe2")
+			(uuid "756eb649-0905-4d0b-98be-63035ef47f04")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2180,7 +2171,7 @@
 			)
 		)
 		(property "Value" "4.7k"
-			(at 0 1.65 270)
+			(at 1.67 2.03 270)
 			(layer "F.Fab")
 			(uuid "eaf84c7f-8f62-4f43-87e1-85c5b6b0f8e7")
 			(effects
@@ -4371,7 +4362,7 @@
 		(descr "Resistor SMD 0805 (2012 Metric), square (rectangular) end terminal, IPC-7351 nominal with elongated pad for handsoldering. (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor handsolder")
 		(property "Reference" "R1"
-			(at 0 -1.65 270)
+			(at -0.74 -1.65 270)
 			(layer "F.SilkS")
 			(uuid "69b8d8cf-3e77-4e32-a49c-22e0abbb5194")
 			(effects
@@ -4382,7 +4373,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 0 1.65 270)
+			(at 1.56 1.58 270)
 			(layer "F.Fab")
 			(uuid "92cffc15-074b-4938-8473-72d1babb9dc9")
 			(effects
@@ -4512,7 +4503,7 @@
 		(descr "Resistor SMD 0805 (2012 Metric), square (rectangular) end terminal, IPC-7351 nominal with elongated pad for handsoldering. (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor handsolder")
 		(property "Reference" "R2"
-			(at 0 -1.65 180)
+			(at -2.09 -1.53 180)
 			(layer "F.SilkS")
 			(uuid "01faa67d-f2bd-4146-a850-7580075af392")
 			(effects
@@ -4653,8 +4644,9 @@
 		(descr "Capacitor SMD 1206 (3216 Metric), square (rectangular) end terminal, IPC-7351 nominal with elongated pad for handsoldering. (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor handsolder")
 		(property "Reference" "C5"
-			(at 0 -1.85 0)
+			(at -4.39 2.48 0)
 			(layer "F.SilkS")
+			(hide yes)
 			(uuid "87450fd7-129c-4605-98f2-1f71148c5827")
 			(effects
 				(font
@@ -4794,7 +4786,7 @@
 		(descr "Through hole straight pin header, 1x04, 2.54mm pitch, single row")
 		(tags "Through hole pin header THT 1x04 2.54mm single row")
 		(property "Reference" "LCD1"
-			(at 0 -2.38 90)
+			(at 0.33 -2.86 90)
 			(layer "F.SilkS")
 			(uuid "621ab5e0-27f2-4ec0-8466-d761f52cb4f5")
 			(effects
@@ -4807,6 +4799,7 @@
 		(property "Value" "Conn_01x04"
 			(at 0 10 90)
 			(layer "F.Fab")
+			(hide yes)
 			(uuid "3ac63e36-f02b-4574-b9d7-b7ed2b3a961f")
 			(effects
 				(font
@@ -7020,18 +7013,6 @@
 		(layer "Edge.Cuts")
 		(uuid "fde28bda-553a-40b4-b6c9-30540ad86704")
 	)
-	(gr_text "${REFERENCE}"
-		(at 106.98 75.29 180)
-		(layer "B.Fab")
-		(uuid "69252ea5-6af4-4d24-aeba-6ca9af11106b")
-		(effects
-			(font
-				(size 1 1)
-				(thickness 0.15)
-			)
-			(justify mirror)
-		)
-	)
 	(segment
 		(start 89.14 76.89)
 		(end 90.266 75.764)
@@ -7121,12 +7102,60 @@
 		(uuid "ff394843-070e-4ef5-a495-550a95054af1")
 	)
 	(segment
+		(start 102.96 108.77)
+		(end 75.59 108.77)
+		(width 0.5)
+		(layer "F.Cu")
+		(net 3)
+		(uuid "2c3b4433-3eeb-47ed-8cef-b5f5ed46bbde")
+	)
+	(segment
+		(start 75.59 108.77)
+		(end 73.96 107.14)
+		(width 0.5)
+		(layer "F.Cu")
+		(net 3)
+		(uuid "3c28f74f-d07a-494a-95e4-bdb28be6f451")
+	)
+	(segment
 		(start 76.44 59.11)
 		(end 76.328636 59.11)
 		(width 0.5)
 		(layer "F.Cu")
 		(net 3)
 		(uuid "de9eb443-75bd-4ee3-80a6-9ae19176b6c4")
+	)
+	(segment
+		(start 108.5 103.23)
+		(end 102.96 108.77)
+		(width 0.5)
+		(layer "F.Cu")
+		(net 3)
+		(uuid "ffa7e6a7-5135-4225-b59c-1805a3fa6d74")
+	)
+	(segment
+		(start 98.731 73.069)
+		(end 97.48 74.32)
+		(width 0.5)
+		(layer "B.Cu")
+		(net 3)
+		(uuid "30632a64-5c6b-4698-afbf-c6230a42d550")
+	)
+	(segment
+		(start 97.48 59.08)
+		(end 98.731 60.331)
+		(width 0.5)
+		(layer "B.Cu")
+		(net 3)
+		(uuid "9cfea0aa-ad9c-4131-9253-8a675aff3fbd")
+	)
+	(segment
+		(start 98.731 60.331)
+		(end 98.731 73.069)
+		(width 0.5)
+		(layer "B.Cu")
+		(net 3)
+		(uuid "b5349081-4c20-4b16-bc22-e54bdc2cbd77")
 	)
 	(segment
 		(start 124.789 107.331)
