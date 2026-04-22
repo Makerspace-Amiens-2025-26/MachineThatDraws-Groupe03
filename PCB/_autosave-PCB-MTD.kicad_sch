@@ -6355,7 +6355,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "C_1206_3216Metric_Pad1.33x1.80mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:CP_Elec_6.3x5.4"
 			(at 210.5152 139.7 0)
 			(effects
 				(font
@@ -6374,6 +6374,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 209.55 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Field5" ""
 			(at 209.55 135.89 0)
 			(effects
 				(font
@@ -8483,7 +8492,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "C_1206_3216Metric_Pad1.33x1.80mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:CP_Elec_6.3x5.4"
 			(at 304.4952 106.68 0)
 			(effects
 				(font
