@@ -7,41 +7,64 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="panel">
-        <h2>Contrôle Manuel</h2>
+    <div class="layout">
         
-        <div class="status-box">
-            <div>Statut : <span id="status">Déconnecté</span></div>
-        </div>
-        <button id="btnConnect" class="conn-btn">🔌 CONNECTER USB</button>
+        <aside class="sidebar">
+            
+            <div class="panel">
+                <h2>Contrôle Manuel</h2>
+                <div class="status-box">
+                    <div>Statut : <span id="status">Déconnecté</span></div>
+                </div>
+                <button id="btnConnect" class="conn-btn">🔌 CONNECTER USB</button>
+            </div>
 
-        <div class="settings">
-            <label>Distance par appui (mm) :</label>
-            <input type="number" id="stepDistance" value="10" min="0.1" step="0.1">
+            <div class="panel">
+                <h3>Paramètres</h3>
+                <div class="setting-group">
+                    <label>Distance par appui (mm) :</label>
+                    <input type="number" id="stepDistance" value="10" min="0.1" step="0.1">
+                </div>
+                <div class="setting-group">
+                    <label>Vitesse (mm/min) :</label>
+                    <input type="number" id="jogSpeed" value="1000" min="100" step="100">
+                </div>
+            </div>
 
-            <label>Vitesse de déplacement (mm/min) :</label>
-            <!-- VITESSE PASSÉE À 1000 ICI -->
-            <input type="number" id="jogSpeed" value="1000" min="100" step="100">
-        </div>
+            <div class="panel dpad">
+                <h3>Déplacements</h3>
+                <div class="row center-row">
+                    <button id="btnUp" class="dir-btn" title="Flèche Haut">⬆️ Y+</button>
+                </div>
+                <div class="row">
+                    <button id="btnLeft" class="dir-btn" title="Flèche Gauche">⬅️ X-</button>
+                    <button id="btnHome" class="action-btn">🏠 Origine</button>
+                    <button id="btnRight" class="dir-btn" title="Flèche Droite">➡️ X+</button>
+                </div>
+                <div class="row center-row">
+                    <button id="btnDown" class="dir-btn" title="Flèche Bas">⬇️ Y-</button>
+                </div>
+                <div class="row" style="margin-top: 15px;">
+                    <button id="btnPen" class="pen-btn" title="Appuyez sur Espace">🖊️ Stylo : LEVÉ (Espace)</button>
+                </div>
+                
+                <p class="hint">⌨️ Astuces : <br><strong>Flèches</strong> = Déplacements<br><strong>Espace</strong> = Stylo</p>
+            </div>
 
-        <div class="dpad">
-            <div class="row">
-                <button id="btnUp" class="dir-btn" title="Flèche Haut">⬆️ Y+</button>
-            </div>
-            <div class="row">
-                <button id="btnLeft" class="dir-btn" title="Flèche Gauche">⬅️ X-</button>
-                <button id="btnHome" class="action-btn">🏠 Origine</button>
-                <button id="btnRight" class="dir-btn" title="Flèche Droite">➡️ X+</button>
-            </div>
-            <div class="row">
-                <button id="btnDown" class="dir-btn" title="Flèche Bas">⬇️ Y-</button>
-            </div>
-            <div class="row" style="margin-top: 10px;">
-                <button id="btnPen" class="pen-btn" title="Appuyez sur Espace">🖊️ Stylo : LEVÉ (Espace)</button>
-            </div>
-        </div>
-        
-        <p class="hint">⌨️ Astuces : <br><strong>Flèches</strong> = Déplacements | <strong>Espace</strong> = Stylo</p>
+        </aside>
+
+        <main id="canvas-container">
+            <nav class="top-nav">
+                <a href="../Slicer/index.html" class="nav-btn">1. Slicer</a>
+                <a href="../Topo/index.html" class="nav-btn">2. Topographie</a>
+                <a href="../Word/index.html" class="nav-btn">3. Ecrire</a>
+                <a href="../Visage/index.html" class="nav-btn">4. Visage</a>
+                <a href="../Musique/index.html" class="nav-btn">5. Musique</a>
+                <a href="#" class="nav-btn active">6. Manuel</a>
+                <a href="../index.html" class="nav-btn">7. Doc</a>
+            </nav>
+            </main>
+
     </div>
 
     <script src="script.js"></script>
