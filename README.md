@@ -1,6 +1,6 @@
 # 🤖 MachineThatDraws
 
-**MachineThatDraws** est un traceur vectoriel automatisé (stylo sur papier) conçu de A à Z par le Groupe 3 constituer de Loïc Islam Louis Tom. Capable de dessiner sur une surface utile de **170x140 mm**, cette machine se distingue par une indépendance logicielle totale : **toute la chaîne de contrôle et de génération de G-Code est gérée directement depuis un navigateur Web**, sans nécessiter l'installation de logiciels tiers.
+**MachineThatDraws** est un traceur vectoriel automatisé (stylo sur papier) conçu de A à Z par le Groupe 3 constituer de Loïc Islam Louis et Tom. Capable de dessiner sur une surface utile de **170x140 mm**, cette machine se distingue par une indépendance logicielle totale : **toute la chaîne de contrôle et de génération de G-Code est gérée directement depuis un navigateur Web**, sans nécessiter l'installation de logiciels tiers.
 
 ---
 
@@ -66,5 +66,5 @@ Détourne la fonction première de la machine pour lui faire jouer de la musique
 
 ## 👥 Équipe & Crédits
 
-- Projet réalisé par le **Groupe 3** dans le cadre des projets académiques du **MakerSpace d'UniLaSalle Amiens**.
+- Projet réalisé par le **Groupe 3** constituer de Loïc Islam Louis et Tom dans le cadre d'un projet académique.
 - **Librairies utilisées :** `p5.js` (rendu canvas et mathématiques), `imagetracer.js` (vectorisation), `@tonejs/midi` (parsing musical).
