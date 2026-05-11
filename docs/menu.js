@@ -81,6 +81,7 @@
                     <li><a href="${p}/Word/index.html">3. Machine a écrire</a></li>
                     <li><a href="${p}/Visage/index.html">4. Slicer Portraits (V2)</a></li>
                     <li><a href="${p}/Musique/index.html">5. Lecteur MIDI (Musique)</a></li>
+                    <li><a href="${p}/Manuel/index.html">6. Manuel</a></li>
                 </ul>
             </details>
         </ul>
