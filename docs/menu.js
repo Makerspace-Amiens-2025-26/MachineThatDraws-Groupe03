@@ -1,10 +1,13 @@
 // On enferme tout le code dans une fonction isolée pour éviter les conflits de variables
 (() => {
-    // On détecte automatiquement si on est dans un sous-dossier
+    // On détecte automatiquement si on est dans un sous-dossier (j'ai rajouté Main, Word et Manuel)
     const inSubFolder = window.location.href.includes('/Slicer/') || 
                         window.location.href.includes('/Topo/') || 
                         window.location.href.includes('/Visage/') || 
-                        window.location.href.includes('/Musique/');
+                        window.location.href.includes('/Musique/') ||
+                        window.location.href.includes('/Main/') ||
+                        window.location.href.includes('/Word/') ||
+                        window.location.href.includes('/Manuel/');
 
     // Si oui, on ajoute les "../" pour reculer, sinon on ne met rien
     const p = inSubFolder ? '../' : '';
@@ -76,12 +79,12 @@
             <details>
                 <summary>Ouvrir les Logiciels & Slicers</summary>
                 <ul class="sub-menu">
-                    <li><a href="${p}/Main/index.html">1. Slicer d'Images</a></li>
-                    <li><a href="${p}/Topo/index.html">2. Générateur Topographique</a></li>
-                    <li><a href="${p}/Word/index.html">3. Machine a écrire</a></li>
-                    <li><a href="${p}/Visage/index.html">4. Slicer Portraits (V2)</a></li>
-                    <li><a href="${p}/Musique/index.html">5. Lecteur MIDI (Musique)</a></li>
-                    <li><a href="${p}/Manuel/index.html">6. Manuel</a></li>
+                    <li><a href="${p}Main/index.html">1. Slicer d'Images</a></li>
+                    <li><a href="${p}Topo/index.html">2. Générateur Topographique</a></li>
+                    <li><a href="${p}Word/index.html">3. Machine a écrire</a></li>
+                    <li><a href="${p}Visage/index.html">4. Slicer Portraits (V2)</a></li>
+                    <li><a href="${p}Musique/index.html">5. Lecteur MIDI (Musique)</a></li>
+                    <li><a href="${p}Manuel/index.html">6. Manuel</a></li>
                 </ul>
             </details>
         </ul>
