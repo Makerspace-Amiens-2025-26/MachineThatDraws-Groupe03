@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slicer Traceur Cartésien - 5 Couleurs</title>
+    
+    <script src="../Include/p5.min.js"></script>
+    <script src="../Include/imagetracer_v1.2.6.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="layout">
+        
+        <div class="sidebar">
+            <h2>Slicer 5 Couleurs</h2>
+            
+            <div class="panel">
+                <h3>1. Image & Seuils d'Intensité</h3>
+                <input type="file" id="fileInput">
+                
+                <label style="margin-top:10px; display:block;">Densité Max (Quadrillage croisé) : <span id="valDark">85</span></label>
+                <input type="range" id="threshDark" min="0" max="255" value="85">
+
+                <label style="margin-top:10px; display:block;">Densité Min (Lignes simples) : <span id="valLight">170</span></label>
+                <input type="range" id="threshLight" min="0" max="255" value="170">
+            </div>
+
+            <div class="panel">
+                <h3>2. Géométrie & Tracé</h3>
+
+                <label style="margin-top:10px; display:block;">Adoucissement (Anti-Bruit) : <span id="blurVal">0</span></label>
+                <input type="range" id="blurSlider" min="0" max="3" value="0" step="1">
+
+                <label style="margin-top:10px; display:block;">Densité des hachures (mm) : <span id="densityVal">1.0</span></label>
+                <input type="range" id="densityInput" value="1.0" step="0.1" min="0.2" max="5">
+
+                <label style="margin-top:10px; display:block; color:#00ffcc;">Pas (Espacement pts) : <span id="pasVal">1.0</span> mm</label>
+                <input type="range" id="pasSlider" min="0.1" max="5" value="1" step="0.1">
+                
+                <hr style="border-color:#333; margin:10px 0;">
+
+                <label>Taille du dessin (mm) :</label>
+                <div class="row">
+                    <input type="number" id="widthInput" value="100" placeholder="Largeur">
+                    <input type="number" id="heightInput" value="100" placeholder="Hauteur">
+                </div>
+                
+                <label style="margin-top:5px; display:block;">Décalage (mm) :</label>
+                <div class="row">
+                    <input type="number" id="offsetXInput" value="0" placeholder="X">
+                    <input type="number" id="offsetYInput" value="0" placeholder="Y">
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="checkRatio" checked> <label>Garder Ratio</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="checkInvertX"> <label>Miroir X</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="checkInvertY"> <label>Miroir Y</label>
+                </div>
+                
+                <hr style="border-color:#333; margin:10px 0;">
+                
+                <label style="margin-top:10px; display:block;">Ignorer les petits traits < (mm)</label>
+                <input type="number" id="minPathInput" value="2">
+                
+                <div class="checkbox-group" style="margin-top: 10px;">
+                    <input type="checkbox" id="checkHatches" checked> <label style="color:#ff9800; font-weight:bold;">Tracer les Hachures (Couleurs)</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="checkContours" checked> <label style="color:#00ffcc; font-weight:bold;">Tracer les Contours (Noir)</label>
+                </div>
+                
+                <button id="btnGenerate" class="action-btn" style="margin-top:15px; background-color:#28a745; color:white;">🔄 ACTUALISER LE TRACÉ</button>
+                <button id="btnClearTrace" class="action-btn" style="margin-top:5px; background-color:#6c757d; color:white;">👁️ MASQUER LE TRACÉ</button>
+            </div>
+
+            <div class="panel">
+                <h3>3. Impression</h3>
+                <div class="status-box">
+                    <div>Lignes G-Code : <strong id="lineCount">0</strong></div>
+                    <div>Temps Est. : <strong id="estimatedTime" style="color:#00ffcc">00:00</strong></div>
+                    <div>Statut : <span id="status">Déconnecté</span></div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <button id="btnHome" class="action-btn" style="background:#17a2b8; color:white; font-size: 0.9em; padding: 8px;">🏠 Origine ($H)</button>
+                </div>
+
+                <button id="btnConnect" class="conn-btn">🔌 CONNECTER USB</button>
+                
+                <div class="control-btns">
+                    <button id="btnPrint" disabled>▶ LANCER</button>
+                    <button id="btnStop" class="stop-btn">STOP 🛑</button>
+                </div>
+                
+                <div class="progress-container">
+                    <div id="progressBar"></div>
+                </div>
+                <div id="progressText">0%</div>
+                <div id="timeText"></div>
+                
+                <button id="btnDownload" class="small-btn" style="margin-top:10px;">💾 Télécharger Gcode</button>
+            </div>
+        </div>
+
+        <div id="canvas-container">
+            <nav class="top-nav">
+                <a href="#" class="nav-btn active">1. Slicer</a>
+                <a href="../Topo/index.html" class="nav-btn">2. Topographie</a>
+                <a href="../Word/index.html" class="nav-btn">3. Ecrire</a>
+                <a href="../Visage/index.html" class="nav-btn">4. Visage</a>
+                <a href="../Musique/index.html" class="nav-btn">5. Musique</a>
+                <a href="../index.html" class="nav-btn">6. Doc</a>
+            </nav>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | La Tête d'Impression</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>   
+
+    <div id="nav-placeholder"></div>
+
+    <main class="content">
+        
+        <section id="cao-tete">
+            <h1>La Tête d'Impression (Axe Z)</h1>
+            <p>La tête d'impression est un organe importantde la machine. Contrairement à une imprimante 3D, elle ne possède pas de moteur pas-à-pas pour l'axe Z, mais un système hybride alliant servomoteur et rappel élastique.</p>
+
+                <div class="model-window" style="width: 100%; height: 500px; background: #1a1a1a; border: 1px solid #111; border-top: 2px solid #ff003c; border-radius: 5px; overflow: hidden; margin: 30px 0; display: flex; flex-direction: column;">
+                <model-viewer 
+                    src="Model/Tete.gltf" 
+                    camera-controls 
+                    auto-rotate
+                    shadow-intensity="1"
+                    orientation="30deg -80deg 0deg" 
+                    exposure="0.3"
+                    tone-mapping="commerce"        
+                    shadow-intensity="2"
+                    shadow-softness="1"
+                    style="width: 100%; flex-grow: 1; background-color: #222;">
+                    <div slot="poster" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: 100%; color: #ff003c; font-family: 'Orbitron', sans-serif; background: #050505; text-align: center;">
+                        <div style="font-size: 1.2rem; margin-bottom: 10px; letter-spacing: 2px;">📡 LIAISON ÉTABLIE</div>
+                        <div style="font-size: 0.9rem; color: #888;">CHARGEMENT DU MODÈLE 3D...</div>
+                        <div style="width: 150px; height: 2px; background: #333; margin-top: 15px; position: relative; overflow: hidden;">
+                            <div class="anim-scanline" style="width: 50px; height: 100%; background: #ff003c; position: absolute;"></div>
+                        </div>
+                    </div>
+                </model-viewer>
+                <div class="model-caption" style="background: #111; border-top: 1px solid #222; font-size: 0.9em; color: #888; padding: 12px; font-family: 'Rajdhani', sans-serif; text-align: center; letter-spacing: 1px;">
+                    ▶ Modèle 3D interactif de la tete
+                </div>
+            </div>
+
+            <h3>1. Mouvement Verticale (Lift & Drop)</h3>
+            <p>Le mouvement de l'axe Z est conçu pour être rapide et fiable afin de ne pas ralentir les tracés :</p>
+            <ul>
+                <li><strong>La Levée :</strong> Le servomoteur, via son système de bielle, soulève le stylo de <strong>7 mm au-dessus de la feuille</strong>. Cette garde est suffisante pour éviter tout tracé parasite lors des déplacements rapides (G0).</li>
+                <li><strong>La Descente (Pression constante) :</strong> Plutôt que de compter sur la seule gravité, nous utilisons des <strong>élastiques</strong> qui tirent constamment le stylo vers le bas. Le servomoteur lutte contre ces élastiques pour lever le stylo. Lorsqu'il descend, les élastiques assurent une pression ferme et constante sur le papier, absorbant les éventuels défauts de planéité du plateau.</li>
+            </ul>
+
+            <h3>2. Guidage Minimaliste et Efficace</h3>
+            <p>Pour assurer une translation verticale parfaitement droite sans alourdir la tête, nous avons détourné du matériel standard :</p>
+            <ul>
+                <li><strong>Rails de guidage :</strong> Le chariot coulisse le long de <strong>deux vis M3 de 60 mm de long</strong>.</li>
+                <li><strong>Friction réduite :</strong> Le chariot glisse directement sur le corps des vis. Cette solution "sans roulement" simplifie énormément le mechanisme et réduit le poids total embarqué.</li>
+            </ul>
+
+            <div class="info-box" style="border-left-color: #a371f7; background-color: rgba(163, 113, 247, 0.1);">
+                <strong>🖋️ Support du Stylo 4 Couleurs :</strong><br>
+                Le porte-stylo est conçu pour accueillir un stylo standard de type "4 couleurs". Il est fermement maintenu en place par une <strong>vis de pression latérale</strong>, garantissant qu'il ne bouge pas pendant le dessin. Le choix de la couleur se fait manuellement avant de lancer le tracé.
+            </div>
+
+            <h3 style="margin-top: 40px;">3. Fixation à la Transmission</h3>
+            <p>L'arrière de la tête d'impression joue un rôle structurel crucial pour la précision de l'axe X. La courroie GT2 y est fixée par un système de <strong>pincement direct</strong>. Les crans de la courroie s'insèrent dans des rainures imprimées en 3D dans le corps de la tête, supprimant tout risque de glissement sans nécessiter de colliers de serrage inesthétiques.</p>
+        </section>
+
+    </main>
+    
+    <script src="menu.js"></script>
+    <script src="script.js"></script>
+    <script type="module" src="Include/model-viewer.min.js"></script>
+</body>
+</html>

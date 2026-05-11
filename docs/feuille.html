@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | La Surface de Dessin</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>   
+
+    <div id="nav-placeholder"></div>
+
+    <main class="content">
+        
+        <section id="cao-feuille">
+            <h1>La Surface de Dessin (Feuille)</h1>
+            <p>La surface de dessin est l'interface directe entre la machine et l'œuvre finale. Elle a été pensée pour maintenir le papier fermement en place tout en offrant un support parfaitement plat pour la pointe du stylo.</p>
+
+
+                <div class="model-window" style="width: 100%; height: 500px; background: #1a1a1a; border: 1px solid #111; border-top: 2px solid #ff003c; border-radius: 5px; overflow: hidden; margin: 30px 0; display: flex; flex-direction: column;">
+                <model-viewer 
+                    src="Model/Feuille.gltf" 
+                    camera-controls 
+                    auto-rotate
+                    shadow-intensity="1"
+                    orientation="-30deg -70deg 0deg" 
+                    exposure="0.3"
+                    tone-mapping="commerce"        
+                    shadow-intensity="2"
+                    shadow-softness="1"
+                    style="width: 100%; flex-grow: 1; background-color: #222;">
+                    <div slot="poster" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: 100%; color: #ff003c; font-family: 'Orbitron', sans-serif; background: #050505; text-align: center;">
+                        <div style="font-size: 1.2rem; margin-bottom: 10px; letter-spacing: 2px;">📡 LIAISON ÉTABLIE</div>
+                        <div style="font-size: 0.9rem; color: #888;">CHARGEMENT DU MODÈLE 3D...</div>
+                        <div style="width: 150px; height: 2px; background: #333; margin-top: 15px; position: relative; overflow: hidden;">
+                            <div class="anim-scanline" style="width: 50px; height: 100%; background: #ff003c; position: absolute;"></div>
+                        </div>
+                    </div>
+                </model-viewer>
+                <div class="model-caption" style="background: #111; border-top: 1px solid #222; font-size: 0.9em; color: #888; padding: 12px; font-family: 'Rajdhani', sans-serif; text-align: center; letter-spacing: 1px;">
+                    ▶ Modèle 3D interactif de la feuille et son support
+                </div>
+            </div>
+
+
+            <h3>1. Format et Surface de Tracé</h3>
+            <p>Le support a été dimensionné pour accueillir confortablement des feuilles au format standard <strong>A4</strong>. Cependant, la zone de dessin réelle est définie par les limites mécaniques de nos axes X et Y :</p>
+            <ul>
+                <li><strong>Surface utile maximale :</strong> <code>170 x 140 mm</code>.</li>
+                <li>Cette limitation est donnée au firmware GRBL (paramètres $130 et $131) ainsi que dans notre Slicer Web pour éviter tout crash physique de la tête d'impression contre les bords.</li>
+            </ul>
+
+            <h3>2. Maintien de la feuille (Les cales 3D)</h3>
+            <p>Pour éviter que le papier ne se soulève, ne gondole ou ne soit entraîné par le frottement du stylo, nous avons conçu un système de fixation aux quatre coins :</p>
+            <ul>
+                <li><strong>Insertion par glissement :</strong> Les quatre coins noirs sont des pièces imprimées en 3D faisant office de "cales". Il suffit de faire glisser la feuille d'imprimante A4 sous ces pièces pour qu'elle soit pincée et maintenue en tension.</li>
+                <li><strong>Un bloquage par frottement :</strong> En plus des calles, des aimants ont été intégrés dans la planche permettant de pincer la feuille et empêcher tout deplacement involontaire.</li>
+                <li><strong>Un choix simple :</strong> Ce système de cales très simple a été choisi dès le début de la conception. Par soucis d'efficacité, il nous permettait d'avoir une solution fonctionnelle immédiate pour nous concentrer sur le développement d'éléments beaucoup plus complexes (comme l'axe Z ou la carte électronique).</li>
+            </ul>
+
+            <h3 style="margin-top: 40px;">3. Surface de contact et Origine</h3>
+            <p>La qualité d'un tracé au stylo dépend énormément de ce qui se trouve <em>sous</em> la feuille :</p>
+            <ul>
+                <li><strong>Le fond rigide :</strong> Sous le papier se trouve une plaque de <strong>d'acrylique de 3 mm d'épaisseur, découpée au laser</strong>. Cela garantit une surface de dessin parfaitement plane (contrairement au plateau de base de la machine qui présenter des troues pour les fixations).</li>
+                <li><strong>Le point Zéro (0,0) :</strong> L'alignement de la feuille a été calé pour que le coin <strong>inférieur gauche</strong> corresponde exactement au point d'origine mécanique de la machine. Une fois le Homing ($H) effectué, la machine sait avec une précision millimétrique où commence la feuille de papier. (Malgré que les tables traçantes aient en général leur 0 0 en haut à gauche, nous préférons en bas à gauche.)</li>
+            </ul>
+
+        </section>
+
+    </main>
+    
+    <script src="menu.js"></script>
+    <script src="script.js"></script>
+    <script type="module" src="Include/model-viewer.min.js"></script>
+</body>
+</html>

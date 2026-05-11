@@ -3,36 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bientôt | MachineThatDraws</title>
+    <title>Doc | MachineThatDraws</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+    <div id="nav-placeholder"></div>
     <main class="content">
-        <div class="center-wrapper">
+        
+        <section id="presentation">
+            <h1>Présentation générale</h1>
+            <p>Bienvenue dans la documentation officielle du groupe 3 de <strong>MachineThatDraws</strong>. Ce projet est fait au sein du MakerSpace d'UniLaSalle Amiens dans le cadre d'un projet académique (60 heures), cette machine est un traceur vectoriel automatisé capable de dessiner sur une surface maximale de <strong>170x140 mm</strong>.</p>
             
-            <h1>Documentation à venir</h1>
-            
-            <p>La documentation officielle de la <strong>MachineThatDraws</strong> est actuellement en cours de rédaction et de structuration.</p>
-            
-            <p>Revenez très bientôt pour découvrir tous les détails sur notre hardware sur-mesure, notre firmware FluidNC et notre chaîne logicielle développée "from scratch" au MakerSpace d'Amiens.</p>
-
-            <div style="margin: 40px 0; width: 100%; border-bottom: 1px dashed #330011;"></div>
-
-            <h3>Accès Développeurs & Associés</h3>
-            
-            <p>Si vous faites partie de l'équipe du projet, vous pouvez accéder à la version de test du Slicer hébergée sur nos serveurs.</p>
-            
-            <div class="info-box" style="text-align: left; display: inline-block; max-width: 600px;">
-                <strong>⚠️ Zone Restreinte :</strong> L'accès au slicer nécessite vos identifiants d'équipe.
+                <div class="model-window" style="width: 100%; height: 500px; background: #1a1a1a; border: 1px solid #111; border-top: 2px solid #ff003c; border-radius: 5px; overflow: hidden; margin: 30px 0; display: flex; flex-direction: column;">
+                <model-viewer 
+                    src="Model/Machine That Draws.gltf" 
+                    camera-controls 
+                    auto-rotate
+                    shadow-intensity="1"
+                    orientation="45deg -70deg 0deg" 
+                    exposure="0.3"
+                    tone-mapping="commerce"        
+                    shadow-intensity="2"
+                    shadow-softness="1"
+                    style="width: 100%; flex-grow: 1; background-color: #222;">
+                    <div slot="poster" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: 100%; color: #ff003c; font-family: 'Orbitron', sans-serif; background: #050505; text-align: center;">
+                        <div style="font-size: 1.2rem; margin-bottom: 10px; letter-spacing: 2px;">📡 LIAISON ÉTABLIE</div>
+                        <div style="font-size: 0.9rem; color: #888;">CHARGEMENT DU MODÈLE 3D...</div>
+                        <div style="width: 150px; height: 2px; background: #333; margin-top: 15px; position: relative; overflow: hidden;">
+                            <div class="anim-scanline" style="width: 50px; height: 100%; background: #ff003c; position: absolute;"></div>
+                        </div>
+                    </div>
+                </model-viewer>
+                <div class="model-caption" style="background: #111; border-top: 1px solid #222; font-size: 0.9em; color: #888; padding: 12px; font-family: 'Rajdhani', sans-serif; text-align: center; letter-spacing: 1px;">
+                    ▶ Modèle 3D interactif de notre MachineThatDraws
+                </div>
             </div>
             
-            <br>
-            
-            <a href="https://slicer.portois.fr" class="cyber-button">Accéder au Slicer de Test</a>
+            <div class="info-box">
+                <strong>💡 Indépendance technologique :</strong> L'équipe a fait le choix fort de développer l'intégralité de la chaîne logicielle et de concevoir sa propre électronique pour ne dépendre d'aucune solution logicielle toute faite.
+            </div>
 
-        </div>
+            <h3>1. Évolution Matérielle (Hardware)</h3>
+            <p>Le prototype initial (POC) reposait sur un microcontrôleur Arduino Uno et un CNC Shield V3 standard. Pour la version finale, la machine évolue vers une solution sur-mesure :</p>
+            <ul>
+                <li><strong>Le passage à l'ESP32 UNO :</strong> Remplacement de l'Arduino par un microcontrôleur ESP32. Ce choix offre beaucoup plus de mémoire, permet la transition de GRBL vers le firmware moderne <strong>FluidNC</strong>, intègre le Wi-Fi, et ouvre la possibilité d'ajouter un écran avec menu interactif.</li>
+                <li><strong>Shield de puissance "Fait Maison" :</strong> Nous avons conçu, routé et fabriqué notre propre circuit imprimé pour gérer proprement la séparation des alimentations (12V / 5V) et l'intégration des drivers moteurs ainsi que rajouter différente options comme un écran et des boutons.</li>
+                <li><strong>Dessin Multicouche (RGB) :</strong> La machine permet la réalisation de tracés complexes en couleurs. Le changement de mine du stylo s'effectue manuellement par l'utilisateur entre chaque couche.</li>
+                <li><strong>Mécanique et Matériaux techniques :</strong> Les pièces structurelles sont imprimées en PETG chargé en fibre de carbone, et les chariots utilisent des bagues auto-lubrifiantes en PETG-PTFE.</li>
+                <li><strong>Esthétique :</strong> Le cable management de la machine permet de masquer et sécuriser les fils électriques, offrant un rendu visuel net et professionnel, sans aucun câble apparent.</li>
+            </ul>
+
+            <h3>2. La Chaîne Logicielle (Software)</h3>
+            <p>Toute l'interface utilisateur, la génération d'art et les slicers ont été codés "from scratch" en <strong>HTML, CSS et JavaScript pur</strong>, tournant directement dans un navigateur Web. Cette suite logicielle se décline en 5 applications dédiées.</p>
+
+            <ul class="software-list" style="list-style-type: none; padding-left: 0;">
+
+                <li style="margin-bottom: 40px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                    <div style="flex: 0 0 300px; max-width: 100%;">
+                        <img src="Images/slicer1.png" alt="Interface du Slicer Traceur" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <strong>1. Slicer Traceur (Reproduction d'images) :</strong> Convertit n'importe quelle image en trajectoires physiques pour la machine. Il utilise un système de traitement à 3 zones basé sur des seuils réglables : les zones sombres génèrent un quadrillage croisé, les zones grises des hachures simples, et les zones claires sont épargnées. Il intègre également des outils complets de géométrie (décalage, miroir X/Y, adoucissement anti-bruit).
+                    </div>
+                </li>
+                
+                <li style="margin-bottom: 40px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                    <div style="flex: 0 0 300px; max-width: 100%;">
+                        <img src="Images/slicer2.png" alt="Interface du Générateur Topographique" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <strong>2. Générateur Topo (Art Génératif) :</strong> Utilise la puissance des mathématiques (bruit de Perlin) pour générer des paysages topographiques uniques. L'utilisateur peut personnaliser le relief à l'infini en modifiant la "graine" (seed) de génération, l'espacement des lignes et la hauteur des montagnes avant d'envoyer le tracé en G-Code.
+                    </div>
+                </li>
+                
+                <li style="margin-bottom: 40px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                    <div style="flex: 0 0 300px; max-width: 100%;">
+                        <img src="Images/slicer3.png" alt="Interface de Studio Texte CNC" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <strong>3. Studio Texte CNC (Traitement de texte) :</strong> Un véritable éditeur vectoriel fonctionnant comme un logiciel de traitement de texte ("Word"). Il permet d'ajouter et de superposer plusieurs calques de texte, de choisir différentes polices, de gérer l'orientation, et d'ajuster finement la position (X/Y). La machine se transforme alors en traceur typographique de précision.
+                    </div>
+                </li>
+
+                <li style="margin-bottom: 40px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                    <div style="flex: 0 0 300px; max-width: 100%;">
+                        <img src="Images/slicer4.png" alt="Interface du Slicer Visage" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <strong>4. Slicer Visage (Portraits optimisés) :</strong> Un algorithme spécialement pensé pour la reproduction de visages et de jeux d'ombres. Son procédé de rendu est unique : les zones claires de l'image sont représentées par de simples traits droits réguliers, tandis que les zones sombres sont converties en ondes sinusoïdales (sinus). Cette variation de forme crée des effets d'ombres remarquables au stylo.
+                    </div>
+                </li>
+
+                <li>
+                    <strong>5. Studio Musique CNC (Lecteur MIDI) :</strong> Un détournement technique et ludique de la machine. Ce module permet de charger des fichiers musicaux standards (.mid). L'interface attribue ensuite chaque piste musicale à un moteur pas-à-pas spécifique de la CNC. En vibrant à des fréquences précises, les moteurs génèrent des notes et jouent physiquement la musique.
+                </li>
+            </ul>
+
+        </section>
+
     </main>
-
+    <script src="menu.js"></script>
+    <script src="script.js"></script>
+    <script type="module" src="Include/model-viewer.min.js"></script>
 </body>
 </html>

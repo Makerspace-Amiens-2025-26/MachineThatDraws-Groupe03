@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Fonctionnement Studio Musique CNC</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="/Include/tex-mml-chtml.js.js"></script>
+</head>
+
+<body>
+    <div id="nav-placeholder"></div>
+    <main class="content">
+        
+        <section id="studio-musique">
+            <h1>Module 5 : Le Studio Musique CNC</h1>
+            <p>Le <strong>Studio Musique CNC</strong> est le module le plus atypique de la <em>MachineThatDraws</em>. Plutôt que de déplacer un stylo pour créer une image, ce logiciel utilise les moteurs pas-à-pas de la CNC comme des oscillateurs acoustiques. En contrôlant précisément la vitesse de rotation, la machine devient capable d'interpréter des partitions musicales complexes.</p>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <img src="Images/interface5.png" alt="Interface du Studio Musique CNC" style="max-width: 100%; height: auto; border-radius: 12px; border: 1px solid #ff003c; box-shadow: 0 8px 24px rgba(255,0,60,0.2);">
+            </div>
+
+            <h3>1. Analyse et Parsing MIDI</h3>
+            <p>Le logiciel s'appuie sur la bibliothèque <strong>@tonejs/midi</strong> pour décoder la structure des fichiers <code>.mid</code> chargés par l'utilisateur ou sélectionnés via les presets.</p>
+            <ul>
+                <li><strong>Filtrage Intelligent :</strong> Le script ignore automatiquement le canal 9, traditionnellement réservé aux percussions, car les moteurs pas-à-pas ne peuvent pas reproduire efficacement des sons atonaux.</li>
+                <li><strong>Sélection des Pistes :</strong> L'utilisateur peut attribuer une piste mélodique au moteur X et une piste d'accompagnement au moteur Y. Un mode "Unisson" permet également de synchroniser les deux moteurs sur la même mélodie pour doubler la puissance sonore.</li>
+            </ul>
+
+            <h3>2. La Physique du Son : Fréquences et Feedrate</h3>
+            <p>Pour qu'un moteur "chante", il doit recevoir des impulsions électriques à une fréquence correspondant à une note de musique (ex: 440 Hz pour un La4). La conversion s'effectue via la formule standard :</p>
+            
+            <div style="margin: 20px 0; font-size: 1.2em;">
+                $$f = 440 \times 2^{\frac{note - 69}{12}}$$
+            </div>
+
+            <ul>
+                <li><strong>Gestion des Octaves :</strong> Pour protéger la mécanique, les fréquences sont bridées par algorithme. Le moteur X est limité entre 100 et 800 Hz, tandis que le moteur Y est limité entre 80 et 400 Hz. Le script effectue des divisions ou multiplications par deux pour rester dans ces zones de sécurité.</li>
+                <li><strong>Conversion en Vitesse (G-Code) :</strong> La fréquence est ensuite transformée en une vitesse de déplacement (Feedrate F en mm/min). C'est ce paramètre <code>F</code> qui définit la "hauteur" de la note jouée par la CNC.</li>
+            </ul>
+
+            <h3>3. L'Algorithme de "Mouvement Perpétuel"</h3>
+            <p>Un défi majeur est de maintenir les moteurs en mouvement sans que le chariot ne percute les bords physiques du plateau (100x100mm). Pour cela, nous avons implémenté un <strong>algorithme de rebond balistique</strong> :</p>
+            <ul>
+                <li><strong>Calcul de collision :</strong> Pour chaque note, le script calcule le temps restant avant que le chariot ne touche un "mur" virtuel à la vitesse donnée.</li>
+                <li><strong>Inversion de direction :</strong> Dès qu'une collision est imminente, le script multiplie la direction par -1. Le chariot rebondit instantanément dans l'autre sens sans interrompre la note de musique. (regarder la video si dessous pour un exemple)</li>
+                <li><strong>Gestion des Silences :</strong> Les silences de la partition sont traduits par des commandes de pause <code>G4 P[temps]</code>, stoppant momentanément les moteurs.</li>
+            </ul>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <video controls poster="Images/dvd.webp" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.6);">
+                    <source src="Images/DVD.mp4" type="video/mp4">
+                    Votre navigateur ne prend pas en charge la lecture de vidéos HTML5. Voici un 
+                    <a href="Images/DVD.mp4" style="color: #ff003c;">lien vers la vidéo</a> à la place.
+                </video>
+                
+                <div style="font-size: 0.9em; color: #8b949e; margin-top: 10px; font-style: italic;">
+                    Vidéo du logo dvd 
+                </div>
+            </div>
+
+            <h3>4. Modes Écoute vs Dessin</h3>
+            <p>Le module propose deux expériences distinctes :</p>
+            <ul>
+                <li><strong>Mode Écoute (▶) :</strong> Le stylo reste levé (<code>M3 S33</code>). La machine se déplace librement pour jouer la musique.</li>
+                <li><strong>Mode Dessin (🖍️) :</strong> Le stylo est abaissé (<code>M3 S0</code>). La machine dessine la trajectoire chaotique générée par les rebonds des fréquences musicales, créant une œuvre d'art abstraite unique à chaque chanson.</li>
+            </ul>
+        </section>
+
+    </main>
+    <script src="menu.js"></script>
+</body>
+</html>

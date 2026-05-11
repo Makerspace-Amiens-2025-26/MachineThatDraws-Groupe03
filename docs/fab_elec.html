@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Électronique & Câblage</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>   
+
+    <div id="nav-placeholder"></div>
+
+    <main class="content">
+        
+        <section id="fab-elec">
+            <h1>3. Électronique & Câblage</h1>
+            <p>L'étape suivante consiste à intégrer l'intelligence (la carte mère) et les muscles (les moteurs) de la machine. L'objectif ici était d'obtenir un câblage invisible et sécurisé.</p>
+
+            <h3>1. Le Boîtier et l'Alimentation</h3>
+            <p>L'intégration de l'électronique a été pensée pour être à la fois robuste et esthétique :</p>
+            <ul>
+                <li><strong>Fixation invisible :</strong> Le boîtier électronique, imprimé en 3D, intègre des inserts en laiton directement dans son plancher. Il est vissé fermement <strong>depuis le dessous de la plaque en bois</strong>. Aucune vis n'est apparente sur le dessus, garantissant un design épuré.</li>
+                <li><strong>Alimentation 12V :</strong> Pour des raisons de sécurité et de simplicité, la puissance est fournie par un <strong>bloc d'alimentation externe (type chargeur de PC portable)</strong>. Cela permet d'isoler la haute tension (220V) loin de la machine et d'injecter un 12V continu et stable directement dans le Shield.</li>
+            </ul>
+
+            <h3 style="margin-top: 40px;">2. Câblage et "Cable Management"</h3>
+            <p>Une machine avec des fils qui pendent risque à tout moment d'accrocher une courroie ou de fausser un dessin il faut donc y faire bien attention :</p>
+            <ul>
+                <li><strong>Passage sous plateau :</strong> La grande majorité des câbles (moteurs Y, capteurs, alimentation) a été routée <strong>sous le plateau en bois</strong> de la machine. Résultat : une zone de travail totalement dégagée.</li>
+                <li><strong>Rallonge de l'effecteur :</strong> Le servomoteur de l'axe Z étant très éloigné de la carte mère lors de ses déplacements, une rallonge de câble a été fabriquée et sécurisée le long de l'axe X pour suivre les mouvements du chariot sans jamais se coincer.</li>
+            </ul>
+
+            <div class="info-box" style="border-left-color: #dc3545; background-color: rgba(220, 53, 69, 0.1);">
+                <strong>⚠️ Règle d'or absolue :</strong><br>
+                Ne rebranchez JAMAIS un moteur pas-à-pas lorsque la carte est alimentée en 12V. Cette action détruit instantanément les drivers A4988 par un pic d'induction !
+            </div>
+
+            <h3 style="margin-top: 40px;">3. Les Sécurités : Capteurs de fin de course</h3>
+            <p>La machine est équipée de <strong>capteurs de fin de course (Endstops)</strong> mécaniques. Câblés sur le shield, ils permettent à la machine de réaliser son "Homing" ($H dans GRBL). Lors du démarrage, la machine vient palper ces capteurs pour trouver physiquement son point zéro (0,0) exact. C'est indispensable pour assurer la répétabilité des dessins.</p>
+
+            <h3 style="margin-top: 40px;">4. Le réglage critique : La puissance des drivers</h3>
+            <p>Avant d'envoyer la première commande de mouvement, il a fallu régler le courant envoyé aux moteurs NEMA 17 pour éviter qu'ils ne surchauffent ou, à l'inverse, qu'ils ne manquent de force (perte de pas).</p>
+            <ul>
+                <li><strong>Le réglage de la VREF :</strong> À l'aide d'un petit tournevis en céramique et d'un multimètre, nous avons ajusté le minuscule potentiomètre présent sur chaque driver A4988 à 0.7V.</li>
+                <li><strong>Courant cible :</strong> Les drivers ont été calibrés pour délivrer <strong>1 Ampère (1A)</strong> par phase aux moteurs. Ce réglage offre un couple (force) largement suffisant pour mouvoir les chariots tout en maintenant les moteurs et l'électronique à une température de fonctionnement optimale.</li>
+            </ul>
+
+        </section>
+
+    </main>
+    
+    <script src="menu.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

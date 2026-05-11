@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Étude & Choix Techniques</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div id="nav-placeholder"></div>
+
+    <main class="content">
+        
+        <section id="etude">
+            <h1>Étude et choix techniques</h1>
+            <p>La phase d'étude de <em>MachineThatDraws</em> a été conditionnée par deux facteurs majeurs : notre volonté de concevoir une machine fiable, et le respect d'un cahier des charges matériel strict imposé par l'école.</p>
+
+            <h3>1. Architecture de la machine : Le choix du Cartésien</h3>
+            <p>Nous avons rapidement écarté les choix trop complexes (comme le CoreXY ou les bras robotiques SCARA). Nous voulions <strong>la fiabilité, la précision et la simplicité</strong> d'une machine cartésienne pure (un axe X qui se déplace de façon indépendante sur un axe Y).</p>
+            <p>Les avantages de cette architecture sont nombreux et parfaitement adaptés à notre projet :</p>
+            <ul>
+                <li><strong>Simplicité de calcul et de contrôle :</strong> Contrairement au CoreXY qui exige des équations mathématiques complexes pour mixer les mouvements de deux moteurs simultanément, ici un déplacement en X ne sollicite que le moteur X. Le firmware est allégé, la carte calcule plus vite, et le débogage est instantané.</li>
+                <li><strong>Indépendance des axes (Maintenance) :</strong> En cas de défaut mécanique (courroie détendue, point dur), les axes étant totalement découplés, il est très facile d'isoler et de réparer le problème sur un seul axe sans devoir démonter ou rééquilibrer toute la machine.</li>
+                <li><strong>Fiabilité géométrique :</strong> L'équerrage (les angles parfaits à 90°) est mécaniquement garanti par la rigidité de la structure physique en H. Les dessins ne subissent aucune distorsion diagonale.</li>
+                <li><strong>Optimisation du couple :</strong> La force de chaque moteur NEMA 17 est dédiée à 100% à son propre axe, évitant les pertes d'énergie.</li>
+            </ul>
+
+            <h3>2. Guidage et Transmission de mouvement</h3>
+            <p>Pour assurer un tracé parfait, la tete de la machine doit se déplacer sans aucun point dur ni "jeu" mécanique (backlash).</p>
+            <ul>
+                <li><strong>Axes linéaires de 6 mm :</strong> La machine est conçue autour des tiges lisses (axes linéaires) de 6 mm de diamètre. Cela permet aux chariots de <strong>coulisser parfaitement</strong> avec une friction extrêmement faible, tout en gardant une tête d'impression très légère.</li>
+                <li><strong>Courroies et poulies crantées :</strong> La transmission du mouvement est assurée par des courroies GT2 (fabriquer maison en impression 3D) fermement tendues. Elles sont entraînées par des <strong>poulies crantées (dentées)</strong> montées sur l'arbre des moteurs. L'emboîtement des dents empêche tout glissement lors des changements rapides de direction.</li>
+                <li><strong>Stockage et Démontabilité :</strong> Un point clé de notre conception est la fixation des courroies. Elles sont conçues pour être <strong>facilement démontables et remontables</strong>. Cela permet de relâcher instantanément la tension lorsque la machine est entreposée dans un casier pendant une longue période, évitant ainsi d'étirer le caoutchouc de la courroie ou de déformer la structure plastique au repos.</li>
+            </ul>
+
+            <h3>3. Motorisation et Actionneurs (Cahier des charges)</h3>
+            <p>L'école nous a imposé l'utilisation d'actionneurs spécifiques. Loin d'être un frein, nous avons optimisé notre conception autour de ces composants standards de l'industrie "Maker" :</p>
+            
+            <div class="info-box">
+                <strong>⚙️ Moteurs NEMA 17 (Axes X et Y) :</strong> Imposés par le projet, ces moteurs pas-à-pas offrent un couple de maintien (Holding Torque) largement supérieur à ce qui est nécessaire pour déplacer un simple stylo. Cela nous garantit qu'<strong>aucune perte de pas</strong> n'aura lieu, même à haute vitesse, rendant la machine extrêmement robuste.
+            </div>
+
+            <div class="info-box">
+                <strong>🕹️ Servomoteur (Axe Z) :</strong> Également imposé par l'école, le servomoteur est en réalité la solution idéale pour le levage du stylo. Contrairement à un 3ème moteur NEMA 17 qui aurait alourdi inutilement l'axe X, le servomoteur est ultra-léger et ne nécessite que deux états programmés : "Stylo levé" (Mouvement G0) et "Stylo baissé" (Mouvement G1).
+            </div>
+
+            <h3 style="margin-top: 40px;">4. Configuration Firmware (GRBL)</h3>
+            <p>Pour que le logiciel comprenne la mécanique, nous avons dû calibrer la machine (Conversion des impulsions électriques en millimètres). Voici les paramètres critiques calculés et intégrés à notre carte mère :</p>
+            <pre style="background: #161b22; padding: 15px; border-radius: 8px; color: #c9d1d9; font-family: monospace;">
+                <code>  $100=40.000  (Résolution axe X en pas/mm)
+                    $101=21.053  (Résolution axe Y en pas/mm)
+                    $110=1200.000 (Vitesse max axe X en mm/min)
+                    $111=1200.000 (Vitesse max axe Y en mm/min)
+                    $120=400.000  (Accélération axe X en mm/sec²)
+                    $130=170.000  (Course max axe X en mm)
+                    $131=140.000  (Course max axe Y en mm)</code></pre>
+            <p style="font-size: 0.9em; color: #8b949e;"><em>Note : La différence de résolution (pas/mm) entre l'axe X et l'axe Y est due aux choix de démultiplication mécanique (diamètre de poulies) appliqués sur la machine.</em></p>
+        </section>
+
+    </main>
+    
+    <script src="menu.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

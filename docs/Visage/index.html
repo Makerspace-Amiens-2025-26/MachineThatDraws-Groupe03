@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slicer Visage CNC - Cyberpunk</title>
+    <script src="../Include/p5.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="layout">
+        
+        <div class="sidebar">
+            <h2>Slicer Visage</h2>
+            
+            <div class="panel">
+                <h3>1. Image & Effets</h3>
+                <input type="file" id="imgUpload" accept="image/*">
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="chkShowBackground" checked>
+                    <label for="chkShowBackground">Afficher l'image de fond</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="chkContinuousLines" checked>
+                    <label for="chkContinuousLines">Tracer les lignes de fond</label>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>2. Dimensions & Décalage</h3>
+                <div class="checkbox-group" style="margin-bottom: 10px;">
+                    <input type="checkbox" id="chkKeepRatio" checked>
+                    <label for="chkKeepRatio" style="color:#00ffcc;">🔒 Conserver le ratio</label>
+                </div>
+
+                <div class="setting-group">
+                    <label>Largeur (X) mm: <span id="valW" style="color:#ff4d4d">100</span></label>
+                    <input type="range" id="inpW" min="10" max="170" step="1" value="100">
+                </div>
+                <div class="setting-group">
+                    <label>Hauteur (Y) mm: <span id="valH" style="color:#ff4d4d">100</span></label>
+                    <input type="range" id="inpH" min="10" max="140" step="1" value="100">
+                </div>
+                
+                <div style="border-top: 1px dashed #330011; margin: 10px 0;"></div>
+                
+                <div class="setting-group">
+                    <label>Décalage X mm: <span id="valOffX" style="color:#ff4d4d">0</span></label>
+                    <input type="range" id="inpOffX" min="0" max="170" step="1" value="0">
+                </div>
+                <div class="setting-group">
+                    <label>Décalage Y mm: <span id="valOffY" style="color:#ff4d4d">0</span></label>
+                    <input type="range" id="inpOffY" min="0" max="140" step="1" value="0">
+                </div>
+                
+                <button id="btnGenerate" style="margin-top: 10px;">🔄 GÉNÉRER LE TRACÉ</button>
+                <div class="row">
+                    <button id="btnClear">👁 MASQUER LE TRACÉ</button>
+                </div>
+
+                <button class="action-btn" id="btnDownload" style="margin-top: 10px;">💾 Télécharger Gcode</button>
+            </div>
+
+            <div class="panel">
+                <h3>3. Contrôle Machine</h3>
+                <button id="btnConnect" class="conn-btn">🔌 CONNECTER USB</button>
+                
+                <div class="row">
+                    <button id="btnHome">🏠 Origine ($H)</button>
+                </div>
+                
+                <div class="row">
+                    <button id="btnPrint" disabled>▶ LANCER</button>
+                </div>
+                <div class="row">
+                    <button id="btnStop" class="stop-btn">STOP 🛑</button>
+                </div>
+                
+                <div class="progress-container">
+                    <div id="progressBar"></div>
+                </div>
+                <div id="progressText">0%</div>
+                <div id="timeText">Temps Est: 00:00</div>
+                
+                <div id="console"></div>
+            </div>
+        </div>
+
+        <div id="canvas-container">
+            <nav class="top-nav">
+                <a href="../Main/index.html" class="nav-btn">1. Slicer</a>
+                <a href="../Topo/index.html" class="nav-btn">2. Topographie</a>
+                <a href="../Word/index.html" class="nav-btn">3. Ecrire</a>
+                <a href="#" class="nav-btn active">4. Visage</a>
+                <a href="../Musique/index.html" class="nav-btn">5. Musique</a>
+                <a href="../index.html" class="nav-btn">6. Doc</a>
+            </nav>
+            <div id="zoom-controls">
+                <p>Molette = Zoom | Clic = Déplacer</p>
+                <button id="btnResetView" class="btn-small">Recadrer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

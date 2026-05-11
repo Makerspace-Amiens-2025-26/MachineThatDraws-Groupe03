@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Fonctionnement Studio Texte CNC</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="nav-placeholder"></div>
+    <main class="content">
+        
+        <section id="studio-texte">
+            <h1>Module 3 : Le Studio Texte CNC (Word)</h1>
+            <p>Le <strong>Studio Texte CNC</strong> transforme la machine en une véritable machine à écrire. Ce module fonctionne comme un éditeur de texte vectoriel permettant de composer, superposer et orienter plusieurs blocs de texte pour générer automatiquement les trajectoires du stylo.</p>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <img src="Images/interface3.png" alt="Interface du Studio Texte CNC" style="max-width: 100%; height: auto; border-radius: 12px; border: 1px solid #ff003c; box-shadow: 0 8px 24px rgba(255,0,60,0.2);">
+            </div>
+
+            <h3>1. Gestion des Calques de Texte</h3>
+            <p>Pour offrir une flexibilité totale, l'interface repose sur un système de calques dynamiques. L'utilisateur peut ajouter autant de blocs de texte qu'il le souhaite via le bouton <em>"Ajouter un texte"</em>. Chaque calque est traité comme un objet indépendant possédant ses propres paramètres :</p>
+            <ul>
+                <li><strong>Saisie multi-lignes :</strong> Une zone de texte permettant d'écrire des paragraphes entiers. Le code gère automatiquement les sauts de ligne avec un interlignage proportionnel (110% de la taille de la police).</li>
+                <li><strong>Choix de la typographie :</strong> L'utilisateur peut sélectionner différentes graisses et styles (Arial standard, Bold, Italic, Black).</li>
+                <li><strong>Taille et Positionnement :</strong> Taille de police ajustable (T) et coordonnées (X, Y) au millimètre près pour placer précisément le bloc sur le plateau de 170x140 mm.</li>
+            </ul>
+
+            <h3>2. La Conversion Vectorielle (textToPoints)</h3>
+            <p>Dessiner du texte avec un stylo est un défi complexe car une machine ne comprend pas les "pixels" d'une police d'écriture. Voici comment le logiciel procède "sous le capot" :</p>
+            <ul>
+                <li><strong>Chargement asynchrone des polices (TTF) :</strong> Le script charge dynamiquement de véritables fichiers de polices (<code>.TTF</code>) dans le cache du navigateur.</li>
+                <li><strong>Mode Aperçu (Bleu) :</strong> Tant que l'utilisateur modifie ses textes, le programme utilise le moteur de rendu natif de p5.js pour afficher un aperçu bleu rapide et léger, sans faire ralentir l'ordinateur.</li>
+                <li><strong>Extraction des contours :</strong> Lors du clic sur <em>"Générer le tracé"</em>, le script utilise la fonction <code>textToPoints()</code> de p5.js. Cette fonction scanne la géométrie mathématique de la police et en extrait une liste brute de milliers de points (x, y) qui forment le contour exact de chaque lettre. Le tracé apparaît alors en rouge (Mode Tracé).</li>
+            </ul>
+
+            <h3>3. Opérations Mathématiques et Optimisation</h3>
+            <p>Pour garantir un résultat parfait à la machine, le script applique deux traitements mathématiques majeurs sur ces points bruts :</p>
+            <ul>
+                <li><strong>Matrice de Rotation (Trigonométrie) :</strong> Pour gérer l'orientation globale du texte (0°, 90°, -90°, 180°), le programme n'utilise pas de simple rotation d'image. Il recalcule les coordonnées de chaque point un par un en appliquant une formule trigonométrique utilisant le cosinus (<code>cosA</code>) et le sinus (<code>sinA</code>) par rapport à un point de pivot. Cela permet de générer un G-Code parfaitement aligné avec la mécanique.</li>
+                <li><strong>Filtrage spatial (Espacement des points) :</strong> La fonction <code>textToPoints</code> génère souvent beaucoup trop de points, ce qui fait "bégayer" la machine. Un algorithme de nettoyage calcule la distance entre chaque point généré (<code>dist()</code>). Si deux points sont plus proches que la règle d'espacement (ex: 0.15 mm), le point est supprimé. Ce nettoyage intelligent allège le fichier G-Code final tout en gardant des courbes fluides.</li>
+            </ul>
+
+            <h3>4. Génération G-Code et Exécution</h3>
+            <p>Une fois les chemins optimisés, le script boucle sur chaque lettre pour générer le G-Code. Le stylo se lève (<code>M3 S33</code>), se déplace rapidement (<code>G0</code>) au début d'une lettre, se baisse (<code>M3 S0</code>), puis trace le contour (<code>G1</code>) à la vitesse configurée (F1500). L'envoi se fait de manière asynchrone via la technologie Web Serial, avec une barre de progression en direct.</p>
+        </section>
+
+    </main>
+    <script src="menu.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | L'Axe X</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>   
+
+    <div id="nav-placeholder"></div>
+
+    <main class="content">
+        
+        <section id="cao-axe-x">
+            <h1>L'Axe X (Le Pont Transversal)</h1>
+            <p>L'axe X est l'élément mobile le plus sollicité de la machine. Il supporte la tête d'impression et doit garantir un déplacement parfaitement rectiligne sur toute la largeur de la zone de dessin.</p>
+
+                <div class="model-window" style="width: 100%; height: 500px; background: #1a1a1a; border: 1px solid #111; border-top: 2px solid #ff003c; border-radius: 5px; overflow: hidden; margin: 30px 0; display: flex; flex-direction: column;">
+                <model-viewer 
+                    src="Model/AxeX.gltf" 
+                    camera-controls 
+                    auto-rotate
+                    shadow-intensity="1"
+                    orientation="-130deg -80deg 0deg" 
+                    exposure="0.3"
+                    tone-mapping="commerce"        
+                    shadow-intensity="2"
+                    shadow-softness="1"
+                    style="width: 100%; flex-grow: 1; background-color: #222;">
+                    <div slot="poster" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: 100%; color: #ff003c; font-family: 'Orbitron', sans-serif; background: #050505; text-align: center;">
+                        <div style="font-size: 1.2rem; margin-bottom: 10px; letter-spacing: 2px;">📡 LIAISON ÉTABLIE</div>
+                        <div style="font-size: 0.9rem; color: #888;">CHARGEMENT DU MODÈLE 3D...</div>
+                        <div style="width: 150px; height: 2px; background: #333; margin-top: 15px; position: relative; overflow: hidden;">
+                            <div class="anim-scanline" style="width: 50px; height: 100%; background: #ff003c; position: absolute;"></div>
+                        </div>
+                    </div>
+                </model-viewer>
+                <div class="model-caption" style="background: #111; border-top: 1px solid #222; font-size: 0.9em; color: #888; padding: 12px; font-family: 'Rajdhani', sans-serif; text-align: center; letter-spacing: 1px;">
+                    ▶ Modèle 3D interactif de l'axe X
+                </div>
+            </div>
+
+            <h3>1. Motorisation et Rigidité</h3>
+            <p>Le mouvement est assuré par un moteur NEMA 17 monté en extrémité gauche. Malgré le poids déporté du moteur, la structure reste stable :</p>
+            <ul>
+                <li><strong>Résistance à la flexion :</strong> Les deux axes en aluminium supportent sans difficulté le poids du moteur ainsi que la traction exercée par la courroie. Aucun fléchissement n'est observé, garantissant que le stylo reste toujours à la même hauteur par rapport au plateau.</li>
+                <li><strong>Transmission :</strong> Une poulie crantée GT2 (fait maison) montée sur l'arbre du moteur entraîne la courroie qui parcourt toute la longueur du pont.</li>
+            </ul>
+
+            <h3>2. L'importance de la tension (Le phénomène des "cercles ovales")</h3>
+            <p>Une courroie détendue est le pire ennemi d'un traceur vectoriel car elle crée un jeu mécanique (aussi appelé <em>backlash</em>) :</p>
+            <ul>
+                <li><strong>Explication du défaut :</strong> Lorsqu'une courroie a du "mou" et que le moteur change de direction (ce qui arrive tres souvent), le moteur va tourner dans le vide sur quelques millimètres pour retendre la courroie <em>avant</em> que la tête de dessin ne commence réellement à bouger. Ce petit retard de mouvement déforme systématiquement le tracé, transformant un cercle parfait en une <strong>forme ovale</strong> imparfaite par exemple.</li>
+                <li><strong>Le réglage :</strong> Pour pallier cela, le bloc situé à l'extrémité droite du pont intègre un mécanisme de tension efficace. En vissant <strong>deux vis M3</strong>, on écarte la poulie folle vers l'extérieur, ce qui permet de tendre la courroie GT2 avec une grande finesse.</li>
+            </ul>
+
+            <div class="info-box" style="border-left-color: #f1c40f; background-color: rgba(241, 196, 15, 0.1);">
+                <strong>🛑 Sécurité : Capteur de fin de course (Endstop)</strong><br>
+                Sur le support moteur, on distingue un circuit imprimé rouge. Il s'agit du capteur de fin de course de l'axe X. Il permet à la machine de détecter sa position limite à gauche lors de la phase de "Homing". Dès que le chariot de la tête vient percuter ce contacteur, l'ESP32 initialise l'origine X=0.
+            </div>
+
+            <h3 style="margin-top: 40px;">3. Entraînement de la Tête et Démontabilité</h3>
+            <p>La liaison entre la courroie et l'effecteur est un point critique de la conception :</p>
+            <ul>
+                <li><strong>Fixation par pincement :</strong> Pour éviter toute pièce métallique supplémentaire ou système de fixation complexe qui alourdirait l'axe, la courroie est directement <strong>pincée par la tête d'impression</strong>. Le design du chariot Z intègre des fentes spécifiques qui verrouillent les crans de la courroie GT2, assurant une transmission du mouvement sans aucun glissement, même lors des accélérations brusques.</li>
+                <li><strong>Stockage et Démontage :</strong> Ce système d'encoche présente un avantage majeur : <strong>la courroie est extrêmement facile à démonter et à remonter</strong> sans aucun outil. C'est une fonctionnalité très pratique pour relâcher instantanément la tension lorsque la machine est entreposée pendant une longue période, évitant ainsi d'étirer le caoutchouc de manière permanente.</li>
+            </ul>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <img src="Images/pince.png" alt="Schéma électronique de la carte" style="max-width: 100%; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 8px rgba(0,0,0,0.5);">
+            </div>
+
+        </section>
+
+    </main>
+    
+    <script src="menu.js"></script>
+    <script src="script.js"></script>
+    <script type="module" src="Include/model-viewer.min.js"></script>
+</body>
+</html>

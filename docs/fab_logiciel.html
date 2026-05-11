@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Logiciel & Slicer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>   
+
+    <div id="nav-placeholder"></div>
+
+    <main class="content">
+        
+        <section id="fab-logiciel">
+            <h1>4. Logiciel, Slicer & Interface (Software)</h1>
+            <p>La mécanique et l'électronique sont prêtes. L'ultime étape du projet a été de concevoir une chaîne logicielle capable de piloter la machine. L'équipe a pris la décision radicale de <strong>tout développer "from scratch" en technologies Web (HTML/CSS/JS)</strong>, éliminant ainsi le besoin de logiciels tiers lourds.</p>
+
+            <h3>1. Le Cerveau Bas-Niveau : Le Firmware</h3>
+            <p>La carte mère (Arduino Uno V1, puis ESP32 UNO) doit pouvoir comprendre les commandes de déplacement. Nous avons flashé le firmware <strong>GRBL Servo</strong> (une version de GRBL modifiée spécifiquement pour gérer un signal PWM sur l'axe Z au lieu d'un moteur classique).</p>
+            <ul>
+                <li><strong>Déploiement :</strong> Initialement flashé via l'IDE Arduino pour le POC, nous sommes ensuite passés sur l'environnement professionnel <strong>PlatformIO</strong> pour gérer plus facilement les bibliothèques et la compilation sur l'ESP32 UNO.</li>
+            </ul>
+
+            <h3 style="margin-top: 40px;">2. La Magie du Web : L'API Google Serial</h3>
+            <p>Habituellement, les machines CNC nécessitent un logiciel installé sur l'ordinateur (comme Universal Gcode Sender) pour envoyer les commandes à la machine. Notre interface Web fait tout cela directement depuis le navigateur Chrome.</p>
+            <div class="info-box" style="border-left-color: #388bfd; background-color: rgba(56, 139, 253, 0.1);">
+                <strong>🌐 Communication Directe (Web Serial API) :</strong><br>
+                Grâce à l'API <code>navigator.serial</code> intégrée en JavaScript, notre site Web ouvre un port de communication (BaudRate 115200) directement avec le port USB du PC. Le navigateur lit l'état de la machine en temps réel et envoie le G-Code ligne par ligne, tout en gérant les accusés de réception (le fameux <code>ok</code> de GRBL).
+            </div>
+
+            <h3 style="margin-top: 40px;">3. Workflow Utilisateur : Comment lancer un dessin ?</h3>
+            <p>L'objectif de cette interface était de rendre la machine utilisable par n'importe qui en quelques clics, sans connaissances techniques :</p>
+            <ol style="background: #161b22; padding: 20px 40px; border-radius: 8px; border: 1px solid #30363d;">
+                <li><strong>Brancher</strong> le câble USB reliant la machine au PC.</li>
+                <li><strong>Cliquer sur "Connecter USB"</strong> sur notre interface Web et sélectionner le bon port série.</li>
+                <li><strong>Faire le Homing ($H)</strong> pour que la machine aille chercher ses capteurs de fin de course et trouve son origine physique.</li>
+                <li><strong>Importer une image</strong> (ou générer un paysage Topographique).</li>
+                <li><strong>Ajuster les réglages</strong> (Taille, Seuil de contraste, Flou) via les sliders avec un aperçu visuel en temps réel du plateau.</li>
+                <li><strong>Cliquer sur "Lancer l'impression"</strong> et admirer le résultat !</li>
+            </ol>
+
+        </section>
+
+    </main>
+    
+    <script src="menu.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

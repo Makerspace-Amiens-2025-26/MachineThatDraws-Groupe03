@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Routage PCB</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="nav-placeholder"></div>
+    <main class="content">
+        <section id="routage">
+            <h1>Routage du PCB Maison</h1>
+            <p>Ce routage a été réalisé pour garantir une stabilité électrique maximale malgré les courants élevés demandés par les moteurs pas-à-pas.</p>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <img src="Images/rootage.png" alt="Routage 2D du PCB" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid #ff003c; box-shadow: 0 0 20px rgba(255, 0, 60, 0.2);">
+                <div style="font-size: 0.9em; color: #ff4d4d; margin-top: 10px; font-family: 'Orbitron', sans-serif;">
+                    Vue du routage double couche (Top: Rouge / Bottom: Bleu)
+                </div>
+            </div>
+
+            <h3>1. Architecture et Composants</h3>
+            <p>Le PCB centralise l'intégralité de l'intelligence et de la puissance de la machine :</p>
+            <ul>
+                <li><strong>Empreinte ESP32 UNO:</strong> L'emprinte de l'esp32 uno est placé au centre pour pouvoir prévoir l'installation des composants.</li>
+                <li><strong>Double Drivers Moteurs (A1 & A2) :</strong> Emplacements pour drivers type A4988, avec condensateurs de filtrage (100µF) placés au plus près des broches d'alimentation pour absorber les pics de courant.</li>
+                <li><strong>Connecteurs d'alimentation :</strong> Un connecteur dédié pour l'alimentation 12V des moteurs et un port USB pour la partie logique (ESP32).</li>
+                <li><strong>Le support de carte SD :</strong> Il est placer en dessous du pcb pour gagner de la place</li>
+            </ul>
+
+            <h3>2. Stratégie de Routage Technique</h3>
+            <p>La conception a suivi des règles strictes pour assurer la fiabilité du tracé :</p>
+            <ul>
+                <li><strong>Gestion de la puissance :</strong> Les pistes transportant le 12V (en rouge large) ont été dimensionnées pour supporter l'ampérage des moteurs sans chauffer ni provoquer de chute de tension.</li>
+                <li><strong>Plan de masse (GND) :</strong> Utilisation de larges zones de cuivre pour minimiser les parasites électromagnétiques (EMI) générés par les commutations rapides des moteurs.</li>
+                <li><strong>Double couche optimisée :</strong> Les signaux logiques transitent majoritairement par la couche inférieure (bleue) pour éviter de croiser les lignes de puissance et réduire les interférences.</li>
+                <li><strong>Protection :</strong> Intégration d'un fusible (F1) et de diodes de protection pour sécuriser l'électronique contre les inversions de polarité ou les surcharges.</li>
+            </ul>
+
+            <div class="info-box">
+                <strong>⚡ Note de fabrication :</strong> Le PCB est conçu pour être compact tout en laissant suffisamment d'espace pour l'évacuation thermique des drivers moteurs, point critique lors de longs tracés de portraits.
+            </div>
+        </section>
+    </main>
+
+    <script src="menu.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

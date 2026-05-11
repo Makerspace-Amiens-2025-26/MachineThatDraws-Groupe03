@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Objectifs</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="nav-placeholder"></div>
+    <main class="content">
+        
+        <section id="objectifs">
+            <h1>Objectifs du projet</h1>
+            <p>Ce projet s'inscrit dans le cadre de nos étude et a été realiser au MakerSpace d'UniLaSalle Amiens. Formant une équipe de 4 étudiants, nous disposions officiellement de 60 heures allouées en présentiel. Néanmoins, face à l'ampleur et à la complexité du défi, ce projet a nécessité un investissement personnel massif à la maison, dépassant très largement ce quota horaire initial. Notre mission commune : concevoir de A à Z une machine à dessiner automatisée, sans aucun plan préexistant.</p>
+
+            <h3>1. Objectifs Mécaniques et Précision</h3>
+            <p>La machine devait être compacte et fonctionnelle. Nos critères d'acceptation mécaniques étaient les suivants :</p>
+            <ul>
+                <li><strong>Zone de travail :</strong> 170 x 140 mm (format optimisé pour le dessin de bureau).</li>
+                <li><strong>Précision des traits :</strong> La résolution mécanique doit être suffisante pour que l'erreur de tracé soit imperceptible à l'œil nu lors du dessin de courbes complexes ou de portraits.</li>
+                <li><strong>Polyvalence de la machine :</strong> La tête de la machine est capable d'embarquer un stylo 4 couleurs, ouvrant la voie à des dessins multicouleur.</li>
+            </ul>
+
+            <h3>2. L'Indépendance Logicielle</h3>
+            <p>Plutôt que d'utiliser des logiciels lourds et des générateurs de G-Code déja existants, nous avons fait le choix radical de développer l'intégralité de notre chaîne logicielle de A à Z. Coder notre propre interface en technologies Web nous a permis d'offrir une expérience "Plug & Play" adapter a notre machine : tout se pilote depuis un simple navigateur, sans aucune installation. Enfin, cette maîtrise totale du code source était indispensable pour optimiser les trajectoires spécifiquement pour notre mécanique, et nous a offert la liberté d'intégrer des fonctionnalités créatives sur-mesure (comme la machine à écrire ou le lecteur MIDI), ce qui aurait été impossible avec un système fermé.</p>
+
+            <h3>3. Objectifs et Marche à suivre pour la présentation de Juin</h3>
+            <p>Pour la version finale (V4) qui sera présentée devant le jury lors de la Journée des Projets en juin, nous avons établi un plan d'action précis pour implémenter nos dernières améliorations :</p>
+            
+            <ul>
+                <li><strong>1. L'électronique maison (PCB & ESP32) :</strong> 
+                    <br><em>L'objectif :</em> Remplacer le matériel du commerce par notre propre circuit de commande.
+                    <br><em>La marche à suivre :</em> Nous devons finaliser la soudure des composants sur notre PCB personnalisé. Nous procéderons ensuite aux tests de tension électrique, avant d'y intégrer l'ESP32 UNO et de le flasher avec le firmware moderne <strong>FluidNC</strong>. L'étape finale consistera à calibrer les moteurs pour garantir une communication fluide avec notre interface Web.
+                </li>
+                
+                <li style="margin-top: 15px;"><strong>2. Le dessin multicouche (RGB) :</strong> 
+                    <br><em>L'objectif :</em> Réaliser des tracés complexes en superposant plusieurs couleurs.
+                    <br><em>La marche à suivre :</em> Côté logiciel, notre Slicer sera programmé pour décomposer l'image en différentes couches de couleurs. Côté matériel, la machine effectuera des pauses automatiques entre chaque couche. L'utilisateur devra alors sélectionner manuellement la bonne mine sur le stylo 4 couleurs avant de relancer le tracé d'un simple clic sur l'interface.
+                </li>
+                
+                <li style="margin-top: 15px;"><strong>3. Algorithme avancé pour les portraits :</strong> 
+                    <br><em>L'objectif :</em> Créer un slicer spécifique pour la reproduction optimisée des visages.
+                    <br><em>La marche à suivre :</em> Développer un nouveau module mathématique en JavaScript dédié à la gestion des ombres. Au lieu de simples contours, l'algorithme utilisera des techniques de hachures (cross-hatching) ou de trame pointillée pour convertir les dégradés complexes d'un visage en un chemin continu, garantissant un rendu visuel réaliste.
+                </li>
+
+                <li style="margin-top: 15px;"><strong>4. Assemblage final et préparation au jury :</strong> 
+                    <br><em>L'objectif :</em> Présenter une machine fiable, robuste et esthétiquement finie.
+                    <br><em>La marche à suivre :</em> Remplacer les dernières pièces d'essai par les modèles définitifs imprimés en matériaux techniques (PETG-Carbone). Nous finaliserons le routage invisible des câbles à l'aide de caches, puis nous préparerons une sélection de fichiers de démonstration pour prouver la répétabilité et la précision de la machine en direct devant le jury.
+                </li>
+            </ul>
+        </section>
+
+    </main>
+    <script src="menu.js"></script>
+</body>
+</html>

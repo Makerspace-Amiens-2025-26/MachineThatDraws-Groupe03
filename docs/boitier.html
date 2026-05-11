@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Le Boîtier Électronique</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>   
+
+    <div id="nav-placeholder"></div>
+
+    <main class="content">
+        
+        <section id="cao-boitier">
+            <h1>Le Boîtier Électronique</h1>
+            <p>Le boîtier est l'élément protecteur de la machine. Il centralise toute l'intelligence de la machine, protégeant les composants sensibles tout en organisant le flux important de câblage.</p>
+
+            <div class="model-window" style="width: 100%; height: 500px; background: #1a1a1a; border: 1px solid #111; border-top: 2px solid #ff003c; border-radius: 5px; overflow: hidden; margin: 30px 0; display: flex; flex-direction: column;">
+                <model-viewer 
+                    src="Model/Boitier.gltf" 
+                    camera-controls 
+                    auto-rotate
+                    shadow-intensity="1"
+                    orientation="145deg -60deg 0deg" 
+                    exposure="0.3"
+                    tone-mapping="commerce"        
+                    shadow-intensity="2"
+                    shadow-softness="1"
+                    style="width: 100%; flex-grow: 1; background-color: #222;">
+                    <div slot="poster" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: 100%; color: #ff003c; font-family: 'Orbitron', sans-serif; background: #050505; text-align: center;">
+                        <div style="font-size: 1.2rem; margin-bottom: 10px; letter-spacing: 2px;">📡 LIAISON ÉTABLIE</div>
+                        <div style="font-size: 0.9rem; color: #888;">CHARGEMENT DU MODÈLE 3D...</div>
+                        <div style="width: 150px; height: 2px; background: #333; margin-top: 15px; position: relative; overflow: hidden;">
+                            <div class="anim-scanline" style="width: 50px; height: 100%; background: #ff003c; position: absolute;"></div>
+                        </div>
+                    </div>
+                </model-viewer>
+                <div class="model-caption" style="background: #111; border-top: 1px solid #222; font-size: 0.9em; color: #888; padding: 12px; font-family: 'Rajdhani', sans-serif; text-align: center; letter-spacing: 1px;">
+                    ▶ Modèle 3D interactif du boitier
+                </div>
+            </div>
+
+            <h3>1. Accessibilité et Gestion des Flux</h3>
+            <p>La conception du boîtier a été dictée par la connectivité. Plusieurs ouvertures stratégiques ont été prévues dans la modélisation :</p>
+            <ul>
+                <li><strong>Ouvertures stratégiques (Dessus) :</strong> Des passages de câbles larges permettent de faire sortir proprement les cables des deux moteurs NEMA 17 et les trois fils du servomoteur de l'axe Z.</li>
+                <li><strong>Alimentation :</strong> Un perçage circulaire sur le flanc permet d'insérer le connecteur Jack de l'alimentation externe 12V.</li>
+                <li><strong>Connexion PC :</strong> Une fenêtre rectangulaire sur le côté permet l'accès direct au port USB de la carte, indispensable pour le pilotage via l'interface Web et les mises à jour du firmware.</li>
+            </ul>
+
+            <h3>2. Fixation et Montage Interne</h3>
+            <p>Pour garantir que rien ne bouge pendant le transport ou le fonctionnement, nous avons utilisé des fixations mécaniques robustes :</p>
+            <ul>
+                <li><strong>Support Carte Mère :</strong> La carte (format Arduino Uno) n'est pas simplement posée. Elle est fixée au fond du boîtier par des vis se prenant dans des <strong>inserts filetés en laiton</strong> directement intégrés à l'impression 3D.</li>
+                <li><strong>Fixation au châssis :</strong> Sous le "plancher" du boîtier, <strong>2 inserts M3 supplémentaires</strong> permettent de solidariser l'ensemble à la base de la machine. Le boîtier est vissé par le dessous de la planche, rendant la fixation totalement invisible.</li>
+            </ul>
+
+            <div class="info-box" style="border-left-color: #2ea043; background-color: rgba(46, 160, 67, 0.1);">
+                <strong>🧵 Matériau et Refroidissement :</strong><br>
+                Le boîtier et son couvercle sont imprimés en <strong>PLA Noir classique</strong>. Bien que les drivers A4988 génèrent de la chaleur, l'absence de couvercle hermétique et les larges ouvertures pour les câbles permettent une circulation d'air suffisante. Le PLA reste stable et ne subit aucune déformation thermique dans ces conditions d'utilisation.
+            </div>
+
+            <h3 style="margin-top: 40px;">3. Sécurité Électrique</h3>
+            <p>En centralisant le 12V et le 5V dans ce boîtier, nous isolons les connexions électriques de l'utilisateur. Le couvercle imprimé en 3D vient parfaire la finition et évite tout contact accidentel avec les composants lors de l'utilisation de la machine.</p>
+
+        </section>
+
+    </main>
+    
+    <script src="menu.js"></script>
+    <script src="script.js"></script>
+    <script type="module" src="Include/model-viewer.min.js"></script>
+</body>
+</html>

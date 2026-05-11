@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | L'Axe Y</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>   
+
+    <div id="nav-placeholder"></div>
+
+    <main class="content">
+        
+        <section id="cao-axe-y">
+            <h1>Axe Y : Synchronisation et Entraînement</h1>
+            <p>L'axe Y est le moteur principal du déplacement. Pour éviter tout phénomène de mise de travers du pont central (racking), nous avons conçu un système de synchronisation mécanique robuste.</p>
+
+                <div class="model-window" style="width: 100%; height: 500px; background: #1a1a1a; border: 1px solid #111; border-top: 2px solid #ff003c; border-radius: 5px; overflow: hidden; margin: 30px 0; display: flex; flex-direction: column;">
+                <model-viewer 
+                    src="Model/Axe-Y.gltf" 
+                    camera-controls 
+                    auto-rotate
+                    shadow-intensity="1"
+                    orientation="145deg -70deg 0deg" 
+                    exposure="0.3"
+                    tone-mapping="commerce"        
+                    shadow-intensity="2"
+                    shadow-softness="1"
+                    style="width: 100%; flex-grow: 1; background-color: #222;">
+                    <div slot="poster" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: 100%; color: #ff003c; font-family: 'Orbitron', sans-serif; background: #050505; text-align: center;">
+                        <div style="font-size: 1.2rem; margin-bottom: 10px; letter-spacing: 2px;">📡 LIAISON ÉTABLIE</div>
+                        <div style="font-size: 0.9rem; color: #888;">CHARGEMENT DU MODÈLE 3D...</div>
+                        <div style="width: 150px; height: 2px; background: #333; margin-top: 15px; position: relative; overflow: hidden;">
+                            <div class="anim-scanline" style="width: 50px; height: 100%; background: #ff003c; position: absolute;"></div>
+                        </div>
+                    </div>
+                </model-viewer>
+                <div class="model-caption" style="background: #111; border-top: 1px solid #222; font-size: 0.9em; color: #888; padding: 12px; font-family: 'Rajdhani', sans-serif; text-align: center; letter-spacing: 1px;">
+                    ▶ Modèle 3D interactif de l'axe Y
+                </div>
+            </div>
+
+            <h3>1. L'Arbre de Transmission Transversal</h3>
+            <p>Le cœur de la synchronisation repose sur un arbre qui relie les deux côtés de la machine :</p>
+            <ul>
+                <li><strong>Matériau :</strong> Une tige en <strong>aluminium de 6 mm</strong> de diamètre pour une longueur de <strong>300 mm</strong>. Ce choix permet de conserver une grande rigidité tout en minimisant le poids total de l'ensemble.</li>
+                <li><strong>Coupleur rigide sur mesure :</strong> La liaison entre l'arbre du moteur NEMA 17 et la tige en aluminium est assurée par un <strong>bloc rigide imprimé en 3D</strong>. Ce coupleur est verrouillé par des vis de pression, garantissant une transmission de la force de rotation sans aucun patinage.</li>
+            </ul>
+
+            <h3>2. Transmission et Poulies Crantées</h3>
+            <p>Le mouvement est distribué de manière strictement identique à gauche et à droite grâce aux courroies GT2 :</p>
+            <ul>
+                <li><strong>Poulies d'entraînement crantées :</strong> Aux deux extrémités de l'arbre en aluminium se trouvent des poulies <strong>crantées</strong>. Leurs dents s'emboîtent parfaitement dans celles des courroies GT2, assurant une traction directe et empêchant tout glissement. Elles sont fermement fixées sur l'arbre par des vis de pression. Cette pièece a été modeliser et imprimer en 3D.</li>
+                <li><strong>Attache des courroies :</strong> Les deux boucles de courroies sont attachées aux chariots latéraux. Ces derniers entraînent ensuite le portique de l'axe X de façon parfaitement parallèle.</li>
+                <li><strong>Intégration au châssis :</strong> Tout comme le reste de la machine, les supports moteurs et les paliers de l'axe Y sont fixés sur la <strong>planche de 10 mm</strong> à l'aide d'<strong>inserts M3 en laiton</strong> posés par le dessous.</li>
+            </ul>
+
+            <div class="info-box" style="border-left-color: #2ea043; background-color: rgba(46, 160, 67, 0.1);">
+                <strong>⚙️ Avantage Mécanique :</strong><br>
+                En utilisant un seul moteur couplé à un arbre rigide pour piloter les deux côtés, on élimine les erreurs de désynchronisation électronique. Si le moteur fait un pas, les deux côtés de la machine avancent exactement de la même distance, ce qui est crucial pour maintenir l'équerrage parfait du dessin.
+            </div>
+
+        </section>
+
+    </main>
+    
+    <script src="menu.js"></script>
+    <script src="script.js"></script>
+    <script type="module" src="Include/model-viewer.min.js"></script>
+</body>
+</html>

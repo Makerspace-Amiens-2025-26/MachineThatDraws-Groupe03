@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Fonctionnement Slicer Traceur</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="nav-placeholder"></div>
+    <main class="content">
+        
+        <section id="slicer-traceur">
+            <h1>Module 1 : Le Slicer Traceur</h1>
+            <p>Le <strong>Slicer Traceur</strong> est le module principal de la <em>MachineThatDraws</em>. Conçu intégralement en JavaScript (avec l'aide des librairie p5.js et imagetracer.js pour le rendu visuel), ils permetent de convertir n'importe quelle image matricielle (JPEG, PNG) en un ensemble de trajectoires vectorielles (G-Code) prêtes à être dessinées au stylo.</p>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <img src="Images/interface1.png" alt="Interface du Slicer Traceur" style="max-width: 100%; height: auto; border-radius: 12px; border: 1px solid #ff003c; box-shadow: 0 8px 24px rgba(255,0,60,0.2);">
+            </div>
+
+            <h3>1. Le Traitement d'Image (Système à 3 Zones)</h3>
+            <p>Pour s'adapter aux contraintes physiques d'un stylo (qui ne peut faire qu'un seul niveau de couleur : tracé ou non tracé), nous avons développé un système de <strong>seuillage intelligent à 3 zones</strong> avec prévisualisation en temps réel :</p>
+            <ul>
+                <li><strong>Zone Noire (<span style="color:#ff003c;">Seuil Noir</span>) :</strong> Représente les ombres denses. L'algorithme génère un quadrillage croisé (hachures diagonales dans les deux sens) pour saturer le papier en encre.</li>
+                <li><strong>Zone Grise (<span style="color:#ff4d4d;">Seuil Gris</span>) :</strong> Représente les demi-teintes. L'algorithme génère de simples lignes diagonales espacées pour créer un effet d'ombrage léger.</li>
+                <li><strong>Zone Blanche :</strong> Les zones claires au-dessus du seuil gris sont purement et simplement ignorées par la machine (épargne du papier).</li>
+                <li><em>Optimisation de l'UI :</em> Pour éviter de faire figer le navigateur, l'ajustement de ces seuils modifie instantanément l'image de fond en 3 couleurs pures (Noir/Gris/Blanc) <strong>sans recalculer les trajectoires</strong>. Le calcul lourd du G-Code n'intervient qu'au clic sur le bouton "Actualiser".</li>
+            </ul>
+
+            <h3>2. Paramètres Géométriques & Tracé</h3>
+            <p>L'interface offre un contrôle total sur le positionnement physique du dessin sur le plateau de 170x140 mm :</p>
+            <ul>
+                <li><strong>Décalage et Dimensions :</strong> Mise à l'échelle personnalisée avec conservation du ratio natif, et décalage (Offset X/Y) pour placer le dessin exactement où on le souhaite sur la feuille.</li>
+                <li><strong>Le "Pas" (Espacement des points) :</strong> Paramètre critique. L'algorithme rééchantillonne chaque courbe en segments de droites selon cette valeur en millimètres. Un pas fin (ex: 0.2mm) donne des courbes parfaites mais un fichier G-Code lourd, un pas large (ex: 2mm) donne un effet géométrique/low-poly.</li>
+                <li><strong>Miroirs Dynamiques :</strong> Possibilité d'inverser le dessin sur l'axe X ou Y, avec un retour visuel direct sur le canvas de prévisualisation.</li>
+            </ul>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <img src="Images/interface1.1.png" alt="Interface du Slicer Traceur" style="max-width: 100%; height: auto; border-radius: 12px; border: 1px solid #ff003c; box-shadow: 0 8px 24px rgba(255,0,60,0.2);">
+            </div>
+
+            <h3>3. Les Algorithmes "Sous le capot"</h3>
+            <p>Développer notre propre Slicer nous a obligés à implémenter plusieurs algorithmes mathématiques complexes pour garantir le bon fonctionnement de la machine :</p>
+            <ul>
+                <li><strong>Vectorisation des contours :</strong> Utilisation de la librairie <em>ImageTracer.js</em> pour détecter les arêtes de l'image, suivie d'une conversion des courbes de Bézier quadratiques en coordonnées cartésiennes linéaires compréhensibles par la CNC.</li>
+                <li><strong>Algorithme de Cohen-Sutherland (Clipping) :</strong> Sécurité matérielle critique. Si l'utilisateur demande à tracer une image qui dépasse les dimensions physiques de la machine (170x145mm), cet algorithme mathématique "coupe" virtuellement toutes les lignes qui sortent du cadre. L'interface dessine ensuite automatiquement une bordure de délimitation propre le long de la coupe.</li>
+                <li><strong>Optimisation du chemin (TSP approché) :</strong> Pour éviter que le stylo ne passe son temps à se lever et se baisser de manière aléatoire aux quatre coins de la feuille, nous avons implémenté un algorithme du plus proche voisin. Après avoir généré toutes les lignes, le script réordonne la liste des trajectoires pour toujours lier une ligne à la ligne la plus proche, réduisant le temps de tracé parfois de plus de 40%.</li>
+            </ul>
+
+            <h3>4. Communication Directe (Web Serial API)</h3>
+            <p>Une fois les trajectoires générées, le navigateur Web prend le contrôle exclusif de la machine. Grâce à l'API <strong>Web Serial</strong>, l'interface HTML/JS se connecte directement au port USB du microcontrôleur ESP32. Le G-Code généré est envoyé ligne par ligne, avec une vérification de la réponse "ok" du firmware (FluidNC/GRBL) pour synchroniser la barre de progression en temps réel.</p>
+        </section>
+
+    </main>
+    <script src="menu.js"></script>
+</body>
+</html>

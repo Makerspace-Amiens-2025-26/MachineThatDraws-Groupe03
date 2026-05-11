@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecteur & Dessinateur MIDI CNC - Cyberpunk</title>
+    <script src="https://unpkg.com/@tonejs/midi"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="layout">
+        
+        <div class="sidebar">
+            <h2>Studio Musique CNC</h2>
+            <p style="text-align:center; color:#aaa; font-size:0.85em; margin: -5px 0 10px 0; font-family:'Orbitron', sans-serif;">📍 Origine: Bas-Gauche (0,0) | Limite: 100x100mm</p>
+            
+            <div class="panel">
+                <h3>1. Fichier MIDI</h3>
+                <div class="setting-group">
+                    <label>Musique intégrée :</label>
+                    <select id="presetMidi">
+                        <option value="">💽 Choisir une musique locale...</option>
+                        <option value="ACDC.Highway to Hell K.mid">🎸 AC/DC - Highway to Hell</option>
+                        <option value="ACDC.Thunderstruck K.mid">⚡ AC/DC - Thunderstruck</option>
+                        <option value="Mario Bros. - Super Mario Bros. Theme.mid">🍄 Mario Bros Theme</option>
+                        <option value="Metallica - Master Of Puppets.mid">🤘 Metallica - Master Of Puppets</option>
+                        <option value="Tetris - Tetris Main Theme.mid">🧱 Tetris Theme</option>
+                        <option value="Undertale_-_Megalovania.mid">💀 Undertale - Megalovania</option>
+                    </select>
+                </div>
+                
+                <div style="text-align: center; color: #666; font-size: 0.8em; margin: 10px 0;">-- OU --</div>
+                
+                <div class="setting-group">
+                    <label>Importer un fichier (.mid) :</label>
+                    <input type="file" id="midiInput" accept=".mid,.midi">
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>2. Pistes & Moteurs</h3>
+                <div id="selectors" style="display:none;">
+                    <div class="setting-group">
+                        <label>🎵 Moteur X (Mélodie) :</label>
+                        <select id="trackSelectX"></select>
+                    </div>
+                    <div class="setting-group">
+                        <label>🎸 Moteur Y (Accompagnement) :</label>
+                        <select id="trackSelectY"></select>
+                    </div>
+                </div>
+
+                <div class="status-box" id="trackInfo">
+                    Aucune musique chargée.
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>3. Contrôle Machine</h3>
+                <button id="btnConnect" class="conn-btn">🔌 CONNECTER USB</button>
+                
+                <div class="row">
+                    <button id="btnHome" style="display:none; width: 100%;">🏠 Origine ($H)</button>
+                </div>
+                
+                <div class="row" id="playButtons" style="display:none; margin-top: 5px;">
+                    <button id="btnPlay" disabled>▶ ÉCOUTER</button>
+                    <button id="btnDraw" disabled>🖍️ DESSINER</button>
+                </div>
+                
+                <div class="row">
+                    <button id="btnStop" class="stop-btn" style="display:none;">STOP 🛑</button>
+                </div>
+                
+                <div class="progress-container" id="progressContainer" style="display:none;">
+                    <div id="progressBar"></div>
+                </div>
+                <div id="status">Statut : Déconnecté</div>
+                
+                <div id="console"></div>
+            </div>
+        </div>
+
+        <div id="canvas-container">
+            <nav class="top-nav">
+                <a href="../Slicer/index.html" class="nav-btn">1. Slicer</a>
+                <a href="../Topo/index.html" class="nav-btn">2. Topographie</a>
+                <a href="../Word/index.html" class="nav-btn">3. Ecrire</a>
+                <a href="../Visage/index.html" class="nav-btn">4. Visage</a>
+                <a href="#" class="nav-btn active">5. Musique</a>
+                <a href="../index.html" class="nav-btn">6. Doc</a>
+            </nav>
+            </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Assemblage Mécanique</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>   
+
+    <div id="nav-placeholder"></div>
+
+    <main class="content">
+        
+        <section id="fab-meca">
+            <h1>2. Assemblage Mécanique</h1>
+            <p>Une fois les pièces imprimées en 3D, l'étape de l'assemblage mécanique demande minutie et précision. L'objectif de cette étape est d'obtenir une cinématique parfaitement fluide, sans aucun point de friction (point dur) ni jeu mécanique (backlash).</p>
+
+            <h3>1. La Base et l'Équerrage</h3>
+            <p>Conformément au cahier des charges, nous sommes partis d'une fondation fournie par l'école : <strong>une base composée de profilés en aluminium et d'un plateau en bois</strong>. Tout notre travail a consisté à greffer notre cinématique cartésienne sur cette base rigide, en nous assurant que les axes X et Y soient parfaitement perpendiculaires (à 90°).</p>
+
+            <h3>2. Le Guidage Linéaire (La fluidité absolue)</h3>
+            <p>Pour le coulissement de l'axe transversal, nous utilisons des tiges lisses en acier de 6mm. Pour garantir un mouvement parfait :</p>
+            <ul>
+                <li><strong>Fixation :</strong> Les tiges de 6mm sont fermement bloquées à leurs extrémités par un système de serrage par vis, les empêchant de translater ou de vibrer lors des mouvements rapides.</li>
+                <li><strong>Glissement (Astuce de pro) :</strong> Plutôt que d'utiliser des roulements à billes linéaires métalliques (bruyants et parfois accrocheurs), nos professeurs ont imprimé des paliers lisses (bagues) en <strong>PETG-PTFE</strong>. Le PTFE (Téflon) contenu dans ce filament offre des propriétés auto-lubrifiantes. Couplé à un lubrifiant mécanique liquide, on obtient un glissement totalement silencieux et d'une fluidité redoutable.</li>
+            </ul>
+
+            <h3 style="margin-top: 40px;">3. La Transmission (Tension des courroies)</h3>
+            <p>La précision du tracé dépend directement de la tension des courroies crantées GT2. Si elles sont trop lâches, le dessin sera déformé. Si elles sont trop tendues, les moteurs vont forcer.</p>
+            <p>Nous avons conçu des <strong>tendeurs de courroie intégrés</strong> très simples et efficaces : l'action de visser une seule vis tire directement le support de la poulie folle, ce qui permet d'ajuster la tension de la courroie au millimètre près, comme on accorderait une corde de guitare.</p>
+
+            <div style="text-align: center; margin: 40px 0;">
+                <img src="Images/visse.png" alt="Vue CAO du mécanisme de la tête d'impression (Axe Z)" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.6);">
+                <div style="font-size: 0.9em; color: #8b949e; margin-top: 10px; font-style: italic;">
+                    Tendeur de courroie intégré à l'axe X.
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+    
+    <script src="menu.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

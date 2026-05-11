@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slicer Traceur | Texte Pro - Cyberpunk</title>
+    <script src="../Include/p5.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="layout">
+        <div class="sidebar">
+            <h2>Studio Texte CNC</h2>
+            
+            <div class="panel">
+                <h3>1. Calques de Texte</h3>
+                <div id="layers-container" style="display:flex; flex-direction:column; max-height: 380px; overflow-y: auto; padding-right: 5px;">
+                </div>
+                
+                <button id="btnAddLayer">➕ Ajouter un texte</button>
+            </div>
+
+            <div class="panel">
+                <h3>2. Paramètres & Tracé</h3>
+                <div class="setting-group">
+                    <label>Orientation :</label>
+                    <select id="angleSelect">
+                        <option value="0">➡️ Horizontale (0°)</option>
+                        <option value="90">⬇️ Verticale (+90°)</option>
+                        <option value="-90">⬆️ Verticale (-90°)</option>
+                        <option value="180">⬅️ À l'envers (180°)</option>
+                    </select>
+                </div>
+                <div class="setting-group" style="margin-top: 10px;">
+                    <label>Espacement points (mm): <span id="valSpacing" style="color:#ff4d4d">0.15</span></label>
+                    <input type="range" id="inpSpacing" min="0.05" max="1.0" step="0.05" value="0.15">
+                </div>
+                
+                <button id="btnGenerate" style="margin-top: 10px;">🔄 GÉNÉRER LE TRACÉ</button>
+                <div class="row">
+                    <button id="btnClear">👁 MASQUER LE TRACÉ</button>
+                </div>
+                <button class="action-btn" id="btnDownload" style="margin-top: 10px;">💾 TÉLÉCHARGER GCODE</button>
+            </div>
+
+            <div class="panel">
+                <h3>3. Contrôle Machine</h3>
+                <button id="btnConnect" class="conn-btn">🔌 CONNECTER USB</button>
+                
+                <div class="row">
+                    <button id="btnHome" style="width: 100%;">🏠 Origine ($H)</button>
+                </div>
+                
+                <div class="row">
+                    <button id="btnPrint" disabled>▶ LANCER</button>
+                </div>
+                <div class="row">
+                    <button id="btnStop" class="stop-btn">STOP 🛑</button>
+                </div>
+                
+                <div class="progress-container">
+                    <div id="progressBar"></div>
+                </div>
+                <div id="progressText">0%</div>
+                <div id="timeText">Temps Est: 00:00</div>
+                
+                <div id="console"></div>
+            </div>
+        </div>
+
+        <div id="canvas-container">
+            <nav class="top-nav">
+                <a href="../Main/index.html" class="nav-btn">1. Slicer</a>
+                <a href="../Topo/index.html" class="nav-btn">2. Topographie</a>
+                <a href="#" class="nav-btn active">3. Ecrire</a>
+                <a href="../Visage/index.html" class="nav-btn">4. Visage</a>
+                <a href="../Musique/index.html" class="nav-btn">5. Musique</a>
+                <a href="../index.html" class="nav-btn">6. Doc</a>
+            </nav>
+            <div id="zoom-controls">
+                <p>Molette = Zoom | Clic = Déplacer</p>
+                <button id="btnResetView" class="btn-small">Recadrer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

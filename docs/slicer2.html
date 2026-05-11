@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Fonctionnement Générateur Topo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="nav-placeholder"></div>
+    <main class="content">
+        
+        <section id="generateur-topo">
+            <h1>Module 2 : Le Générateur Topographique</h1>
+            <p>Le <strong>Générateur Topo</strong> est le module d'art génératif de la <em>MachineThatDraws</em>. Contrairement au Slicer qui reproduit une image existante, ce programme crée des dessins uniques en temps réel en s'appuyant sur des algorithmes mathématiques complexes. Le résultat est un paysage en relief ("wireframe landscape") prêt à être tracé physiquement.</p>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <img src="Images/interface2.png" alt="Interface du Générateur Topographique" style="max-width: 100%; height: auto; border-radius: 12px; border: 1px solid #ff003c; box-shadow: 0 8px 24px rgba(255,0,60,0.2);">
+            </div>
+
+            <h3>1. Le Cœur de l'Algorithme : Le Bruit de Perlin</h3>
+            <p>Pour générer des montagnes et des vallées d'aspect naturel, nous n'utilisons pas de simples fonctions aléatoires (qui produiraient un bruit chaotique et illisible), mais l'algorithme du <strong>Bruit de Perlin</strong> (intégré via <code>p5.js</code>).</p>
+            <ul>
+                <li><strong>La Graine (Seed) :</strong> L'algorithme repose sur une "graine" mathématique. En modifiant cette valeur (par exemple "42"), le relief change du tout au tout. Si vous réutilisez la même graine, vous obtiendrez exactement la même montagne. Le bouton "Actualiser" génère une graine aléatoire parmi 10 000 possibilités.</li>
+                <li><strong>L'Amplitude (Hauteur) :</strong> Ce paramètre agit comme un multiplicateur sur les valeurs du bruit de Perlin, définissant ainsi le dénivelé des montagnes (de 5 à 80 mm).</li>
+                <li><strong>La Résolution (Espace Lignes) :</strong> Définit l'écartement (en millimètres) entre chaque coupe horizontale du terrain. Un espace faible crée une carte très dense et sombre, un espace large crée une esthétique rétro-synthwave plus épurée.</li>
+            </ul>
+
+            <h3>2. Optimisation des Trajectoires (Zigzag & Filtrage)</h3>
+            <p>Tracer des milliers de points peut prendre énormément de temps si le parcours n'est pas optimisé. Le programme intègre deux routines d'optimisation cruciales avant la génération du G-Code :</p>
+            <ul>
+                <li><strong>Tracé en Zigzag :</strong> Au lieu de tracer chaque ligne de gauche à droite (ce qui obligerait la machine à lever le stylo et faire un long trajet à vide à chaque fin de ligne), le script inverse dynamiquement le sens de dessin une ligne sur deux (<code>reverseDirection</code>). Le stylo dessine la ligne 1 vers la droite, descend, puis dessine la ligne 2 vers la gauche, assurant un tracé ininterrompu et un gain de temps considérable.</li>
+                <li><strong>Filtrage des points superflus :</strong> Sur une ligne générée par le bruit de Perlin, beaucoup de points sont alignés ou extrêmement proches. Le script calcule la distance entre chaque sommet (<code>dist()</code>). Si deux points sont séparés par moins de 0.5 mm, le point est ignoré. Cela allège drastiquement le poids du fichier G-Code sans aucune perte de qualité visuelle.</li>
+            </ul>
+
+            <h3>3. Contrôle Géométrique et Interface Fluide</h3>
+            <p>L'interface a été pensée pour offrir un retour visuel ultra-réactif :</p>
+            <ul>
+                <li><strong>Fenêtre de contrainte stricte :</strong> L'algorithme vérifie constamment les limites du plateau (170x140 mm). Tout point généré en dehors de cette boîte (grâce à la fonction <code>Math.max/min</code>) est raboté ou ignoré, garantissant que la machine ne percutera jamais ses fins de course physiques (Crash).</li>
+                <li><strong>Décalages X/Y :</strong> Permet de déplacer virtuellement la "caméra" au-dessus du relief généré pour cibler une chaîne de montagnes ou une vallée spécifique avant l'impression.</li>
+                <li><strong>Exploration au poignet :</strong> Le canvas intègre un système de Pan & Zoom personnalisé. L'utilisateur peut se déplacer sur la prévisualisation en maintenant le clic (Drag) et zoomer avec précision (Molette) pour inspecter les micro-détails du tracé rouge avant d'envoyer les commandes aux moteurs.</li>
+            </ul>
+
+            <h3>4. Transmission et Contrôle G-Code</h3>
+            <p>Comme pour les autres modules, le Générateur Topo communique via l'API <strong>Web Serial</strong>. Les commandes de stylo (<code>M3 S33</code> pour lever, <code>M3 S0</code> pour baisser) s'intercalent parfaitement avec les déplacements rapides (<code>G0</code>) et les déplacements de travail (<code>G1 F1500</code>). Le script calcule d'ailleurs en temps réel une estimation précise de la durée du dessin en convertissant la distance totale des vecteurs en fonction de la vitesse des moteurs (F1500).</p>
+        </section>
+
+    </main>
+    <script src="menu.js"></script>
+</body>
+</html>

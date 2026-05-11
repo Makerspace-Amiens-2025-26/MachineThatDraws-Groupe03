@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Capteurs de Fin de Course</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>   
+
+    <div id="nav-placeholder"></div>
+
+    <main class="content">
+        
+        <section id="cao-capteurs">
+            <h1>Capteurs de Fin de Course (Endstops)</h1>
+            <p>Les capteurs de fin de course sont les "yeux" de la machine. Ils permettent à <em>MachineThatDraws</em> de se repérer dans l'espace et d'éviter les collisions mécaniques destructrices.</p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; margin: 40px 0; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 300px;">
+                    <img src="Images/capteur1.png" alt="Vue détaillée du bloc capteur" style="width: 100%; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.6);">
+                </div>
+                <div style="flex: 1; min-width: 300px;">
+                    <img src="Images/capteur2.png" alt="Capteur intégré sur l'axe" style="width: 100%; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.6);">
+                </div>
+            </div>
+
+            <h3>1. Mécanisme de Déclenchement</h3>
+            <p>Le système utilise des micro-switchs à levier mécanique. Pour simplifier la conception et limiter le nombre de pièces mobiles :</p>
+            <ul>
+                <li><strong>Contact direct :</strong> C'est la structure même du <strong>chariot</strong> (X ou Y) qui vient appuyer physiquement sur la languette métallique du capteur.</li>
+                <li><strong>Câblage NO (Normally Open) :</strong> Les capteurs sont câblés de manière à ce que "rien ne passe" en temps normal. Le circuit ne se ferme que lorsque le levier est activé.</li>
+            </ul>
+
+            <h3>2. Une Double Fonction : Homing et Sécurité</h3>
+            <p>Chaque capteur remplit deux rôles cruciaux dans le firmware GRBL :</p>
+            <ul>
+                <li><strong>Recherche de l'Origine (Homing) :</strong> Au démarrage, la machine se déplace lentement jusqu'à toucher les capteurs pour définir son <strong>0,0</strong>.</li>
+                <li><strong>Limites Matérielles (Hard Limits) :</strong> En cours d'impression, si un capteur est touché par accident, la machine interprète cela comme une erreur critique et coupe instantanément les moteurs pour éviter tout dégât.</li>
+            </ul>
+
+            <div class="info-box" style="border-left-color: #f1c40f; background-color: rgba(241, 196, 15, 0.1);">
+                <strong>⚠️ Protection Mécanique (Offset de 5 mm) :</strong><br>
+                Pour éviter que la machine ne vienne écraser le capteur lors de sa recherche d'origine, nous avons configuré un <strong>décalage de sécurité de 5 mm</strong>. Une fois le contact établi, la machine recule de 5 mm. Le point 0 réel du dessin commence donc après cette zone tampon, préservant ainsi l'intégrité physique des switchs sur le long terme.
+            </div>
+
+            <h3 style="margin-top: 40px;">3. Positionnement Stratégique</h3>
+            <p>Les capteurs sont répartis pour couvrir les deux axes principaux :</p>
+            <ul>
+                <li><strong>Axe Y :</strong> Un capteur est placé sur le rail gauche pour stopper le portique.</li>
+                <li><strong>Axe X :</strong> Un capteur (Y0) est placé au niveau du chariot de la tête d'impression pour définir le départ latéral du tracé.</li>
+            </ul>
+
+        </section>
+
+    </main>
+    
+    <script src="menu.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

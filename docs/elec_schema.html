@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Schéma Électronique</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div id="nav-placeholder"></div>
+
+    <main class="content">
+        
+        <section id="schema">
+            <h1>Schéma électronique du Shield pour (ESP32-UNO)</h1>
+            <p>Pour remplacer le CNC Shield V3, nous avons conçu (sous demande de nos professeurs) une carte d'extension sur-mesure au format "UNO", spécialement pensée pour accueillir la puissance de calcul d'un microcontrôleur <strong>ESP32</strong>.</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <img src="Images/chema.png" alt="Schéma électronique de la carte" style="max-width: 100%; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 8px rgba(0,0,0,0.5);">
+            </div>
+
+            <h3>1. La Gestion des Alimentations (Séparation Logique/Puissance)</h3>
+            <p>Notre carte gère deux circuits d'alimentation bien distincts pour protéger l'électronique sensible des retours de courant des moteurs :</p>
+            <ul>
+                <li><strong>La partie Logique (5V / 3.3V) :</strong> Le cerveau (ESP32-UNO) et les périphériques (comme le Servomoteur Z) sont alimentés directement via la connexion USB reliée au PC.</li>
+                <li><strong>La partie Puissance (12V) :</strong> Une alimentation externe dédiée est branchée sur le connecteur J2 (GNDPWR / +12V) pour fournir le courant nécessaire aux moteurs NEMA 17.</li>
+            </ul>
+
+            <div class="info-box" style="border-left-color: #2ea043; background-color: rgba(46, 160, 67, 0.1);">
+                <strong>🛡️ Sécurités intégrées :</strong> Sur la ligne de puissance 12V, nous avons placé un <strong>Fusible de 3A (F1)</strong>. De plus, chaque driver A4988 est protégé par un <strong>condensateur de découplage de 100µF (C1 et C2)</strong> placé au plus près des broches VMOT/GND pour absorber les pics de tension (Effet LC) lors de la mise sous tension.
+            </div>
+
+            <h3>2. Commande des Moteurs (Drivers A4988)</h3>
+            <p>Les signaux de commande (STEP, DIR, ENABLE) sont envoyés par l'ESP32 en 3.3V logique vers les drivers. Pour gagner en précision, nous avons routé les broches de sélection de mode (MS1, MS2, MS3) avec un système de cavaliers (Jumpers), permettant de configurer facilement le <em>Micro-stepping</em> (division des pas de base du moteur).</p>
+
+            <h3>3. Périphériques et Extensions</h3>
+            <p>Le schéma montre que cette carte vas regrouper différentes fonctionnalités :</p>
+            <ul>
+                <li><strong>Lecteur Micro-SD (Interface SPI) :</strong> Intégration d'un module SD avec une résistance de tirage (Pull-up) de 10kΩ sur la ligne DAT3 pour la stabilité des données.</li>
+                <li><strong>Interface de navigation :</strong> Intégration directe de 4 boutons poussoirs (Haut, Bas, Sélection, Retour) et d'un connecteur I2C pour un écran OLED, permettant un pilotage sans ordinateur.</li>
+                <li><strong>Boutons de contrôle locaux :</strong> 4 boutons poussoirs (BTN_1 à BTN_4) reliés à la masse, utilisant les résistances pull-up internes de l'ESP32.</li>
+                <li><strong>Stockage :</strong> Un slot MicroSD est prévu pour charger les fichiers G-Code directement sur la machine.</li>
+            </ul>
+
+        </section>
+
+    </main>
+    
+    <script src="menu.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

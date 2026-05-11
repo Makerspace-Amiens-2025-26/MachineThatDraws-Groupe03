@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Fonctionnement Slicer Visage</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="nav-placeholder"></div>
+    <main class="content">
+        
+        <section id="slicer-visage">
+            <h1>Module 4 : Le Slicer Visage (Algorithme Squiggle)</h1>
+            <p>Le <strong>Slicer Visage</strong> est un module de traitement d'image spécialisé dans le portrait. Contrairement au premier Slicer qui utilise des hachures droites, celui-ci repose sur l'algorithme <em>"Squiggle"</em> : il module des ondes sinusoïdales pour simuler les ombres et les volumes d'un visage humain.</p>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <img src="Images/interface4.png" alt="Interface du Slicer Visage" style="max-width: 100%; height: auto; border-radius: 12px; border: 1px solid #ff003c; box-shadow: 0 8px 24px rgba(255,0,60,0.2);">
+            </div>
+
+            <h3>1. L'Algorithme Squiggle : De la Lumière à l'Onde</h3>
+            <p>Le principe fondamental est de transformer la valeur de gris d'un pixel en une propriété géométrique de la ligne. Plus une zone est sombre, plus la ligne doit être "agitée" pour déposer de l'encre.</p>
+            <ul>
+                <li><strong>Modulation d'Amplitude :</strong> Le script parcourt l'image horizontalement avec un espacement fixe (<code>ESP_MM</code>). Pour chaque point, il analyse la luminosité. Si le pixel est noir, l'amplitude de l'onde est maximale (<code>AMP_MAX</code>) ; s'il est blanc, la ligne devient parfaitement droite.</li>
+                <li><strong>Double Fréquence :</strong> L'algorithme combine une fréquence de base (pour la structure) et une fréquence de détail (<code>FREQ_DETAIL</code>). Cela permet de capturer les micro-contrastes comme les cils ou les rides, offrant un rendu organique proche d'une gravure sur cuivre.</li>
+                <li><strong>Lissage des données :</strong> Avant le tracé, l'image subit un léger flou gaussien algorithmique pour éviter que le stylo ne vibre de manière saccadée sur le bruit numérique de la photo originale.</li>
+            </ul>
+
+            <h3>2. Optimisation Mécanique : Lignes Continues</h3>
+            <p>Pour un portrait, la fluidité est essentielle. Le logiciel propose un mode <strong>"Lignes Continues"</strong> :</p>
+            <ul>
+                <li><strong>Réduction des levées de stylo :</strong> Au lieu de traiter chaque segment d'onde comme une entité à part, le script les enchaîne en une seule trajectoire G-Code par ligne horizontale. Le stylo ne se lève qu'en bout de ligne pour passer à la suivante.</li>
+                <li><strong>Gestion du Ratio :</strong> Un système de verrouillage (<code>chkKeepRatio</code>) recalcule automatiquement la hauteur si l'utilisateur modifie la largeur, garantissant que les proportions du visage ne soient jamais étirées ou écrasées (effet anamorphique non désiré).</li>
+            </ul>
+
+            <h3>3. Traduction en G-Code Spécifique</h3>
+            <p>Ce module utilise un jeu de commandes G-Code optimisé pour la vitesse de l'ESP32 :</p>
+            <ul>
+                <li><strong>M5 / M3 S33 :</strong> Pour ce module, nous utilisons <code>M5</code> (Pen Down) et <code>M3 S33</code> (Pen Up). Cette inversion ou adaptation dépend du firmware configuré pour répondre le plus rapidement possible aux micro-mouvements de l'axe Z.</li>
+                <li><strong>Flux de données Serial :</strong> Comme le portrait génère une densité de points très élevée (plusieurs dizaines de milliers de lignes de code), le système de lecture/écriture Serial utilise un <code>serialBuffer</code>. Il attend le signal "ok" de la machine avant d'envoyer la coordonnée suivante, évitant ainsi de saturer la mémoire tampon de la CNC.</li>
+            </ul>
+
+            <h3>4. Prévisualisation interactive</h3>
+            <p>Le canvas <code>p5.js</code> permet de simuler le rendu final avant de gaspiller du papier. Le tracé rouge représente le chemin exact du stylo, tandis que l'image de fond peut être désactivée pour juger uniquement de la qualité de la vectorisation. Un système de "Zoom sur souris" permet d'inspecter la précision des ondes dans les zones critiques comme les yeux ou la bouche.</p>
+        </section>
+
+    </main>
+    <script src="menu.js"></script>
+</body>
+</html>

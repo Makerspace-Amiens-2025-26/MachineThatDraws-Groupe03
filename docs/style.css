@@ -19,7 +19,7 @@
 ::-webkit-scrollbar-thumb { background: var(--accent-red); border-radius: 0; }
 ::-webkit-scrollbar-thumb:hover { background: #ff4d4d; box-shadow: 0 0 10px var(--accent-red); }
 
-/* === STRUCTURE GLOBALE === */
+/* === CENTRAGE GLOBAL === */
 body {
     font-family: 'Rajdhani', sans-serif;
     background-color: var(--bg-color);
@@ -28,41 +28,88 @@ body {
     justify-content: center;
     line-height: 1.6;
     font-size: 1.1rem;
-    min-height: 100vh;
 }
 
+/* === MENU LATÉRAL === */
+.sidebar {
+    width: 320px; 
+    height: 100vh;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--accent-red);
+    position: sticky; 
+    top: 0; 
+    overflow-y: auto; 
+    padding: 20px 0;
+    flex-shrink: 0; 
+    box-shadow: 5px 0 20px rgba(255, 0, 60, 0.15);
+}
+
+.logo { padding: 0 20px 20px 20px; border-bottom: 1px solid var(--border-color); margin-bottom: 15px; text-align: center; }
+.logo h2 { font-size: 1.5em; color: var(--accent-red); font-family: 'Orbitron', sans-serif; text-transform: uppercase; text-shadow: 0 0 8px rgba(255, 0, 60, 0.6); margin-bottom: 5px; }
+.logo p { font-size: 0.9em; color: var(--accent-cyan); font-family: 'Orbitron', sans-serif; }
+
+.nav-links { list-style: none; }
+.nav-links li a {
+    display: block; padding: 10px 30px;
+    color: var(--text-muted); text-decoration: none;
+    font-weight: bold; transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.nav-links li a:hover { 
+    color: #fff; background-color: rgba(255, 0, 60, 0.1); 
+    text-shadow: 0 0 5px var(--accent-red);
+}
+.nav-links li a.active {
+    color: #000; font-weight: bold;
+    border-left: 3px solid var(--accent-red);
+    background-color: var(--accent-red);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* Menus déroulants */
+details { margin: 5px 0; }
+details summary {
+    padding: 10px 30px; color: var(--accent-cyan); font-family: 'Orbitron', sans-serif; 
+    font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 0.85em; 
+    list-style: none; transition: color 0.2s ease; letter-spacing: 1px;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary:hover { color: #fff; text-shadow: 0 0 5px var(--accent-cyan); }
+details summary::after { content: ' ▼'; float: right; font-size: 0.9em; transition: transform 0.2s; }
+details[open] summary::after { content: ' ▲'; }
+.sub-menu li a { padding: 8px 30px 8px 50px !important; font-size: 0.95em !important; color: #777; }
+
+/* === CONTENU PRINCIPAL === */
 .content {
     padding: 50px 80px;
     max-width: 1000px; 
     width: 100%;
 }
 
-/* === MISE EN PAGE CENTRÉE (POUR LA PAGE D'ATTENTE) === */
-.center-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin-top: 10vh;
-}
-
-/* === TYPOGRAPHIE === */
 h1 { 
     font-size: 2.5em; color: var(--accent-red); font-family: 'Orbitron', sans-serif; 
     text-transform: uppercase; border-bottom: 1px solid var(--accent-red); 
     padding-bottom: 10px; margin-bottom: 25px; text-shadow: 0 0 10px rgba(255, 0, 60, 0.4); 
 }
-
 h3 { 
     font-size: 1.4em; color: var(--accent-cyan); font-family: 'Orbitron', sans-serif; 
     margin: 35px 0 15px 0; text-transform: uppercase; letter-spacing: 1px; 
     border-bottom: 1px dashed var(--border-color); padding-bottom: 5px;
 }
-
-p { margin-bottom: 15px; color: #ccc; }
+p, ul, ol { margin-bottom: 15px; color: #ccc; }
+ul, ol { padding-left: 25px; }
+li { margin-bottom: 8px; }
 strong { color: #fff; }
 
-/* === COMPOSANTS SPÉCIFIQUES === */
+/* Blocs de code & Info */
+pre { 
+    background-color: var(--code-bg); padding: 15px; border-radius: 2px; 
+    border: 1px solid var(--accent-red); overflow-x: auto; margin-bottom: 20px; 
+    box-shadow: inset 0 0 15px rgba(255, 0, 60, 0.05); 
+}
+code { font-family: monospace; font-size: 0.9em; color: var(--accent-cyan); }
+
 .info-box {
     background-color: #120204;
     border-left: 4px solid var(--accent-cyan);
@@ -74,32 +121,67 @@ strong { color: #fff; }
     box-shadow: inset 0 0 15px rgba(0, 255, 204, 0.05);
 }
 
-.cyber-button {
-    display: inline-block;
-    background-color: transparent;
-    border: 2px solid var(--accent-red);
-    color: var(--accent-red);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1rem;
-    font-weight: bold;
-    text-decoration: none;
-    text-transform: uppercase;
-    padding: 12px 24px;
-    transition: all 0.3s ease;
-    margin-top: 15px;
-    border-radius: 2px;
-    letter-spacing: 1px;
+/* Images stylisées */
+.img-container { text-align: center; margin: 30px 0; }
+img { 
+    max-width: 100%; height: auto; border-radius: 2px; 
+    border: 1px solid var(--accent-red); 
+    box-shadow: 0 0 20px rgba(255, 0, 60, 0.2); 
 }
+.img-caption { font-size: 0.9em; color: var(--accent-cyan); margin-top: 10px; font-family: 'Orbitron', sans-serif; }
 
-.cyber-button:hover {
-    background-color: var(--accent-red);
-    color: #000;
-    box-shadow: 0 0 15px var(--accent-red);
-}
-
-/* === MODE MOBILE === */
+/* =========================================
+   📱 MODE MOBILE ET PETITS ÉCRANS
+   ========================================= */
 @media screen and (max-width: 950px) {
+    body { flex-direction: column; justify-content: flex-start; }
+    .sidebar { width: 100%; height: auto; max-height: 280px; position: relative; border-right: none; border-bottom: 2px solid var(--accent-red); padding: 15px 0; }
+    .logo { padding: 0 20px 10px 20px; }
     .content { padding: 30px 20px; width: 100%; }
     h1 { font-size: 1.8em; }
     h3 { font-size: 1.2em; }
+}
+
+/* === FENÊTRE POUR LE MODÈLE 3D === */
+.model-window {
+    background-color: #111111; /* Gris très foncé pour contraster avec le fond noir */
+    border: 1px solid var(--border-color); /* Bordure discrète */
+    border-top: 2px solid var(--accent-red); /* Touche Cyberpunk en haut */
+    border-radius: 4px;
+    padding: 10px;
+    margin: 40px 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(255, 0, 60, 0.05);
+}
+
+.model-window model-viewer {
+    width: 100%;
+    height: 500px;
+    background-color: #1a1a1a; /* Un gris un poil plus clair pour le fond de la 3D elle-même */
+    border-radius: 2px;
+    outline: none;
+}
+
+.model-caption {
+    text-align: center;
+    font-size: 0.9em;
+    color: var(--text-muted);
+    margin-top: 10px;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+}
+
+
+
+
+
+
+
+/* Animation de la barre de chargement 3D */
+@keyframes scanline {
+    0% { transform: translateX(-50px); }
+    100% { transform: translateX(150px); }
+}
+
+.anim-scanline {
+    animation: scanline 1.2s infinite ease-in-out;
 }

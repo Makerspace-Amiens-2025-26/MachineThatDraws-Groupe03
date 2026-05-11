@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | La Base</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>   
+
+    <div id="nav-placeholder"></div>
+
+    <main class="content">
+        
+        <section id="cao-base">
+            <h1>La Base (Châssis et Guidage Y)</h1>
+            <p>La base constitue la fondation de notre machine. Elle adopte une architecture dite "en H", garantissant une excellente répartition des masses et un déplacement fluide du portique central.</p>
+
+                <div class="model-window" style="width: 100%; height: 500px; background: #1a1a1a; border: 1px solid #111; border-top: 2px solid #ff003c; border-radius: 5px; overflow: hidden; margin: 30px 0; display: flex; flex-direction: column;">
+                <model-viewer 
+                    src="Model/Base.gltf" 
+                    camera-controls 
+                    auto-rotate
+                    shadow-intensity="1"
+                    orientation="-30deg -70deg 0deg" 
+                    exposure="0.3"
+                    tone-mapping="commerce"        
+                    shadow-intensity="2"
+                    shadow-softness="1"
+                    style="width: 100%; flex-grow: 1; background-color: #222;">
+                    <div slot="poster" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: 100%; color: #ff003c; font-family: 'Orbitron', sans-serif; background: #050505; text-align: center;">
+                        <div style="font-size: 1.2rem; margin-bottom: 10px; letter-spacing: 2px;">📡 LIAISON ÉTABLIE</div>
+                        <div style="font-size: 0.9rem; color: #888;">CHARGEMENT DU MODÈLE 3D...</div>
+                        <div style="width: 150px; height: 2px; background: #333; margin-top: 15px; position: relative; overflow: hidden;">
+                            <div class="anim-scanline" style="width: 50px; height: 100%; background: #ff003c; position: absolute;"></div>
+                        </div>
+                    </div>
+                </model-viewer>
+                <div class="model-caption" style="background: #111; border-top: 1px solid #222; font-size: 0.9em; color: #888; padding: 12px; font-family: 'Rajdhani', sans-serif; text-align: center; letter-spacing: 1px;">
+                    ▶ Modèle 3D interactif de la base
+                </div>
+            </div>
+
+            <h3>1. Architecture et Dimensions (L'ossature en H)</h3>
+            <p>La structure est conçue autour de 4 axes linéaires (tiges lisses) de 6 mm de diamètre :</p>
+            <ul>
+                <li><strong>L'Axe Y (Profondeur) :</strong> Il est constitué des deux tiges extérieures. Elles permettent au portique central de se déplacer d'avant en arrière.</li>
+                <li><strong>L'Axe X (Largeur) :</strong> Le pont central (qui navigue sur l'axe Y) est lui-même constitué de deux tiges transversales.</li>
+                <li><strong>Dimensionnement :</strong> Les tiges lisses mesurent toutes <strong>300 mm de long</strong>. L'espacement entre les axes a été précisément fixé à <strong>318 mm</strong>. Cette largeur n'est pas choisie au hasard : elle laisse l'espace nécessaire au mécanisme central (la tête d'impression et le moteur X) pour exploiter pleinement la zone de dessin de 170x140 mm sans venir percuter les bords.</li>
+            </ul>
+
+            <h3 style="margin-top: 40px;">2. Fixation "Invisible" et Détrompeurs</h3>
+            <p>L'esthétique globale de la machine repose sur un choix de conception majeur concernant les 4 supports d'angle (les pieds) :</p>
+            <ul>
+                <li><strong>Fixation par le dessous :</strong> La base de la machine est une épaisse plaque de 10 mm. Sous chaque pied imprimé en 3D se trouvent des inserts filetés M3 en laiton. Cela permet de visser les pieds <em>par le dessous</em> de la plaque. Résultat : aucune vis n'est visible sur le dessus de la machine.</li>
+                <li><strong>Numérotation :</strong> Sur la face supérieure des pieds, on peut remarquer les numéros 1, 2, 3 et 4 gravés dans le plastique. Cette astuce permet de savoir instantanément quelle pièce va à quel endroit lors du montage physique, en se référant simplement au modèle 3D.</li>
+            </ul>
+
+            <h3 style="margin-top: 40px;">3. Guidage et Chariots Latéraux</h3>
+            <p>Le pont central (Axe X) est relié aux tiges de l'axe Y via deux chariots de liaison massifs imprimés en PETG-CF.</p>
+            <div class="info-box" style="border-left-color: #2ea043; background-color: rgba(46, 160, 67, 0.1);">
+                <strong>⚙️ Le secret de la fluidité : Le PETG-PTFE</strong><br>
+                Pour glisser sur les axes en acier, nous n'utilisons pas de roulements à billes classiques. À l'intérieur de ces chariots (ainsi que dans le chariot de la tête d'impression), nous avons intégré des bagues imprimées en filament <strong>PETG-PTFE</strong>. Ce matériau composite chargé au Téflon est auto-lubrifiant. Couplé aux tiges lisses de 6 mm, il offre un mouvement d'une douceur absolue et totalement silencieux.
+            </div>
+
+        </section>
+
+    </main>
+    
+    <script src="menu.js"></script>
+    <script src="script.js"></script>
+    <script type="module" src="Include/model-viewer.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Conception & Prototypage</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>   
+
+    <div id="nav-placeholder"></div>
+
+    <main class="content">
+        
+        <section id="prototypage">
+            <h1>Conception Numérique et Prototypage</h1>
+            <p>Le développement de <strong>MachineThatDraws</strong> a suivi un cycle d'ingénierie complet, passant de la modélisation numérique à un premier prototype fonctionnel avant de finaliser la version définitive.</p>
+
+            <h3>1. Conception Assistée par Ordinateur avec Onshape</h3>
+            <p>Pour concevoir la machine, nous avons utilisé le logiciel de CAO professionnel <strong>Onshape</strong>. Notre approche a été de concevoir la structure autour des composants standards.</p>
+            <ul>
+                <li><strong>Modélisation descendante (Top-Down) :</strong> Nous avons utilisé les modèles 3D des pièces imposées ou standards (moteurs NEMA 17, roulements, ESP32 UNO, servomoteur). Cela nous a permis de modeliser nos pièces pour les imprimées en 3D avec des tolérances parfaites, garantissant un bonne assemblage.</li>
+                <li><strong>Le défi technique :</strong> La pièce la plus complexe à modéliser a été le système de <strong>supports de l'axe X</strong>. Il a fallu gérer l'alignement précis des axes, la fixation rigide du moteur, et surtout concevoir un système de pincement pour la courroie GT2. Ce système a été pensé pour que la courroie soit <strong>facilement démontable et remontable</strong>, une fonctionnalité qui était indispensable pour relâcher la tension lorsque la machine est entreposée entre deux sessions de travail avant d'avoir les tendeurs.</li>
+            </ul>
+            
+                <div class="model-window" style="width: 100%; height: 500px; background: #1a1a1a; border: 1px solid #111; border-top: 2px solid #ff003c; border-radius: 5px; overflow: hidden; margin: 30px 0; display: flex; flex-direction: column;">
+                <model-viewer 
+                    src="Model/Machine That Draws.gltf" 
+                    camera-controls 
+                    auto-rotate
+                    shadow-intensity="1"
+                    orientation="45deg -70deg 0deg" 
+                    exposure="0.3"
+                    tone-mapping="commerce"        
+                    shadow-intensity="2"
+                    shadow-softness="1"
+                    style="width: 100%; flex-grow: 1; background-color: #222;">
+                    <div slot="poster" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: 100%; color: #ff003c; font-family: 'Orbitron', sans-serif; background: #050505; text-align: center;">
+                        <div style="font-size: 1.2rem; margin-bottom: 10px; letter-spacing: 2px;">📡 LIAISON ÉTABLIE</div>
+                        <div style="font-size: 0.9rem; color: #888;">CHARGEMENT DU MODÈLE 3D...</div>
+                        <div style="width: 150px; height: 2px; background: #333; margin-top: 15px; position: relative; overflow: hidden;">
+                            <div class="anim-scanline" style="width: 50px; height: 100%; background: #ff003c; position: absolute;"></div>
+                        </div>
+                    </div>
+                </model-viewer>
+                <div class="model-caption" style="background: #111; border-top: 1px solid #222; font-size: 0.9em; color: #888; padding: 12px; font-family: 'Rajdhani', sans-serif; text-align: center; letter-spacing: 1px;">
+                    ▶ Modèle 3D interactif de notre MachineThatDraws
+                </div>
+            </div>
+
+            <h3 style="margin-top: 40px;">2. Le Premier Prototype (Semestre 1)</h3>
+            <p>Notre objectif pour le premier semestre était de réaliser un modèle de validation pour tester le chassis cartésien et la chaîne logicielle (du G-Code jusqu'aux moteurs).</p>
+            <ul>
+                <li><strong>Une architecture ressemblante :</strong> Visuellement, le châssis de cette première version était très proche de la version finale, validant l'utilisation des axes linéaires et des courroies.</li>
+                <li><strong>L'électronique de test :</strong> Ce prototype utilisait le combo classique <strong>Arduino Uno et CNC Shield V3</strong> pour tester le chassis et nos fonctionnalitées avant le passage à <strong>ESP32 UNO et au circuit imprimé fait maison.</strong></li>
+            </ul>
+
+            <div class="info-box" style="border-left-color: #dc3545; background-color: rgba(220, 53, 69, 0.1);">
+                <strong>🐛 Défaut majeur identifié : La Tête d'impression</strong><br>
+                Bien que fonctionnelle, cette première version souffrait d'une tête de mauvaise qualité. Le mécanisme de maintien du stylo avait énormément de <strong>jeu mécanique</strong>. Lors des changements de direction rapides, le stylo tremblait, rendant les tracés imprécis et gâchant la qualité des dessins complexes. C'est ce problème qui a motivé la conception d'une tête beaucoup plus rigide pour la suite.
+            </div>
+
+            <h3 style="margin-top: 40px;">3. Cycle d'Itération et Gestion des Déchets</h3>
+            <p>Le passage du prototype à la version finale n'a pas été immédiat. Il a nécessité des dizaines de micro-itérations : corriger un trou de vis d'un millimètre, ajuster une tension de courroie, ou renforcer une patte de fixation. Cela génère inévitablement une quantité importante de pièces d'essai.</p>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <img src="Images/dechet.jpg" alt="Sac rempli de dizaines de pièces de prototypes imprimées" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.6);">
+                <div style="font-size: 0.9em; color: #8b949e; margin-top: 10px; font-style: italic;">
+                    Le "Sac à Échecs" : Une collection de dizaines de prototypes accumulés durant le développement.
+                </div>
+            </div>
+
+            <div class="info-box" style="border-left-color: #f1c40f; background-color: rgba(241, 196, 15, 0.1);">
+                <strong>♻️ Rien ne se perd : Le recyclage des inserts M3</strong><br>
+                Plutôt que de simplement jeter ces prototypes obsolètes, nous pratiquons la récupération active des composants coûteux. Comme mentionné dans la partie Impression 3D, nous utilisons des inserts filetés en laiton. Avant de mettre au rebut un prototype, nous utilisons un fer à souder pour extraire proprement ces inserts. Cela nous permet de les réutiliser sur les versions suivantes, réduisant le coût matériel et l'empreinte écologique du projet.
+            </div>
+
+            <h3 style="margin-top: 40px;">4. Validation du Premier Tracé</h3>
+            <p>Malgré les défauts de la première tête d'impression, nous avons réussi à valider l'intégralité de la chaîne de commande. Après avoir configuré les pas par millimètre ($100 et $101) dans GRBL, nous avons lancé le tout premier tracé complexe.</p>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <video controls muted poster="Images/premier.jpg" style="width: 100%; aspect-ratio: 16/9; object-fit: contain; background-color: #050505; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.6);">
+                    <source src="Images/VIDEO_MACHINE.mp4" type="video/mp4">
+                    Votre navigateur ne prend pas en charge la lecture de vidéos HTML5. Voici un 
+                    <a href="Images/VIDEO_MACHINE.mp4" style="color: #ff003c;">lien vers la vidéo</a> à la place.
+                </video>
+                
+                <div style="font-size: 0.9em; color: #8b949e; margin-top: 10px; font-style: italic;">
+                    Vidéo historique : Le premier tracé complexe réussi par MachineThatDraws.
+                </div>
+            </div>
+
+            <p>Ce premier succès, bien qu'imparfait mécaniquement, a validé le concept et nous a donné le feu vert pour lancer le développement de la version finale (ESP32, circuit imprimé maison, tête rigide).</p>
+
+        </section>
+
+    </main>
+    <script src="menu.js"></script>
+    <script src="script.js"></script>
+    <script type="module" src="Include/model-viewer.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Impression 3D</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div id="nav-placeholder"></div>
+
+    <main class="content">
+        
+        <section id="fab-3d">
+            <h1>1. Impression 3D & Fabrication Additive</h1>
+            
+            <p>Bien que le MakerSpace de l'école mette à notre disposition un parc d'imprimantes 3D, nous avions la volonté d'utiliser des matériaux techniques avancés et abrasifs (nécessitant des buses et des températures spécifiques) pour garantir la rigidité de la machine. Nous avons donc fait le choix de produire les pièces techniques à domicile, en utilisant les machines personnelles des membres du groupe.</p>
+
+            <h3>🚀 1. L'Arsenal d'Impression</h3>
+            <p>Les pièces ont été réparties sur deux imprimantes à CoreXY :</p>
+            <ul>
+                <li><strong>Machine Principale : Bambu Lab X1C.</strong> Utilisée pour les pièces éxigantes nécessitant une bonne précision et la gestion de matériaux techniques.</li>
+                <li><strong>Machine Secondaire : Creality K1C.</strong> Utilisée en renfort quand la X1C était deja utilisée.</li>
+            </ul>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <img src="Images/machine.jpg" alt="Nos imprimantes Bambu Lab X1C et Creality K1C" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid #ff003c; box-shadow: 0 4px 12px rgba(255,0,60,0.2);">
+                <div style="font-size: 0.9em; color: #ff4d4d; margin-top: 10px; font-style: italic;">
+                    Notre atelier de fabrication à domicile : Bambu Lab X1C (à gauche) et Creality K1C (à droite).
+                </div>
+            </div>
+
+            <h3>🧵 2. Matériaux et Esthétique</h3>
+            <p>Le choix esthétique s'est porté sur un design <strong>100% Noir (Full Black)</strong>. Mais c'est surtout les plastiques choisi qui font la différence mechanique et visuel :</p>
+            <ul>
+                <li><strong>PETG-CF et PLA-CF (Carbon Fiber) :</strong> Ces filaments chargés en micro-fibres de carbone offrent une rigidité exceptionnelle, un aspect mat magnifique qui masque les couches, et surtout une très faible déformation thermique (warping). Parfait pour les pièces sous tension mécanique (supports moteurs, chariots).</li>
+                <li><strong>PLA standard :</strong> Utilisé pour les pièces de cosmétique ou les capots ne subissant pas d'efforts mécaniques majeurs.</li>
+            </ul>
+
+            <h3 style="margin-top: 40px;">⚙️ 3. Paramètres d'ingénierie (Orca Slicer)</h3>
+            <p>Le tranchage (Slicing) a été réalisé sous <strong>Orca Slicer</strong>. Plutôt que de chercher la vitesse à tout prix, les paramètres ont été optimisés pour la résistance mécanique :</p>
+            <ul>
+                <li><strong>Hauteur de couche :</strong> <code>0.16 mm</code>. Le compromis parfait entre finesse et un temps d'impression raisonnable.</li>
+                <li><strong>Périmètres (Murs) :</strong> <code>4-5 parois</code>. Augmenter le nombre de murs extérieurs renforce considérablement la pièce, bien plus qu'un fort taux de remplissage.</li>
+                <li><strong>Remplissage (Infill) :</strong> <code>30%</code> avec un motif <strong>Gyroïde</strong>. Ce motifs 3D offrent une résistance mécanique égale dans toutes les directions (X, Y et Z).</li>
+                <li><strong>Supports :</strong> Utilisation de supports <strong>Arborescents (Tree Supports)</strong>. Ils permettent d'économiser du plastique, de réduire le temps d'impression et se détachent très facilement sans abîmer les pièces complexes.</li>
+            </ul>
+
+            <div class="info-box">
+                <strong>🔩 Astuce d'assemblage : Les inserts en laiton</strong><br><br>
+                Plutôt que de visser directement dans le plastique (ce qui finit par détruire le pas de vis si on démonte la machine), nous avons intégré des <strong>inserts filetés M3 en laiton</strong>. Conçus lors de la modélisation CAO, ils sont insérés à chaud à l'aide d'un fer à souder. En refroidissant, le plastique emprisonne le laiton, offrant un filetage métallique robuste.
+            </div>
+
+        </section>
+
+    </main>
+    
+    <script src="menu.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

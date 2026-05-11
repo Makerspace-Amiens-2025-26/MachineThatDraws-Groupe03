@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Arrêt d'Urgence</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>   
+
+    <div id="nav-placeholder"></div>
+
+    <main class="content">
+        
+        <section id="cao-bau">
+            <h1>Bouton d'Arrêt d'Urgence (BAU)</h1>
+            <p>La sécurité est un aspect fondamental de la machine. Le bouton d'arrêt d'urgence permet d'interrompre instantanément tout mouvement en cas d'imprévu ou de dysfonctionnement mécanique.</p>
+
+            <div class="model-window" style="width: 100%; height: 500px; background: #1a1a1a; border: 1px solid #111; border-top: 2px solid #ff003c; border-radius: 5px; overflow: hidden; margin: 30px 0; display: flex; flex-direction: column;">
+                <model-viewer 
+                    src="Model/BAU.gltf" 
+                    camera-controls 
+                    auto-rotate
+                    shadow-intensity="1"
+                    orientation="145deg -75deg 0deg" 
+                    exposure="0.3"
+                    tone-mapping="commerce"        
+                    shadow-intensity="2"
+                    shadow-softness="1"
+                    style="width: 100%; flex-grow: 1; background-color: #222;">
+                    <div slot="poster" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: 100%; color: #ff003c; font-family: 'Orbitron', sans-serif; background: #050505; text-align: center;">
+                        <div style="font-size: 1.2rem; margin-bottom: 10px; letter-spacing: 2px;">📡 LIAISON ÉTABLIE</div>
+                        <div style="font-size: 0.9rem; color: #888;">CHARGEMENT DU MODÈLE 3D...</div>
+                        <div style="width: 150px; height: 2px; background: #333; margin-top: 15px; position: relative; overflow: hidden;">
+                            <div class="anim-scanline" style="width: 50px; height: 100%; background: #ff003c; position: absolute;"></div>
+                        </div>
+                    </div>
+                </model-viewer>
+                <div class="model-caption" style="background: #111; border-top: 1px solid #222; font-size: 0.9em; color: #888; padding: 12px; font-family: 'Rajdhani', sans-serif; text-align: center; letter-spacing: 1px;">
+                    ▶ Modèle 3D interactif du BAU
+                </div>
+            </div>
+
+            <h3>1. Conception et Matériau</h3>
+            <p>Le boîtier accueillant le bouton "coup de poing" a été conçu pour être à la fois compact et robuste :</p>
+            <ul>
+                <li><strong>Matériau :</strong> Imprimé en <strong>PLA noir</strong>, le boîtier offre une protection suffisante pour les contacts électriques internes.</li>
+                <li><strong>Ergonomie :</strong> Le bouton rouge est placé proche de nous de manière à être facilement accessible par l'utilisateur à tout moment du dessin.</li>
+            </ul>
+
+            <h3>2. Fixation et Câblage</h3>
+            <p>L'intégration sous le boîtier a été optimisée pour simplifier le montage sur la base de la machine :</p>
+            <ul>
+                <li><strong>Fixation :</strong> Le dessous du boîtier comporte deux perçages dédiés à la fixation sur la planche, assurant que le bloc ne bouge pas lorsqu'on l'actionne brusquement.</li>
+                <li><strong>Passage de câbles :</strong> Deux autres perçages permettent de faire transiter les fils électriques proprement vers le boîtier électronique principal.</li>
+            </ul>
+
+            <div class="info-box" style="border-left-color: #dc3545; background-color: rgba(220, 53, 69, 0.1);">
+                <strong>🛑 Fonctionnement :</strong><br>
+                Ce bouton est câblé en série sur le bornier du shield CNC V3. Une simple pression déclenche une interruption matérielle immédiate, stoppant les moteurs pour protéger à la fois la machine et l'œuvre en cours.
+            </div>
+
+        </section>
+
+    </main>
+    
+    <script src="menu.js"></script>
+    <script src="script.js"></script>
+    <script type="module" src="Include/model-viewer.min.js"></script>
+</body>
+</html>

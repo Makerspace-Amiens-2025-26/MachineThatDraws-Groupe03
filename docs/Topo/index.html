@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topo Slicer Pro</title>
+    <script src="../Include/p5.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="layout">
+        <div class="sidebar">
+            <h2>Générateur Topo</h2>
+            
+            <div class="panel">
+                <h3>1. Géométrie & Décalage</h3>
+                <div class="setting-group">
+                    <label>Largeur Motif (X) mm: <span id="valW" style="color:#ff4d4d">140</span></label>
+                    <input type="range" id="inpW" min="50" max="170" step="1" value="140">
+                </div>
+                <div class="setting-group">
+                    <label>Hauteur Motif (Y) mm: <span id="valH" style="color:#ff4d4d">100</span></label>
+                    <input type="range" id="inpH" min="40" max="140" step="1" value="100">
+                </div>
+
+                <div class="setting-group mt-10">
+                    <label>Décalage X (mm): <span id="valOffX" style="color:#ff4d4d">0</span></label>
+                    <input type="range" id="inpOffX" min="-170" max="170" step="1" value="0">
+                </div>
+                <div class="setting-group">
+                    <label>Décalage Y (mm): <span id="valOffY" style="color:#ff4d4d">0</span></label>
+                    <input type="range" id="inpOffY" min="-140" max="140" step="1" value="0">
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>2. Paramètres du Relief</h3>
+                <div class="setting-group">
+                    <label>Graine (Seed) :</label>
+                    <input type="number" id="inpSeed" value="42">
+                </div>
+                <div class="setting-group mt-10">
+                    <label>Espace lignes (mm): <span id="valEsp" style="color:#ff4d4d">3</span></label>
+                    <input type="range" id="inpEsp" min="1" max="15" step="0.5" value="3">
+                </div>
+                <div class="setting-group">
+                    <label>Hauteur Montagnes: <span id="valHm" style="color:#ff4d4d">30</span></label>
+                    <input type="range" id="inpHm" min="5" max="80" step="1" value="30">
+                </div>
+                <button class="action-btn mt-10" id="btnRegen">🔄 ACTUALISER LE TRACÉ</button>
+            </div>
+
+            <div class="panel">
+                <h3>3. Impression</h3>
+                
+                <div class="status-box">
+                    <div>Lignes G-Code : <span id="valGcodeLines" style="color:#fff">0</span></div>
+                    <div>Statut : <span id="valStatus" style="color:#fff">Déconnecté</span></div>
+                </div>
+                
+                <button id="btnHome" class="action-btn">🏠 ORIGINE ($H)</button>
+                <button id="btnConnect" class="conn-btn mt-10">🔌 CONNECTER USB</button>
+                
+                <div class="row mt-10">
+                    <button id="btnPrint" disabled>▶ LANCER</button>
+                </div>
+                <div class="row">
+                    <button id="btnStop" class="stop-btn">STOP 🛑</button>
+                </div>
+                
+                <div class="progress-container">
+                    <div id="progressBar"></div>
+                </div>
+                <div id="progressText">0%</div>
+                <div id="timeText">Temps Est: 00:00</div>
+                
+                <button id="btnDownload" class="action-btn mt-10">💾 TÉLÉCHARGER GCODE</button>
+                
+                <div id="console"></div>
+            </div>
+        </div>
+        
+        <div id="canvas-container">
+            <nav class="top-nav">
+                <a href="../Main/index.html" class="nav-btn">1. Slicer</a>
+                <a href="#" class="nav-btn active">2. Topographie</a>
+                <a href="../Word/index.html" class="nav-btn">3. Ecrire</a>
+                <a href="../Visage/index.html" class="nav-btn">4. Visage</a>
+                <a href="../Musique/index.html" class="nav-btn">5. Musique</a>
+                <a href="../index.html" class="nav-btn">6. Doc</a>
+            </nav>
+            <div id="zoom-controls">
+                <p>Molette = Zoom | Clic = Déplacer</p>
+                <button id="btnResetView" class="btn-small">Recadrer</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

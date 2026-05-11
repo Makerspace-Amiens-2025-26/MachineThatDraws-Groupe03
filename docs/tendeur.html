@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Le Tendeur de Courroie</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>   
+
+    <div id="nav-placeholder"></div>
+
+    <main class="content">
+        
+        <section id="cao-tendeur">
+            <h1>Le Tendeur de Courroie (Axe Y)</h1>
+            <p>L'axe Y déplace l'intégralité du pont central. Pour encaisser la force de traction importante nécessaire au mouvement de cette masse globale, nous avons conçu un bloc tendeur extrêmement résistant et dédié spécifiquement à cet axe.</p>
+
+            <div class="model-window" style="width: 100%; height: 500px; background: #1a1a1a; border: 1px solid #111; border-top: 2px solid #ff003c; border-radius: 5px; overflow: hidden; margin: 30px 0; display: flex; flex-direction: column;">
+                <model-viewer 
+                    src="Model/Tendeur.gltf" 
+                    camera-controls 
+                    auto-rotate
+                    shadow-intensity="1"
+                    orientation="145deg -75deg 0deg" 
+                    exposure="0.3"
+                    tone-mapping="commerce"        
+                    shadow-intensity="2"
+                    shadow-softness="1"
+                    style="width: 100%; flex-grow: 1; background-color: #222;">
+                    <div slot="poster" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: 100%; color: #ff003c; font-family: 'Orbitron', sans-serif; background: #050505; text-align: center;">
+                        <div style="font-size: 1.2rem; margin-bottom: 10px; letter-spacing: 2px;">📡 LIAISON ÉTABLIE</div>
+                        <div style="font-size: 0.9rem; color: #888;">CHARGEMENT DU MODÈLE 3D...</div>
+                        <div style="width: 150px; height: 2px; background: #333; margin-top: 15px; position: relative; overflow: hidden;">
+                            <div class="anim-scanline" style="width: 50px; height: 100%; background: #ff003c; position: absolute;"></div>
+                        </div>
+                    </div>
+                </model-viewer>
+                <div class="model-caption" style="background: #111; border-top: 1px solid #222; font-size: 0.9em; color: #888; padding: 12px; font-family: 'Rajdhani', sans-serif; text-align: center; letter-spacing: 1px;">
+                    ▶ Modèle 3D interactif des tendeurs
+                </div>
+            </div>
+
+            <h3>1. Une Conception Structurelle Robuste</h3>
+            <p>Le tendeur a été modélisé pour être la pièce la plus rigide de la transmission, sans jamais plier sous la tension de la courroie GT2 :</p>
+            <ul>
+                <li><strong>Renforts intégrés :</strong> La base du tendeur possède des contreforts triangulaires empêchant la déformation du plastique.</li>
+                <li><strong>Fixation à 4 points :</strong> Contrairement à d'autres pièces, ce bloc est fixé à la planche de 10 mm par <strong>4 vis M3</strong> (une dans chaque coin). Cette répartition de l'effort garantit que le bloc reste parfaitement perpendiculaire à l'axe de traction.</li>
+                <li><strong>Ancrage :</strong> La fixation se fait solidement via des inserts filetés en laiton posés par le dessous du plateau en bois.</li>
+            </ul>
+
+            <h3>2. Système de Réglage Micrométrique</h3>
+            <p>Le réglage de la tension s'effectue par la translation du chariot interne porte-poulie :</p>
+            <ul>
+                <li><strong>Mécanisme :</strong> On utilise deux vis <strong>M3 de 50 mm</strong> de long. En vissant, on repousse le bloc mobile contenant la poulie vers l'extérieur de la machine.</li>
+                <li><strong>Durabilité :</strong> Pour éviter d'abîmer le filetage dans le plastique à force de modifier les réglages, nous avons intégré des <strong>inserts filetés</strong> directement dans la pièce mobile. Le réglage est ainsi fluide, précis et inusable.</li>
+            </ul>
+
+            <div class="info-box" style="border-left-color: #f1c40f; background-color: rgba(241, 196, 15, 0.1);">
+                <strong>🛠️ Focus : La Poulie de renvoi sur mesure</strong><br>
+                Plutôt que d'utiliser une poulie standard, nous avons modélisé et imprimé notre propre poulie de guidage. Elle intègre en son centre un <strong>roulement à billes haute performance</strong>. Cette solution nous permet d'avoir une gorge adaptée à la largeur de la courroie, garantissant une rotation sans aucune friction à l'extrémité de l'axe.
+            </div>
+
+            <h3 style="margin-top: 40px;">3. Symétrie et Synchronisation</h3>
+            <p>La machine utilise <strong>un tendeur de chaque côté de l'axe Y</strong>. Un réglage identique sur le tendeur gauche et le tendeur droit est impératif : cela permet d'équilibrer finement la tension de part et d'autre et d'éviter que le pont ne se décale ou ne force lors des déplacements longitudinaux.</p>
+
+        </section>
+
+    </main>
+    
+    <script src="menu.js"></script>
+    <script src="script.js"></script>
+    <script type="module" src="Include/model-viewer.min.js"></script>
+</body>
+</html>
