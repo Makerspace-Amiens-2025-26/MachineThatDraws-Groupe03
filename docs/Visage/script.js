@@ -5,7 +5,7 @@ const CONFIG = {
     penDownCmd: "G53 G0 Z-1",  
     penDelay: 0.2,        
     bedW: 170.0,          
-    bedH: 140.0         
+    bedH: 140.0    
 };
 
 let gcodeData = [];
@@ -315,8 +315,6 @@ function generateArt() {
     let offsetX_mm = parseInt(ui.offX.value) || 0; 
     let offsetY_mm = parseInt(ui.offY.value) || 0; 
     
-    if (W_mm + offsetX_mm > CONFIG.bedW) W_mm = CONFIG.bedW - offsetX_mm;
-    if (H_mm + offsetY_mm > CONFIG.bedH) H_mm = CONFIG.bedH - offsetY_mm;
     previewPaths = [];
 
     for (let y_mm = 0; y_mm <= H_mm; y_mm += ESP_MM) {
@@ -335,7 +333,9 @@ function generateArt() {
             let cx = x_mm + offsetX_mm; 
             let cy = final_y_mm + offsetY_mm; 
             
-            if (!skip && final_y_mm >= 0 && final_y_mm <= H_mm) {
+            let inBounds = (final_y_mm >= 0 && final_y_mm <= H_mm && cx >= 0 && cx <= CONFIG.bedW && cy >= 0 && cy <= CONFIG.bedH);
+            
+            if (!skip && inBounds) {
                 if (!active) { currentPolyline = []; active = true; }
                 currentPolyline.push({x: cx, y: cy});
             } else if (active) {
@@ -377,17 +377,21 @@ function generateArt() {
         currentY = bestPl[bestPl.length - 1].y;
     }
     
-    gcodeData.push("; --- CADRE ---");
+    let frameMinX = constrain(offsetX_mm, 0, CONFIG.bedW);
+    let frameMaxX = constrain(offsetX_mm + W_mm, 0, CONFIG.bedW);
+    let frameMinY = constrain(offsetY_mm, 0, CONFIG.bedH);
+    let frameMaxY = constrain(offsetY_mm + H_mm, 0, CONFIG.bedH);
+
     gcodeData.push(
         CONFIG.penUpCmd,
         `G4 P${CONFIG.penDelay}`,
-        `G0 X${offsetX_mm.toFixed(3)} Y${offsetY_mm.toFixed(3)} F${CONFIG.travelSpeed}`,
+        `G0 X${frameMinX.toFixed(3)} Y${frameMinY.toFixed(3)} F${CONFIG.travelSpeed}`,
         CONFIG.penDownCmd,
         `G4 P${CONFIG.penDelay}`,
-        `G1 X${(offsetX_mm + W_mm).toFixed(3)} Y${offsetY_mm.toFixed(3)} F${CONFIG.feedRate}`,
-        `G1 X${(offsetX_mm + W_mm).toFixed(3)} Y${(offsetY_mm + H_mm).toFixed(3)} F${CONFIG.feedRate}`,
-        `G1 X${offsetX_mm.toFixed(3)} Y${(offsetY_mm + H_mm).toFixed(3)} F${CONFIG.feedRate}`,
-        `G1 X${offsetX_mm.toFixed(3)} Y${offsetY_mm.toFixed(3)} F${CONFIG.feedRate}`,
+        `G1 X${frameMaxX.toFixed(3)} Y${frameMinY.toFixed(3)} F${CONFIG.feedRate}`,
+        `G1 X${frameMaxX.toFixed(3)} Y${frameMaxY.toFixed(3)} F${CONFIG.feedRate}`,
+        `G1 X${frameMinX.toFixed(3)} Y${frameMaxY.toFixed(3)} F${CONFIG.feedRate}`,
+        `G1 X${frameMinX.toFixed(3)} Y${frameMinY.toFixed(3)} F${CONFIG.feedRate}`,
         CONFIG.penUpCmd,
         "G4 P0.5",
         `G0 X0 Y0 F${CONFIG.travelSpeed}`
@@ -524,3 +528,5 @@ async function readSerial() {
         } catch (e) { break; } finally { reader.releaseLock(); }
     }
 }
+
+const dist = (x1, y1, x2, y2) => Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
