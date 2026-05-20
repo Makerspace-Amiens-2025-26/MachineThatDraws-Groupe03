@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doc | MachineThatDraws</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <div id="nav-placeholder"></div>
@@ -16,7 +16,7 @@
             
                 <div class="model-window" style="width: 100%; height: 500px; background: #1a1a1a; border: 1px solid #111; border-top: 2px solid #ff003c; border-radius: 5px; overflow: hidden; margin: 30px 0; display: flex; flex-direction: column;">
                 <model-viewer 
-                    src="Model/Machine That Draws.gltf" 
+                    src="assets/models/Machine That Draws.gltf" 
                     camera-controls 
                     auto-rotate
                     shadow-intensity="1"
@@ -60,7 +60,7 @@
 
                 <li style="margin-bottom: 40px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
                     <div style="flex: 0 0 300px; max-width: 100%;">
-                        <img src="Images/slicer1.png" alt="Interface du Slicer Traceur" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                        <img src="assets/img/slicer1.png" alt="Interface du Slicer Traceur" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
                     </div>
                     <div style="flex: 1; min-width: 300px;">
                         <strong>1. Slicer Traceur (Reproduction d'images) :</strong> Convertit n'importe quelle image en trajectoires physiques pour la machine. Il utilise un système de traitement à 3 zones basé sur des seuils réglables : les zones sombres génèrent un quadrillage croisé, les zones grises des hachures simples, et les zones claires sont épargnées. Il intègre également des outils complets de géométrie (décalage, miroir X/Y, adoucissement anti-bruit).
@@ -69,7 +69,7 @@
                 
                 <li style="margin-bottom: 40px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
                     <div style="flex: 0 0 300px; max-width: 100%;">
-                        <img src="Images/slicer2.png" alt="Interface du Générateur Topographique" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                        <img src="assets/img/slicer2.png" alt="Interface du Générateur Topographique" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
                     </div>
                     <div style="flex: 1; min-width: 300px;">
                         <strong>2. Générateur Topo (Art Génératif) :</strong> Utilise la puissance des mathématiques (bruit de Perlin) pour générer des paysages topographiques uniques. L'utilisateur peut personnaliser le relief à l'infini en modifiant la "graine" (seed) de génération, l'espacement des lignes et la hauteur des montagnes avant d'envoyer le tracé en G-Code.
@@ -78,7 +78,7 @@
                 
                 <li style="margin-bottom: 40px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
                     <div style="flex: 0 0 300px; max-width: 100%;">
-                        <img src="Images/slicer3.png" alt="Interface de Studio Texte CNC" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                        <img src="assets/img/slicer3.png" alt="Interface de Studio Texte CNC" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
                     </div>
                     <div style="flex: 1; min-width: 300px;">
                         <strong>3. Studio Texte CNC (Traitement de texte) :</strong> Un véritable éditeur vectoriel fonctionnant comme un logiciel de traitement de texte ("Word"). Il permet d'ajouter et de superposer plusieurs calques de texte, de choisir différentes polices, de gérer l'orientation, et d'ajuster finement la position (X/Y). La machine se transforme alors en traceur typographique de précision.
@@ -87,7 +87,7 @@
 
                 <li style="margin-bottom: 40px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
                     <div style="flex: 0 0 300px; max-width: 100%;">
-                        <img src="Images/slicer4.png" alt="Interface du Slicer Visage" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                        <img src="assets/img/slicer4.png" alt="Interface du Slicer Visage" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
                     </div>
                     <div style="flex: 1; min-width: 300px;">
                         <strong>4. Slicer Visage (Portraits optimisés) :</strong> Un algorithme spécialement pensé pour la reproduction de visages et de jeux d'ombres. Son procédé de rendu est unique : les zones claires de l'image sont représentées par de simples traits droits réguliers, tandis que les zones sombres sont converties en ondes sinusoïdales (sinus). Cette variation de forme crée des effets d'ombres remarquables au stylo.
@@ -102,7 +102,7 @@
         </section>
 
     </main>
-    <script src="menu.js"></script>
-    <script type="module" src="Include/model-viewer.min.js"></script>
+    <script src="assets/js/menu.js"></script>
+    <script type="module" src="assets/js/model-viewer.min.js"></script>
 </body>
 </html>
