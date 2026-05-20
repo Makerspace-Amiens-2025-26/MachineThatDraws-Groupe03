@@ -1,9 +1,15 @@
+const CONFIG = {
+    feedRate: 1500,       
+    travelSpeed: 2000,    
+    penUpCmd: "G53 G0 Z0",        
+    penDownCmd: "G53 G0 Z-1",  
+    penDelay: 0.2,        
+    bedW: 170.0,          
+    bedH: 140.0           
+};
+
 let port, writer;
 let isConnected = false;
-
-// --- CONFIGURATION DU STYLO ---
-const PEN_UP_VAL = 33;   
-const PEN_DOWN_VAL = 0;  
 let isPenDown = false;   
 
 const ui = {
@@ -19,31 +25,24 @@ const ui = {
     btnPen: document.getElementById('btnPen')
 };
 
-// --- CONNEXION USB ---
 ui.btnConnect.addEventListener('click', async () => {
     if (!navigator.serial) return alert("Google Chrome ou Edge est requis pour le Web Serial.");
     try {
         port = await navigator.serial.requestPort();
         await port.open({ baudRate: 115200 }); 
-        
         ui.status.innerText = "Connecté ✅";
         ui.status.style.color = "#00ffcc";
         ui.btnConnect.style.display = "none";
         isConnected = true;
-        
         const enc = new TextEncoderStream();
         enc.readable.pipeTo(port.writable);
         writer = enc.writable.getWriter();
-        
-        // Initialiser la machine avec le stylo levé
-        sendGcode(`M3 S${PEN_UP_VAL}`);
-        
+        sendGcode(CONFIG.penUpCmd);
     } catch (e) {
         alert("Erreur de connexion USB : " + e);
     }
 });
 
-// --- FONCTION D'ENVOI GCODE ---
 async function sendGcode(command) {
     if (!isConnected || !writer) return;
     try {
@@ -53,26 +52,19 @@ async function sendGcode(command) {
     }
 }
 
-// --- FONCTION DE DEPLACEMENT UNIVERSELLE ---
 async function jogMachine(axis, direction) {
     let distance = parseFloat(ui.stepDistance.value) || 10;
-    let speed = parseInt(ui.jogSpeed.value) || 1000; // Vitesse par défaut à 1000
-    
+    let speed = parseInt(ui.jogSpeed.value) || 1000;
     let moveValue = (direction * distance).toFixed(2); 
-    
-    // Remplacement de la commande $J par une séquence G-Code classique
-    await sendGcode("G91"); // Passage en mode relatif (déplacement depuis la position actuelle)
-    await sendGcode(`G1 ${axis}${moveValue} F${speed}`); // Déplacement
-    await sendGcode("G90"); // Retour en mode absolu pour ne pas perturber la suite
+    await sendGcode("G91"); 
+    await sendGcode(`G1 ${axis}${moveValue} F${speed}`); 
+    await sendGcode("G90"); 
 }
 
-// --- FONCTION LEVER/BAISSER LE STYLO ---
 function togglePen() {
     isPenDown = !isPenDown;
-    let pwmValue = isPenDown ? PEN_DOWN_VAL : PEN_UP_VAL;
-    
-    sendGcode(`M3 S${pwmValue}`);
-    
+    let cmd = isPenDown ? CONFIG.penDownCmd : CONFIG.penUpCmd;
+    sendGcode(cmd);
     if (isPenDown) {
         ui.btnPen.innerText = "🖍️ Stylo : BAISSÉ (Espace)";
         ui.btnPen.classList.add("down");
@@ -82,7 +74,6 @@ function togglePen() {
     }
 }
 
-// --- ÉVÈNEMENTS BOUTONS ---
 ui.btnUp.addEventListener('click', () => jogMachine('Y', 1));
 ui.btnDown.addEventListener('click', () => jogMachine('Y', -1));
 ui.btnRight.addEventListener('click', () => jogMachine('X', 1));
@@ -98,13 +89,11 @@ ui.btnPen.addEventListener('click', (e) => {
     togglePen();
 });
 
-// --- CONTRÔLE CLAVIER (FLÈCHES + ESPACE) ---
 let isKeyPressed = false;
 
 window.addEventListener('keydown', (e) => {
     if (document.activeElement.tagName === 'INPUT') return;
     if (isKeyPressed) return; 
-
     let handled = true;
     switch(e.key) {
         case 'ArrowUp': 
@@ -123,14 +112,13 @@ window.addEventListener('keydown', (e) => {
             jogMachine('X', -1); 
             ui.btnLeft.style.background = "#ff003c"; ui.btnLeft.style.color = "#000";
             break;
-        case ' ': // Touche Espace
+        case ' ': 
         case 'Spacebar':
             togglePen();
             break;
         default: 
             handled = false;
     }
-
     if (handled) {
         isKeyPressed = true;
         e.preventDefault(); 

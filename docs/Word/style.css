@@ -124,7 +124,6 @@ canvas { z-index: 2; }
 #zoom-controls p { margin: 0 0 5px 0; font-size: 0.85rem; font-family: 'Orbitron', sans-serif; }
 .btn-small { padding: 5px 10px; font-size: 0.8rem; background: #110000; color: #ff003c; border: 1px solid #ff003c; clip-path: none; width: auto; display: inline-block; }
 
-/* OVERRIDES SPÉCIFIQUES */
 #btnHome { background: #17a2b8 !important; color: #ffffff !important; border: 1px solid #00ffff !important; }
 #btnHome:hover:not(:disabled) { background: #00ffff !important; color: #000000 !important; box-shadow: 0 0 15px rgba(0, 255, 255, 0.6) !important; }
 

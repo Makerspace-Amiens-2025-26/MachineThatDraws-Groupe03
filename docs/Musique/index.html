@@ -9,10 +9,9 @@
 </head>
 <body>
     <div class="layout">
-        
         <div class="sidebar">
             <h2>Studio Musique CNC</h2>
-            <p style="text-align:center; color:#aaa; font-size:0.85em; margin: -5px 0 10px 0; font-family:'Orbitron', sans-serif;">📍 Origine: Bas-Gauche (0,0) | Limite: 100x100mm</p>
+            <p style="text-align:center; color:#aaa; font-size:0.85em; margin: -5px 0 10px 0; font-family:'Orbitron', sans-serif;">📍 Origine: Bas-Gauche (0,0) | Limite: 195x205mm</p>
             
             <div class="panel">
                 <h3>1. Fichier MIDI</h3>
@@ -28,9 +27,7 @@
                         <option value="Undertale_-_Megalovania.mid">💀 Undertale - Megalovania</option>
                     </select>
                 </div>
-                
                 <div style="text-align: center; color: #666; font-size: 0.8em; margin: 10px 0;">-- OU --</div>
-                
                 <div class="setting-group">
                     <label>Importer un fichier (.mid) :</label>
                     <input type="file" id="midiInput" accept=".mid,.midi">
@@ -49,7 +46,6 @@
                         <select id="trackSelectY"></select>
                     </div>
                 </div>
-
                 <div class="status-box" id="trackInfo">
                     Aucune musique chargée.
                 </div>
@@ -57,26 +53,33 @@
 
             <div class="panel">
                 <h3>3. Contrôle Machine</h3>
+                <button id="btnImportGcode" class="action-btn" style="background:#17a2b8; color:white; margin-bottom: 10px;">📂 IMPORTER G-CODE</button>
+                <input type="file" id="gcodeFileInput" style="display:none;" accept=".gcode,.nc">
+                
+                <div class="row" style="align-items: center; margin-bottom: 10px;">
+                    <label style="flex-grow: 1;">Reprendre à la ligne :</label>
+                    <input type="number" id="startLineInput" value="0" min="0" style="width: 80px; padding: 4px;">
+                </div>
+
                 <button id="btnConnect" class="conn-btn">🔌 CONNECTER USB</button>
                 
                 <div class="row">
                     <button id="btnHome" style="display:none; width: 100%;">🏠 Origine ($H)</button>
                 </div>
-                
                 <div class="row" id="playButtons" style="display:none; margin-top: 5px;">
                     <button id="btnPlay" disabled>▶ ÉCOUTER</button>
                     <button id="btnDraw" disabled>🖍️ DESSINER</button>
                 </div>
-                
                 <div class="row">
                     <button id="btnStop" class="stop-btn" style="display:none;">STOP 🛑</button>
                 </div>
                 
+                <button class="action-btn" id="btnDownload" style="margin-top: 10px;">💾 Télécharger Gcode</button>
+                
                 <div class="progress-container" id="progressContainer" style="display:none;">
                     <div id="progressBar"></div>
                 </div>
-                <div id="status">Statut : Déconnecté</div>
-                
+                <div id="status" style="margin-top:10px;">Statut : Déconnecté</div>
                 <div id="console"></div>
             </div>
         </div>
@@ -91,9 +94,8 @@
                 <a href="../Manuel/index.html" class="nav-btn">6. Manuel</a>
                 <a href="../index.html" class="nav-btn">7. Doc</a>
             </nav>
-            </div>
+        </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>

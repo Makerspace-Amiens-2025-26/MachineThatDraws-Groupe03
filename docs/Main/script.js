@@ -1,16 +1,13 @@
-/* --- CONFIGURATION MACHINE CORE XY --- */
 const CONFIG = {
-    feedRate: 4000,       
-    travelSpeed: 5000,    
-    acceleration: 1000,
-    penUp: 33,            // Valeur pour lever le stylo
-    penDown: 0,           // Valeur pour baisser le stylo
+    feedRate: 1500,       
+    travelSpeed: 2000,    
+    penUpCmd: "G53 G0 Z0",        
+    penDownCmd: "G53 G0 Z-1",  
     penDelay: 0.2,        
     bedW: 170.0,          
-    bedH: 140.0           
+    bedH: 140.0         
 };
 
-/* --- VARIABLES GLOBALES --- */
 let imgOriginal, imgProcessed, pg;
 let gcodeData = [];
 let previewPaths = []; 
@@ -21,8 +18,8 @@ let port, writer;
 let isPrinting = false;
 let arduinoReady = true;
 let printIndex = 0; 
+let wasPausedByColor = false;
 
-/* --- UI ELEMENTS --- */
 const ui = {
     file: document.getElementById('fileInput'),
     threshDark: document.getElementById('threshDark'),
@@ -51,6 +48,9 @@ const ui = {
     timeText: document.getElementById('timeText'),
     lineCount: document.getElementById('lineCount'),
     estimatedTime: document.getElementById('estimatedTime'),
+    startLineInput: document.getElementById('startLineInput'),
+    btnImport: document.getElementById('btnImportGcode'),
+    gcodeFile: document.getElementById('gcodeFileInput'),
     btns: {
         gen: document.getElementById('btnGenerate'), clear: document.getElementById('btnClearTrace'), 
         dl: document.getElementById('btnDownload'), conn: document.getElementById('btnConnect'),
@@ -58,7 +58,6 @@ const ui = {
     }
 };
 
-/* --- P5.JS SETUP & DRAW --- */
 function setup() {
     let container = document.getElementById('canvas-container');
     let cnv = createCanvas(container.clientWidth, container.clientHeight);
@@ -73,21 +72,12 @@ function windowResized() {
 }
 
 function mouseWheel(event) {
-    // On vérifie si la souris est bien au-dessus du canvas
     if (mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height) {
-        
-        // On calcule un facteur de sensibilité (plus petit = plus lent)
-        // 0.001 est une bonne valeur pour un contrôle précis
         let sensitivity = 0.0005;
-        
-        // On ajuste le zoom de manière progressive
         zoom -= event.delta * sensitivity;
-        
-        // On limite le zoom pour éviter de disparaître (min: 0.1, max: 20)
         zoom = constrain(zoom, 0.1, 20);
-        
         redraw(); 
-        return false; // Empêche la page web de défiler en même temps
+        return false; 
     }
 }
 
@@ -112,17 +102,12 @@ function draw() {
     push();
     translate(tx, ty);
 
-    // Fond blanc du plateau
     fill(255); noStroke(); rect(0, 0, bedW * screenScale, bedH * screenScale);
 
-    // --- QUADRILLAGE SIMPLIFIÉ ---
-    
-    // 1. Lignes de 5 mm (Subdivisions)
     stroke(220); strokeWeight(0.7);
     for(let x=0; x<=bedW; x+=5) line(x*screenScale, 0, x*screenScale, bedH*screenScale);
     for(let y=0; y<=bedH; y+=5) line(0, y*screenScale, bedW*screenScale, y*screenScale);
 
-    // 2. Lignes de 10 mm (Repères principaux)
     stroke(180); strokeWeight(1.2);
     for(let x=0; x<=bedW; x+=10) line(x*screenScale, 0, x*screenScale, bedH*screenScale);
     for(let y=0; y<=bedH; y+=10) line(0, y*screenScale, bedW*screenScale, y*screenScale);
@@ -150,10 +135,7 @@ function draw() {
                 let sMaxX = pathObj.bounds.maxX * screenScale + tx;
                 let sMinY = (bedH - pathObj.bounds.maxY) * screenScale + ty; 
                 let sMaxY = (bedH - pathObj.bounds.minY) * screenScale + ty;
-
-                if (sMaxX < 0 || sMinX > width || sMaxY < 0 || sMinY > height) {
-                    continue; 
-                }
+                if (sMaxX < 0 || sMinX > width || sMaxY < 0 || sMinY > height) continue; 
             }
 
             if (pathObj.color === 'black') stroke(10, 10, 10, 220);
@@ -169,20 +151,19 @@ function draw() {
     pop();
 }
 
-/* --- LOGIQUE DE COULEURS & INTENSITÉS --- */
 function autoAdjustThresholds(img) {
     img.loadPixels();
-    let hist = new Array(256).fill(0);
-    let totalPixels = img.width * img.height;
+    const hist = new Uint32Array(256);
+    const totalPixels = img.width * img.height;
+    const pixels = img.pixels;
 
-    for (let i = 0; i < img.pixels.length; i += 4) {
-        let r = img.pixels[i], g = img.pixels[i+1], b = img.pixels[i+2];
-        let brightness = Math.floor((r + g + b) / 3);
+    for (let i = 0, len = pixels.length; i < len; i += 4) {
+        const brightness = Math.floor((pixels[i] + pixels[i+1] + pixels[i+2]) / 3);
         hist[brightness]++;
     }
 
     let sum = 0, darkThresh = -1, lightThresh = -1;
-    let pDark = totalPixels * 0.25, pLight = totalPixels * 0.75;
+    const pDark = totalPixels * 0.25, pLight = totalPixels * 0.75;
 
     for (let i = 0; i < 256; i++) {
         sum += hist[i];
@@ -199,11 +180,10 @@ function autoAdjustThresholds(img) {
 }
 
 function categorizePixel(r, g, b) {
-    let B = (r + g + b) / 3;
-    let Sat = Math.max(r, g, b) - Math.min(r, g, b);
-    
-    let tD = parseInt(ui.threshDark.value) / 255.0;
-    let tL = parseInt(ui.threshLight.value) / 255.0;
+    const B = (r + g + b) / 3;
+    const Sat = Math.max(r, g, b) - Math.min(r, g, b);
+    const tD = parseInt(ui.threshDark.value) / 255.0;
+    const tL = parseInt(ui.threshLight.value) / 255.0;
     
     let pen = 'none';
     let diags = 0;
@@ -213,9 +193,11 @@ function categorizePixel(r, g, b) {
         if (B < 255 * tD) diags = 2;       
         else if (B < 255 * tL) diags = 1;  
     } else {
-        let dRed = (r-255)**2 + g**2 + b**2;
-        let dGreen = r**2 + (g-255)**2 + b**2;
-        let dBlue = r**2 + g**2 + (b-255)**2;
+        const rInv = r-255, gInv = g-255, bInv = b-255;
+        const rSq = r*r, gSq = g*g, bSq = b*b;
+        const dRed = rInv*rInv + gSq + bSq;
+        const dGreen = rSq + gInv*gInv + bSq;
+        const dBlue = rSq + gSq + bInv*bInv;
 
         let minD = dRed; 
         pen = 'red';
@@ -225,12 +207,10 @@ function categorizePixel(r, g, b) {
         if (B < 255 * tD) diags = 2;       
         else if (B < 255 * tL) diags = 1;  
     }
-    
     if (diags === 0) pen = 'none'; 
     return { pen: pen, diags: diags };
 }
 
-/* --- ÉVÈNEMENTS UI --- */
 ui.file.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -265,59 +245,36 @@ function applyFilters() {
     if (!pg) pg = createGraphics(imgOriginal.width, imgOriginal.height);
     else pg.resizeCanvas(imgOriginal.width, imgOriginal.height);
     
-    pg.pixelDensity(1); 
-    pg.background(255); // CORRECTION : Force le blanc pour les PNG transparents
-    pg.image(imgOriginal, 0, 0);
-    
+    pg.pixelDensity(1); pg.background(255); pg.image(imgOriginal, 0, 0);
     let blurAmt = parseInt(ui.blurSlider.value) || 0;
     if (blurAmt > 0) pg.filter(BLUR, blurAmt); 
     
     let tempPg = createGraphics(pg.width, pg.height);
     tempPg.pixelDensity(1); tempPg.image(pg, 0, 0); tempPg.loadPixels();
     
-    for (let i = 0; i < tempPg.pixels.length; i += 4) {
-        let cat = categorizePixel(tempPg.pixels[i], tempPg.pixels[i+1], tempPg.pixels[i+2]);
+    const pixels = tempPg.pixels;
+    for (let i = 0, len = pixels.length; i < len; i += 4) {
+        let cat = categorizePixel(pixels[i], pixels[i+1], pixels[i+2]);
         let r=255, g=255, b=255; 
-        
-        if (cat.pen === 'black') { 
-            if(cat.diags === 2) { r=0; g=0; b=0; } else { r=130; g=130; b=130; } 
-        }
-        else if (cat.pen === 'red') { 
-            if(cat.diags === 2) { r=180; g=0; b=0; } else { r=255; g=100; b=100; } 
-        }
-        else if (cat.pen === 'green') { 
-            if(cat.diags === 2) { r=0; g=150; b=0; } else { r=100; g=255; b=100; } 
-        }
-        else if (cat.pen === 'blue') { 
-            if(cat.diags === 2) { r=0; g=0; b=180; } else { r=100; g=100; b=255; } 
-        }
-        
-        tempPg.pixels[i]=r; tempPg.pixels[i+1]=g; tempPg.pixels[i+2]=b;
+        if (cat.pen === 'black') { if(cat.diags === 2) { r=0; g=0; b=0; } else { r=130; g=130; b=130; } }
+        else if (cat.pen === 'red') { if(cat.diags === 2) { r=180; g=0; b=0; } else { r=255; g=100; b=100; } }
+        else if (cat.pen === 'green') { if(cat.diags === 2) { r=0; g=150; b=0; } else { r=100; g=255; b=100; } }
+        else if (cat.pen === 'blue') { if(cat.diags === 2) { r=0; g=0; b=180; } else { r=100; g=100; b=255; } }
+        pixels[i]=r; pixels[i+1]=g; pixels[i+2]=b;
     }
     tempPg.updatePixels(); imgProcessed = tempPg.get(); tempPg.remove(); redraw();
 }
 
-/* --- BOUTONS D'ACTIONS --- */
-const yieldThread = () => new Promise(resolve => setTimeout(resolve, 10));
+const yieldThread = () => new Promise(resolve => setTimeout(resolve, 5));
 
 ui.btns.gen.addEventListener('click', async () => {
     if (!imgProcessed) return alert("Chargez une image !");
     
-    ui.btns.gen.disabled = true;
-    ui.btns.gen.innerText = "⏳ GÉNÉRATION...";
-    
-    const setProgress = async (pct, text) => {
-        ui.progress.style.width = pct + "%";
-        ui.pctText.innerText = text;
-        await yieldThread();
-    };
-
+    ui.btns.gen.disabled = true; ui.btns.gen.innerText = "⏳ GÉNÉRATION...";
+    const setProgress = async (pct, text) => { ui.progress.style.width = pct + "%"; ui.pctText.innerText = text; await yieldThread(); };
     await setProgress(5, "Initialisation (5%)...");
     
-    gcodeData = []; previewPaths = [];
-    printIndex = 0; 
-    ui.btns.print.innerText = "▶ LANCER"; 
-
+    gcodeData = []; previewPaths = []; printIndex = 0; ui.startLineInput.value = 0; ui.btns.print.innerText = "▶ LANCER"; 
     let pathsByColor = { black: [], blue: [], green: [], red: [] }; 
 
     if (ui.checkContours.checked) {
@@ -328,28 +285,25 @@ ui.btns.gen.addEventListener('click', async () => {
     if (ui.checkHatches.checked) {
         await setProgress(35, "Calcul des hachures (35%)...");
         let hatchPaths = getColoredHatchingPaths();
-        hatchPaths.forEach(p => pathsByColor[p.color].push(p.path));
+        for (let i=0; i<hatchPaths.length; i++) pathsByColor[hatchPaths[i].color].push(hatchPaths[i].path);
     }
 
     let exportGroups = [];
     let pasDistance = parseFloat(ui.pasSlider.value) || 1.0;
     let minLen = parseFloat(ui.minPath.value) || 0;
-    
     let colors = ['black', 'blue', 'green', 'red'];
-    let baseProgression = 50;
-    let stepProgression = 40 / colors.length;
+    let baseProgression = 50, stepProgression = 40 / colors.length;
 
     for (let i = 0; i < colors.length; i++) {
         let color = colors[i];
         if (pathsByColor[color].length === 0) continue;
-
         await setProgress(baseProgression + (i * stepProgression), `Optimisation : ${color}...`);
 
         let transformed = transformPathsToMachineSpace(pathsByColor[color]);
         if (color === 'black') applyBorderIfExceeding(transformed);
-
         let clippedSegments = clipPaths(transformed);
         let resampledSegments = [];
+        
         clippedSegments.forEach(segment => {
             let resampled = resamplePath(segment, pasDistance);
             if (resampled.length > 1) resampledSegments.push(resampled);
@@ -357,14 +311,13 @@ ui.btns.gen.addEventListener('click', async () => {
         
         let filteredSegments = resampledSegments.filter(seg => {
             let totalLen = 0;
-            for(let i=1; i<seg.length; i++) totalLen += dist(seg[i-1].x, seg[i-1].y, seg[i].x, seg[i].y);
+            for(let j=1; j<seg.length; j++) totalLen += dist(seg[j-1].x, seg[j-1].y, seg[j].x, seg[j].y);
             return totalLen >= minLen;
         });
 
-        let optimized = optimizePathOrder(filteredSegments);
+        let optimized = await optimizePathOrder(filteredSegments);
         if (optimized.length > 0) {
             exportGroups.push({ color: color, paths: optimized });
-            
             optimized.forEach(path => {
                 let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
                 for (let pt of path) {
@@ -373,58 +326,100 @@ ui.btns.gen.addEventListener('click', async () => {
                     if (pt.y < minY) minY = pt.y;
                     if (pt.y > maxY) maxY = pt.y;
                 }
-                previewPaths.push({ 
-                    color: color, 
-                    path: path,
-                    bounds: { minX, maxX, minY, maxY } 
-                });
+                previewPaths.push({ color: color, path: path, bounds: { minX, maxX, minY, maxY } });
             });
         }
     }
 
     await setProgress(95, "Génération G-Code (95%)...");
     generateGCodeFromPaths(exportGroups); 
-    
     await setProgress(100, "Terminé ! (100%)");
     
-    setTimeout(() => {
-        if (!isPrinting) {
-            ui.progress.style.width = "0%";
-            ui.pctText.innerText = "0%";
-        }
-    }, 2000);
-
-    ui.btns.gen.disabled = false;
-    ui.btns.gen.innerText = "🔄 ACTUALISER LE TRACÉ";
-    
+    setTimeout(() => { if (!isPrinting) { ui.progress.style.width = "0%"; ui.pctText.innerText = "0%"; } }, 2000);
+    ui.btns.gen.disabled = false; ui.btns.gen.innerText = "🔄 ACTUALISER LE TRACÉ";
     redraw();
 });
 
 ui.btns.clear.addEventListener('click', () => {
-    previewPaths = []; gcodeData = []; printIndex = 0;
-    ui.btns.print.innerText = "▶ LANCER";
-    ui.lineCount.innerText = "0"; ui.estimatedTime.innerText = "00:00"; redraw(); 
+    previewPaths = []; gcodeData = []; printIndex = 0; ui.startLineInput.value = 0;
+    ui.btns.print.innerText = "▶ LANCER"; ui.lineCount.innerText = "0"; ui.estimatedTime.innerText = "00:00"; redraw(); 
 });
 
-/* --- GENERATION DES HACHURES ET CONTOURS --- */
+ui.btnImport.addEventListener('click', () => ui.gcodeFile.click());
+ui.gcodeFile.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+        gcodeData = ev.target.result.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+        parseGcodeToPreview();
+        ui.lineCount.innerText = gcodeData.length;
+        ui.estimatedTime.innerText = "Calculé via G-Code";
+        ui.startLineInput.value = 0; printIndex = 0; wasPausedByColor = false;
+        ui.btns.print.innerText = "▶ LANCER";
+        if(ui.btns.print.disabled && port) ui.btns.print.disabled = false;
+        redraw();
+    };
+    reader.readAsText(file);
+});
+
+function parseGcodeToPreview() {
+    previewPaths = [];
+    let currentColor = 'black';
+    let currentPath = [];
+    let cx = 0, cy = 0;
+    let isPenDown = false;
+
+    for (let line of gcodeData) {
+        let l = line.toUpperCase();
+        if (l.includes("PAUSE COULEUR")) {
+            if (l.includes("ROUGE")) currentColor = 'red';
+            else if (l.includes("VERT")) currentColor = 'green';
+            else if (l.includes("BLEU")) currentColor = 'blue';
+            else currentColor = 'black';
+        }
+        let nx = cx, ny = cy;
+        let hasMove = false;
+        if (l.startsWith("G0") || l.startsWith("G1") || l.startsWith("G53 G0")) {
+            let parts = l.split(" ");
+            parts.forEach(p => {
+                if (p.startsWith("X")) nx = parseFloat(p.substring(1));
+                if (p.startsWith("Y")) ny = parseFloat(p.substring(1));
+            });
+            if (nx !== cx || ny !== cy) hasMove = true;
+        }
+        if (l.includes("Z-1")) isPenDown = true;
+        if (l.includes("Z0")) {
+            isPenDown = false;
+            if (currentPath.length > 1) previewPaths.push({ color: currentColor, path: [...currentPath], bounds: null });
+            currentPath = [];
+        }
+        if (hasMove) {
+            cx = nx; cy = ny;
+            if (isPenDown) {
+                if (currentPath.length === 0) currentPath.push({x: cx, y: cy});
+                currentPath.push({x: nx, y: ny});
+            }
+        }
+    }
+    if (currentPath.length > 1) previewPaths.push({ color: currentColor, path: currentPath, bounds: null });
+}
+
 function getColoredHatchingPaths() {
     let targetW = parseFloat(ui.width.value) || 100, targetH = parseFloat(ui.height.value) || 100;
     let scale = Math.min(targetW / imgOriginal.width, targetH / imgOriginal.height);
-    let densityPx = (parseFloat(ui.density.value) || 1.0) / scale;
+    let densityPx = Math.max(0.5, (parseFloat(ui.density.value) || 1.0) / scale);
     
     let tempPg = createGraphics(imgOriginal.width, imgOriginal.height);
-    tempPg.pixelDensity(1); 
-    tempPg.background(255); // CORRECTION : Fond blanc sécurisé
-    tempPg.image(imgOriginal, 0, 0); 
-    tempPg.loadPixels();
+    tempPg.pixelDensity(1); tempPg.background(255); tempPg.image(imgOriginal, 0, 0); tempPg.loadPixels();
     
-    let w = tempPg.width, h = tempPg.height;
-    let paths = []; 
-
+    let w = tempPg.width, h = tempPg.height, paths = []; 
+    const pixels = tempPg.pixels;
     let commit = (arr, color) => {
         if (arr.length > 1) paths.push({ color, path: [arr[0], arr[arr.length - 1]] });
         else if (arr.length === 1) paths.push({ color, path: [...arr] });
     };
+    const colorKeys = ['black', 'red', 'green', 'blue'];
 
     for (let c = -h; c < w; c += densityPx) {
         let lines = { 'black': [], 'red': [], 'green': [], 'blue': [] };
@@ -432,19 +427,19 @@ function getColoredHatchingPaths() {
             let y = Math.floor(x - c);
             if (y >= 0 && y < h) {
                 let i = (y * w + x) * 4;
-                let cat = categorizePixel(tempPg.pixels[i], tempPg.pixels[i+1], tempPg.pixels[i+2]);
-                
+                let cat = categorizePixel(pixels[i], pixels[i+1], pixels[i+2]);
                 if (cat.diags >= 1) {
-                    ['black', 'red', 'green', 'blue'].forEach(t => {
+                    for(let j=0; j<4; j++) {
+                        let t = colorKeys[j];
                         if (t === cat.pen) lines[t].push({x, y});
                         else { commit(lines[t], t); lines[t] = []; }
-                    });
+                    }
                 } else {
-                    ['black', 'red', 'green', 'blue'].forEach(t => { commit(lines[t], t); lines[t] = []; });
+                    for(let j=0; j<4; j++) { commit(lines[colorKeys[j]], colorKeys[j]); lines[colorKeys[j]] = []; }
                 }
             }
         }
-        ['black', 'red', 'green', 'blue'].forEach(t => commit(lines[t], t));
+        for(let j=0; j<4; j++) commit(lines[colorKeys[j]], colorKeys[j]);
     }
 
     for (let c = 0; c < w + h; c += densityPx) {
@@ -453,50 +448,38 @@ function getColoredHatchingPaths() {
             let y = Math.floor(c - x);
             if (y >= 0 && y < h) {
                 let i = (y * w + x) * 4;
-                let cat = categorizePixel(tempPg.pixels[i], tempPg.pixels[i+1], tempPg.pixels[i+2]);
-                
+                let cat = categorizePixel(pixels[i], pixels[i+1], pixels[i+2]);
                 if (cat.diags === 2) {
-                    ['black', 'red', 'green', 'blue'].forEach(t => {
+                    for(let j=0; j<4; j++) {
+                        let t = colorKeys[j];
                         if (t === cat.pen) lines[t].push({x, y});
                         else { commit(lines[t], t); lines[t] = []; }
-                    });
+                    }
                 } else {
-                    ['black', 'red', 'green', 'blue'].forEach(t => { commit(lines[t], t); lines[t] = []; });
+                    for(let j=0; j<4; j++) { commit(lines[colorKeys[j]], colorKeys[j]); lines[colorKeys[j]] = []; }
                 }
             }
         }
-        ['black', 'red', 'green', 'blue'].forEach(t => commit(lines[t], t));
+        for(let j=0; j<4; j++) commit(lines[colorKeys[j]], colorKeys[j]);
     }
-    
-    tempPg.remove();
-    return paths;
+    tempPg.remove(); return paths;
 }
 
-// CORRECTION MAJEURE : Le contour se base exactement sur les hachures
 function getContourPaths() {
     let tr_pg = createGraphics(imgOriginal.width, imgOriginal.height);
-    tr_pg.pixelDensity(1); 
-    tr_pg.background(255); 
-    tr_pg.image(imgOriginal, 0, 0);
+    tr_pg.pixelDensity(1); tr_pg.background(255); tr_pg.image(imgOriginal, 0, 0);
     
     let blurAmt = parseInt(ui.blurSlider.value) || 0;
     if (blurAmt > 0) tr_pg.filter(BLUR, blurAmt); 
-    
     tr_pg.loadPixels();
-    
+    const pixels = tr_pg.pixels;
     let ctx = tr_pg.canvas.getContext('2d');
     let imgData = ctx.createImageData(tr_pg.width, tr_pg.height);
     
-    // Génère une matrice strictement synchronisée avec le filtre de hachure
-    for (let i = 0; i < tr_pg.pixels.length; i += 4) {
-        let cat = categorizePixel(tr_pg.pixels[i], tr_pg.pixels[i+1], tr_pg.pixels[i+2]);
-        
-        // Si c'est hachuré, on le met en noir pur pour le traceur de bordure
-        if (cat.diags >= 1) {
-            imgData.data[i] = 0; imgData.data[i+1] = 0; imgData.data[i+2] = 0; imgData.data[i+3] = 255;
-        } else {
-            imgData.data[i] = 255; imgData.data[i+1] = 255; imgData.data[i+2] = 255; imgData.data[i+3] = 255;
-        }
+    for (let i = 0, len = pixels.length; i < len; i += 4) {
+        let cat = categorizePixel(pixels[i], pixels[i+1], pixels[i+2]);
+        if (cat.diags >= 1) { imgData.data[i] = 0; imgData.data[i+1] = 0; imgData.data[i+2] = 0; imgData.data[i+3] = 255; } 
+        else { imgData.data[i] = 255; imgData.data[i+1] = 255; imgData.data[i+2] = 255; imgData.data[i+3] = 255; }
     }
     
     let tracedata = ImageTracer.imagedataToTracedata(imgData, { 
@@ -509,17 +492,14 @@ function getContourPaths() {
     for (let i = 0; i < tracedata.layers.length; i++) {
         let color = tracedata.palette[i];
         if ((color.r + color.g + color.b) / 3 > 127) continue; 
-        
         for (let p = 0; p < tracedata.layers[i].length; p++) {
             let path = tracedata.layers[i][p];
             if (!path.segments || path.segments.length === 0) continue;
             let currentPath = [{x: path.segments[0].x1, y: path.segments[0].y1}];
-
             for (let s = 0; s < path.segments.length; s++) {
                 let seg = path.segments[s];
                 if (seg.type === 'L') currentPath.push({x: seg.x2, y: seg.y2});
                 else if (seg.type === 'Q') {
-                    // CORRECTION : Plus de points générés pour avoir des courbes douces (* 0.5 au lieu de * 0.05)
                     let steps = Math.max(5, Math.ceil((dist(seg.x1, seg.y1, seg.x2, seg.y2) + dist(seg.x2, seg.y2, seg.x3, seg.y3)) * 0.5)); 
                     for (let t = 1; t <= steps; t++) currentPath.push(getQBezier({x: seg.x1, y: seg.y1}, {x: seg.x2, y: seg.y2}, {x: seg.x3, y: seg.y3}, t / steps));
                 }
@@ -530,12 +510,13 @@ function getContourPaths() {
     return paths;
 }
 
-/* --- OUTILS MATHÉMATIQUES & GEOMETRIQUES --- */
 function getQBezier(p0, p1, p2, t) {
-    let x = Math.pow(1-t,2)*p0.x + 2*(1-t)*t*p1.x + Math.pow(t,2)*p2.x;
-    let y = Math.pow(1-t,2)*p0.y + 2*(1-t)*t*p1.y + Math.pow(t,2)*p2.y;
+    const mt = 1 - t, mt2 = mt * mt, t2 = t * t;
+    const x = mt2*p0.x + 2*mt*t*p1.x + t2*p2.x;
+    const y = mt2*p0.y + 2*mt*t*p1.y + t2*p2.y;
     return {x, y};
 }
+
 function resamplePath(path, step) {
     if (path.length < 2) return path;
     let newPath = [path[0]], d = 0; 
@@ -550,14 +531,14 @@ function resamplePath(path, step) {
     }
     newPath.push(path[path.length-1]); return newPath;
 }
-function dist(x1, y1, x2, y2) { return Math.sqrt((x2-x1)**2 + (y2-y1)**2); }
+
+const dist = (x1, y1, x2, y2) => Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
 
 function transformPathsToMachineSpace(rawPaths) {
     let targetW = parseFloat(ui.width.value) || 100, targetH = parseFloat(ui.height.value) || 100;
     let offX = parseFloat(ui.offsetX.value) || 0, offY = parseFloat(ui.offsetY.value) || 0;
     let scale = Math.min(targetW / imgOriginal.width, targetH / imgOriginal.height);
     let finalW = imgOriginal.width * scale, finalH = imgOriginal.height * scale;
-    
     return rawPaths.map(path => path.map(pt => {
         let nx = pt.x * scale, ny = pt.y * scale;
         if (ui.invertX.checked) nx = finalW - nx;
@@ -571,7 +552,6 @@ function applyBorderIfExceeding(pathsArray) {
     let offX = parseFloat(ui.offsetX.value) || 0, offY = parseFloat(ui.offsetY.value) || 0;
     let scale = Math.min(targetW / imgOriginal.width, targetH / imgOriginal.height);
     let finalW = imgOriginal.width * scale, finalH = imgOriginal.height * scale;
-    
     if (offX < 0 || offX + finalW > CONFIG.bedW || offY < 0 || offY + finalH > CONFIG.bedH) {
         let minX = Math.max(0, offX), maxX = Math.min(CONFIG.bedW, offX + finalW);
         let minY = Math.max(0, offY), maxY = Math.min(CONFIG.bedH, offY + finalH);
@@ -616,29 +596,33 @@ function clipPaths(rawPaths) {
     return clippedSegments;
 }
 
-// --- OPTIMISATION ZIGZAG DES HACHURES ---
-function optimizePathOrder(paths) {
+async function optimizePathOrder(paths) {
     if (paths.length === 0) return [];
-    let optimized = [], remaining = [...paths], currentPos = {x: 0, y: 0};
-    
-    let currentPath = remaining.splice(0, 1)[0];
-    optimized.push(currentPath); currentPos = currentPath[currentPath.length - 1];
-
-    let linkDist = 0.1; 
+    const optimized = [];
+    const remaining = paths.map(p => ({ path: p, start: p[0], end: p[p.length - 1] }));
+    let current = remaining.shift();
+    optimized.push(current.path);
+    let currentPos = current.end, linkDistSq = 0.01, loopCount = 0;
 
     while (remaining.length > 0) {
-        let bestIdx = -1, bestDist = Infinity, reverseBest = false;
-        for (let i = 0; i < remaining.length; i++) {
-            let p = remaining[i];
-            let d1 = dist(currentPos.x, currentPos.y, p[0].x, p[0].y);
-            let d2 = dist(currentPos.x, currentPos.y, p[p.length-1].x, p[p.length-1].y);
-            if (d1 < bestDist) { bestDist = d1; bestIdx = i; reverseBest = false; }
-            if (d2 < bestDist) { bestDist = d2; bestIdx = i; reverseBest = true; }
+        if (++loopCount % 200 === 0) await yieldThread(); 
+        let bestIdx = -1, bestDistSq = Infinity, reverseBest = false;
+        
+        for (let i = 0, len = remaining.length; i < len; i++) {
+            const p = remaining[i];
+            const dx1 = currentPos.x - p.start.x, dy1 = currentPos.y - p.start.y;
+            const d1Sq = dx1*dx1 + dy1*dy1;
+            const dx2 = currentPos.x - p.end.x, dy2 = currentPos.y - p.end.y;
+            const d2Sq = dx2*dx2 + dy2*dy2;
+            if (d1Sq < bestDistSq) { bestDistSq = d1Sq; bestIdx = i; reverseBest = false; }
+            if (d2Sq < bestDistSq) { bestDistSq = d2Sq; bestIdx = i; reverseBest = true; }
         }
-        let bestPath = remaining.splice(bestIdx, 1)[0];
+        
+        const bestItem = remaining.splice(bestIdx, 1)[0];
+        let bestPath = bestItem.path;
         if (reverseBest) bestPath.reverse();
         
-        if (bestDist <= linkDist) {
+        if (bestDistSq <= linkDistSq) {
             bestPath.shift(); 
             if (bestPath.length > 0) {
                 optimized[optimized.length - 1].push(...bestPath);
@@ -652,62 +636,46 @@ function optimizePathOrder(paths) {
     return optimized;
 }
 
-/* --- GÉNÉRATION GCODE AVEC RETOUR ZERO ET PAUSE --- */
 function generateGCodeFromPaths(exportGroups) {
-    gcodeData = [
-        `$110=${CONFIG.travelSpeed}`, `$111=${CONFIG.travelSpeed}`, 
-        `$120=${CONFIG.acceleration}`, `$121=${CONFIG.acceleration}`, 
-        "$X", "G92 X0 Y0", "G21", "G90"
-    ];
-    
+    gcodeData = ["$X", "G21", "G90", "G92 X0 Y0"];
     let totalDraw=0, totalTravel=0, lastPos = {x:0, y:0};
     const colorNames = { 'black': 'NOIR', 'blue': 'BLEU', 'green': 'VERT', 'red': 'ROUGE' };
-    const toolNum = { 'black': 'T0', 'blue': 'T1', 'green': 'T2', 'red': 'T3' };
 
     exportGroups.forEach((group, index) => {
         let col = group.color;
-        
         gcodeData.push(`; --- DÉBUT COUCHE COULEUR : ${colorNames[col]} ---`);
-        
-        gcodeData.push(`M3 S${CONFIG.penUp}`); 
-        gcodeData.push("G0 X0 Y0"); 
+        gcodeData.push(CONFIG.penUpCmd); 
+        gcodeData.push(`G0 X0 Y0 F${CONFIG.travelSpeed}`); 
         gcodeData.push(`; --- PAUSE COULEUR --- : ${colorNames[col]}`); 
-
-        gcodeData.push(`${toolNum[col]} ; Sélection Outil ${colorNames[col]}`);
         gcodeData.push(`G4 P0.5`);
-        
-        let yAmorceStart = 5 + (index * 15);
-        let yAmorceEnd = yAmorceStart + 10; 
-        
+        let yAmorceStart = 5 + (index * 15), yAmorceEnd = yAmorceStart + 10; 
         gcodeData.push(`; Trait de purge pour amorcer l'encre`);
-        gcodeData.push(`G0 X2 Y${yAmorceStart}`);              
-        gcodeData.push(`M3 S${CONFIG.penDown}`);               
+        gcodeData.push(`G0 X2 Y${yAmorceStart} F${CONFIG.travelSpeed}`);              
+        gcodeData.push(CONFIG.penDownCmd);               
         gcodeData.push(`G4 P${CONFIG.penDelay}`);
         gcodeData.push(`G1 X2 Y${yAmorceEnd} F${CONFIG.feedRate}`); 
-        gcodeData.push(`M3 S${CONFIG.penUp}`);                 
+        gcodeData.push(CONFIG.penUpCmd);                 
         gcodeData.push(`G4 P${CONFIG.penDelay}`);
 
         group.paths.forEach(path => {
             let start = path[0];
             totalTravel += dist(lastPos.x, lastPos.y, start.x, start.y);
-            
-            gcodeData.push(`M3 S${CONFIG.penUp}`); 
-            gcodeData.push(`G0 X${start.x.toFixed(3)} Y${start.y.toFixed(3)}`);
-            gcodeData.push(`M3 S${CONFIG.penDown}`);     
+            gcodeData.push(CONFIG.penUpCmd); 
+            gcodeData.push(`G0 X${start.x.toFixed(3)} Y${start.y.toFixed(3)} F${CONFIG.travelSpeed}`);
+            gcodeData.push(CONFIG.penDownCmd);     
             gcodeData.push(`G4 P${CONFIG.penDelay}`);
-            
             for(let i=1; i<path.length; i++) {
                 gcodeData.push(`G1 X${path[i].x.toFixed(3)} Y${path[i].y.toFixed(3)} F${CONFIG.feedRate}`);
                 totalDraw += dist(path[i-1].x, path[i-1].y, path[i].x, path[i].y);
             }
-            gcodeData.push(`M3 S${CONFIG.penUp}`); 
+            gcodeData.push(CONFIG.penUpCmd); 
             gcodeData.push(`G4 P${CONFIG.penDelay}`);
             lastPos = path[path.length-1];
         });
     });
 
-    gcodeData.push(`M3 S${CONFIG.penUp}`, "G0 X0 Y0"); 
-
+    gcodeData.push(CONFIG.penUpCmd); 
+    gcodeData.push(`G0 X0 Y0 F${CONFIG.travelSpeed}`); 
     let pathCount = exportGroups.reduce((acc, g) => acc + g.paths.length, 0);
     let t = (totalDraw/(CONFIG.feedRate*0.5)) + (totalTravel/CONFIG.travelSpeed) + ((pathCount * CONFIG.penDelay * 2)/60) + ((gcodeData.length * 0.002)/60);
     t = t * (25.0 / 14.0);
@@ -715,7 +683,6 @@ function generateGCodeFromPaths(exportGroups) {
     ui.estimatedTime.innerText = `${Math.floor(t)}m ${Math.floor((t%1)*60)}s`;
 }
 
-/* --- COMMUNICATION USB & BOUCLE D'IMPRESSION --- */
 if(ui.btns.home) ui.btns.home.addEventListener('click', async () => {
     if (!port || !writer) return alert("Connectez la machine !");
     await writer.write("$X\n"); setTimeout(async () => { await writer.write("$H\n"); }, 100);
@@ -752,7 +719,7 @@ ui.btns.conn.addEventListener('click', async () => {
                     serialBuffer = lines.pop(); 
                     for (let line of lines) {
                         line = line.trim().toLowerCase();
-                        if(line === "ok" || line.startsWith("error") || line.includes("grbl")) arduinoReady = true; 
+                        if(line === "ok" || line.startsWith("error") || line.includes("grbl") || line.includes("[msg:")) arduinoReady = true; 
                     }
                 } 
             } 
@@ -763,31 +730,52 @@ ui.btns.conn.addEventListener('click', async () => {
 ui.btns.print.addEventListener('click', async () => {
     if (!port || !gcodeData.length) return;
     
+    let requestedStart = parseInt(ui.startLineInput.value) || 0;
+    if (requestedStart !== printIndex && requestedStart < gcodeData.length) {
+        printIndex = requestedStart;
+        wasPausedByColor = false;
+    }
+
     isPrinting = true; 
     ui.btns.print.disabled = true;
     ui.btns.print.innerText = "▶ EN COURS...";
     
     if (printIndex === 0) {
         await writer.write("\r\n");
+    } else if (!wasPausedByColor) {
+        let lastX = 0, lastY = 0;
+        for(let i = 0; i < printIndex; i++) {
+            let parts = gcodeData[i].toUpperCase().split(" ");
+            parts.forEach(p => {
+                if (p.startsWith("X")) lastX = parseFloat(p.substring(1));
+                if (p.startsWith("Y")) lastY = parseFloat(p.substring(1));
+            });
+        }
+        arduinoReady = false;
+        await writer.write(`${CONFIG.penUpCmd}\n`);
+        while(!arduinoReady) await yieldThread();
+        arduinoReady = false;
+        await writer.write(`G0 X${lastX.toFixed(3)} Y${lastY.toFixed(3)} F${CONFIG.travelSpeed}\n`);
+        while(!arduinoReady) await yieldThread();
     }
     
+    wasPausedByColor = false;
     let startTime = Date.now(); 
     
     for (; printIndex < gcodeData.length; printIndex++) {
         if (!isPrinting) break;
-        
+        ui.startLineInput.value = printIndex;
         let ligneAEnvoyer = gcodeData[printIndex];
 
         if(ligneAEnvoyer.includes("; --- PAUSE COULEUR ---")) {
             isPrinting = false; 
             ui.btns.print.disabled = false;
             ui.btns.print.innerText = "▶ REPRENDRE";
-            
             let colorNext = ligneAEnvoyer.split(":")[1].trim();
             ui.timeText.innerText = `⏸️ Attente : Mettez le stylo ${colorNext} puis REPRENDRE`;
             ui.timeText.style.color = "#ff9800";
-            
-            printIndex++; 
+            printIndex++;
+            wasPausedByColor = true;
             return; 
         }
         
@@ -811,6 +799,7 @@ ui.btns.print.addEventListener('click', async () => {
         ui.timeText.style.color = "#00ffcc"; 
         ui.btns.print.innerText = "▶ LANCER";
         printIndex = 0; 
+        ui.startLineInput.value = 0;
         isPrinting = false; 
         ui.btns.print.disabled = false; 
     }
@@ -818,9 +807,13 @@ ui.btns.print.addEventListener('click', async () => {
 
 ui.btns.stop.addEventListener('click', async () => {
     isPrinting = false; arduinoReady = true;
-    printIndex = 0; 
     ui.btns.print.innerText = "▶ LANCER";
     ui.btns.print.disabled = false;
-    ui.timeText.innerText = "🛑 Impression arrêtée."; ui.timeText.style.color = "#ff4444";
-    if(writer) { await writer.write("\x18\n"); setTimeout(async () => { try { await writer.write(`M3 S${CONFIG.penUp}\nG0 X0 Y0\n`); } catch(e){} }, 500); }
+    ui.timeText.innerText = `🛑 Arrêt à la ligne ${printIndex}`; ui.timeText.style.color = "#ff4444";
+    if(writer) { 
+        await writer.write("\x18\n"); 
+        setTimeout(async () => { 
+            try { await writer.write(`${CONFIG.penUpCmd}\nG0 X0 Y0\n`); } catch(e){} 
+        }, 500); 
+    }
 });

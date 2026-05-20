@@ -128,12 +128,9 @@ canvas { z-index: 2; }
 #zoom-controls p { margin: 0 0 5px 0; font-size: 0.85rem; font-family: 'Orbitron', sans-serif; }
 .btn-small { padding: 5px 10px; font-size: 0.8rem; background: #110000; color: #ff003c; border: 1px solid #ff003c; clip-path: none; width: auto; display: inline-block; }
 
-/* OVERRIDES SPÉCIFIQUES */
 #btnHome { background: #17a2b8 !important; color: #ffffff !important; border: 1px solid #00ffff !important; }
 #btnHome:hover:not(:disabled) { background: #00ffff !important; color: #000000 !important; box-shadow: 0 0 15px rgba(0, 255, 255, 0.6) !important; }
-
 #btnGenerate { background: #28a745 !important; color: #ffffff !important; border: 1px solid #28a745 !important; }
 #btnGenerate:hover:not(:disabled) { background: #218838 !important; box-shadow: 0 0 15px rgba(40, 167, 69, 0.6) !important; color: #ffffff !important; }
-
 #btnClear { background: #333 !important; color: #ccc !important; border: 1px solid #555 !important; }
 #btnClear:hover:not(:disabled) { background: #555 !important; color: #fff !important; }

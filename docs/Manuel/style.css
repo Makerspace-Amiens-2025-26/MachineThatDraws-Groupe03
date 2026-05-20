@@ -1,9 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap');
 
-/* RESET GLOBAL POUR LA STABILITÉ */
 *, *::before, *::after { box-sizing: border-box; }
 
-/* SCROLLBAR CYBERPUNK */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #0a0000; border-left: 1px solid #330000; }
 ::-webkit-scrollbar-thumb { background: #ff003c; border-radius: 0; }
@@ -18,7 +16,6 @@ body {
 
 .layout { display: flex; height: 100vh; width: 100vw; }
 
-/* BARRE LATÉRALE */
 .sidebar {
     width: 340px; background: #0a0000; border-right: 1px solid #ff003c;
     padding: 20px; overflow-y: auto; flex-shrink: 0;
@@ -27,7 +24,6 @@ body {
     z-index: 5;
 }
 
-/* PANNEAUX */
 .panel { 
     background: #120204; padding: 15px; border-radius: 2px; 
     border: 1px solid #ff003c; 
@@ -35,14 +31,12 @@ body {
     position: relative;
 }
 
-/* Petit détail hi-tech sur le bord des panneaux */
 .panel::before {
     content: ''; position: absolute; top: -1px; left: 10px;
     width: 30px; height: 2px; background: #ff4d4d;
     box-shadow: 0 0 10px #ff003c;
 }
 
-/* TYPOGRAPHIE */
 h2 { 
     margin-top: 0; color: #ff003c; text-align: center; font-size: 1.4rem; 
     font-family: 'Orbitron', sans-serif; text-transform: uppercase; 
@@ -54,7 +48,6 @@ h3 {
     text-transform: uppercase; letter-spacing: 1px;
 }
 
-/* INPUTS ET SÉLECTEURS */
 input[type="number"], input[type="file"], select {
     width: 100%; padding: 8px 10px; margin: 5px 0;
     background: #000; border: 1px solid #8a0020; color: #ff4d4d; border-radius: 0;
@@ -66,7 +59,6 @@ input[type="number"]:focus, select:focus {
     background: #1a0005;
 }
 
-/* SLIDERS CYBERPUNK */
 input[type="range"] {
     -webkit-appearance: none; appearance: none;
     width: 100%; background: transparent; margin: 10px 0; cursor: pointer;
@@ -80,12 +72,11 @@ input[type="range"]::-webkit-slider-thumb {
 }
 input[type="range"]::-webkit-slider-thumb:hover { background: #fff; }
 
-/* LAYOUT & CHECKBOXES */
 .row { display: flex; gap: 10px; }
 .setting-group { margin-bottom: 5px; }
 .setting-group label { display: block; font-weight: bold; margin-bottom: 2px; }
+.center-row { justify-content: center; }
 
-/* BOUTONS (Biseautés avec effet Néon) */
 button {
     width: 100%; padding: 10px; cursor: pointer;
     border: 1px solid #ff003c; font-weight: bold; margin-top: 5px;
@@ -107,8 +98,8 @@ button:hover:not(:disabled) {
     box-shadow: none; clip-path: none; 
 }
 .stop-btn { background: #ff003c; color: #000; }
+.hint { font-size: 0.85em; color: #aaa; margin-top: 15px; }
 
-/* BOÎTE DE STATUT ET PROGRESSION */
 .status-box { 
     background: #000; padding: 10px; margin-bottom: 10px; 
     border: 1px solid #8a0020; font-size: 1.1em; font-family: 'Rajdhani', sans-serif;
@@ -125,7 +116,6 @@ button:hover:not(:disabled) {
 
 #console { background: #000; color: #ff003c; font-family: monospace; font-size: 10px; padding: 10px; height: 80px; overflow-y: auto; border: 1px solid #330011; border-radius: 2px; margin-top: 10px;}
 
-/* CANVAS (Fond quadrillé avec Vignette d'écran) */
 #canvas-container {
     flex-grow: 1; background: #030000;
     display: flex; justify-content: center; align-items: center;
@@ -138,9 +128,8 @@ button:hover:not(:disabled) {
     background: radial-gradient(circle, transparent 40%, rgba(5,0,0,0.8) 100%);
     pointer-events: none;
 }
-canvas { z-index: 2; } /* Ombre supprimée ici car elle est gérée par p5.js avec le zoom */
+canvas { z-index: 2; } 
 
-/* NAVIGATION SUPÉRIEURE */
 .top-nav {
     position: absolute; top: 0; left: 0; width: 100%;
     display: flex; justify-content: center; background: rgba(5, 0, 0, 0.9);
@@ -155,7 +144,6 @@ canvas { z-index: 2; } /* Ombre supprimée ici car elle est gérée par p5.js av
 }
 .nav-btn:hover, .nav-btn.active { color: #000; background: #ff003c; box-shadow: 0 0 10px #ff003c; }
 
-/* ZOOM CONTROLS */
 #zoom-controls { 
     position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.8); 
     border: 1px solid #ff003c; padding: 10px; text-align: center; color: #ff4d4d; z-index: 10; 
@@ -163,7 +151,6 @@ canvas { z-index: 2; } /* Ombre supprimée ici car elle est gérée par p5.js av
 #zoom-controls p { margin: 0 0 5px 0; font-size: 0.85rem; font-family: 'Orbitron', sans-serif; }
 .btn-small { padding: 5px 10px; font-size: 0.8rem; background: #110000; color: #ff003c; border: 1px solid #ff003c; clip-path: none; width: auto; display: inline-block; }
 
-/* OVERRIDE : BOUTON ORIGINE BLEU/CYAN FORCÉ */
 #btnHome { 
     background: #17a2b8 !important; 
     color: #ffffff !important; 
@@ -175,7 +162,6 @@ canvas { z-index: 2; } /* Ombre supprimée ici car elle est gérée par p5.js av
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.6) !important; 
 }
 
-/* OVERRIDE : BOUTON ACTUALISER EN VERT FORCÉ */
 #btnRegen {
     background: #28a745 !important;
     color: #ffffff !important;
