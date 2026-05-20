@@ -1,187 +1,266 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap');
 
 :root {
-    --bg-color: #050505;
-    --sidebar-bg: #0a0000;
-    --text-main: #e0e0e0;
-    --text-muted: #888;
-    --accent-red: #ff003c;
-    --accent-cyan: #ffcc00;
-    --code-bg: #110000;
-    --border-color: #330011;
+    --bg-color: #030303; /* Noir très profond */
+    --sidebar-bg: #090909;
+    --text-main: #d4d4d4;
+    --text-muted: #7a7a7a;
+    --cp-red: #ff003c;
+    --cp-cyan: #00f0ff;
+    --cp-yellow: #fcee0a; /* Le vrai jaune 2077 */
+    --code-bg: #0b0b0b;
+    --border-color: #333333;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* === SCROLLBAR CYBERPUNK === */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--sidebar-bg); border-left: 1px solid var(--border-color); }
-::-webkit-scrollbar-thumb { background: var(--accent-red); border-radius: 0; }
-::-webkit-scrollbar-thumb:hover { background: #ff4d4d; box-shadow: 0 0 10px var(--accent-red); }
+/* === SÉLECTION & SCROLLBAR === */
+::selection { background: var(--cp-yellow); color: #000; text-shadow: none; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-color); border-left: 1px solid var(--border-color); }
+::-webkit-scrollbar-thumb { background: var(--cp-cyan); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%); }
+::-webkit-scrollbar-thumb:hover { background: var(--cp-yellow); }
 
-/* === CENTRAGE GLOBAL === */
+/* === CENTRAGE & GRILLE DE FOND TACTIQUE === */
 body {
     font-family: 'Rajdhani', sans-serif;
     background-color: var(--bg-color);
+    background-image: 
+        linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-attachment: fixed;
     color: var(--text-main);
     display: flex;
-    justify-content: center;
     line-height: 1.6;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
+    min-height: 100vh;
 }
 
 /* === MENU LATÉRAL === */
 .sidebar {
-    width: 320px; 
+    width: 340px; 
     height: 100vh;
     background-color: var(--sidebar-bg);
-    border-right: 1px solid var(--accent-red);
+    border-right: 2px solid var(--cp-red);
     position: sticky; 
     top: 0; 
     overflow-y: auto; 
-    padding: 20px 0;
     flex-shrink: 0; 
-    box-shadow: 5px 0 20px rgba(255, 0, 60, 0.15);
+    box-shadow: 8px 0 25px rgba(255, 0, 60, 0.1);
+    z-index: 100;
 }
 
-.logo { padding: 0 20px 20px 20px; border-bottom: 1px solid var(--border-color); margin-bottom: 15px; text-align: center; }
-.logo h2 { font-size: 1.5em; color: var(--accent-red); font-family: 'Orbitron', sans-serif; text-transform: uppercase; text-shadow: 0 0 8px rgba(255, 0, 60, 0.6); margin-bottom: 5px; }
-.logo p { font-size: 0.9em; color: var(--accent-cyan); font-family: 'Orbitron', sans-serif; }
+/* Logo avec Hazard Stripes */
+.logo { 
+    padding: 25px 20px; 
+    margin-bottom: 20px; 
+    text-align: center; 
+    background: #000;
+    position: relative;
+}
+.logo::after {
+    content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 5px;
+    background: repeating-linear-gradient(45deg, var(--cp-yellow), var(--cp-yellow) 10px, #000 10px, #000 20px);
+}
 
-.nav-links { list-style: none; }
+.logo h2 { 
+    font-size: 2em; color: var(--cp-yellow); font-family: 'Orbitron', sans-serif; font-weight: 900;
+    text-transform: uppercase; text-shadow: 3px 3px 0px var(--cp-red); margin-bottom: 5px; letter-spacing: 3px;
+}
+.logo p { font-size: 0.9em; color: var(--cp-cyan); font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
+
+/* Liens de Navigation */
+.nav-links { list-style: none; padding: 0 15px; }
+.nav-links li { margin-bottom: 8px; }
 .nav-links li a {
-    display: block; padding: 10px 30px;
-    color: var(--text-muted); text-decoration: none;
-    font-weight: bold; transition: all 0.2s ease;
-    border-left: 3px solid transparent;
+    display: block; padding: 12px 20px;
+    color: var(--text-main); text-decoration: none;
+    font-weight: 700; transition: all 0.2s;
+    position: relative;
+    text-transform: uppercase;
+    font-size: 1em;
+    letter-spacing: 1.5px;
+    background: #111;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+    border-left: 4px solid var(--cp-cyan);
 }
 
 .nav-links li a:hover { 
-    color: #fff; background-color: rgba(255, 0, 60, 0.1); 
-    text-shadow: 0 0 5px var(--accent-red);
-}
-.nav-links li a.active {
-    color: #000; font-weight: bold;
-    border-left: 3px solid var(--accent-red);
-    background-color: var(--accent-red);
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    background-color: var(--cp-red); color: #fff;
+    padding-left: 30px; border-left: 4px solid var(--cp-yellow);
 }
 
+/* Lien Actif "Édition 2077" */
+.nav-links li a.active {
+    color: #000; font-weight: 900;
+    background-color: var(--cp-yellow);
+    border-left: none;
+    box-shadow: 0 0 15px rgba(252, 238, 10, 0.4);
+    clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+}
+.nav-links li a.active::after {
+    content: '_'; display: inline-block; color: #000;
+    margin-left: 8px; animation: blink 0.8s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
 /* Menus déroulants */
-details { margin: 5px 0; }
+details { margin: 10px 15px; background: #111; clip-path: polygon(0 0, 100% 0, 100% 100%, 15px 100%, 0 calc(100% - 15px)); }
 details summary {
-    padding: 10px 30px; color: var(--accent-cyan); font-family: 'Orbitron', sans-serif; 
+    padding: 12px 20px; color: var(--cp-cyan); font-family: 'Orbitron', sans-serif; 
     font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 0.85em; 
-    list-style: none; transition: color 0.2s ease; letter-spacing: 1px;
+    list-style: none; transition: all 0.3s; letter-spacing: 2px;
+    border-left: 4px solid var(--cp-red);
 }
 details summary::-webkit-details-marker { display: none; }
-details summary:hover { color: #fff; text-shadow: 0 0 5px var(--accent-cyan); }
-details summary::after { content: ' ▼'; float: right; font-size: 0.9em; transition: transform 0.2s; }
-details[open] summary::after { content: ' ▲'; }
-.sub-menu li a { padding: 8px 30px 8px 50px !important; font-size: 0.95em !important; color: #777; }
+details summary:hover { background: rgba(0, 240, 255, 0.1); }
+details summary::after { content: '[+]'; float: right; color: var(--cp-yellow); }
+details[open] summary::after { content: '[-]'; color: var(--cp-red); }
+.sub-menu li a { padding: 10px 20px 10px 35px !important; font-size: 0.9em !important; background: transparent; border-left: 2px solid var(--border-color); clip-path: none;}
+.sub-menu li a:hover { background: rgba(252, 238, 10, 0.1); color: var(--cp-yellow); border-left: 2px solid var(--cp-yellow); }
 
 /* === CONTENU PRINCIPAL === */
 .content {
-    padding: 50px 80px;
-    max-width: 1000px; 
+    padding: 60px 80px;
+    max-width: 1200px; 
+    margin: 0 auto;
     width: 100%;
 }
 
+/* Titres avec Animation GLITCH au survol */
 h1 { 
-    font-size: 2.5em; color: var(--accent-red); font-family: 'Orbitron', sans-serif; 
-    text-transform: uppercase; border-bottom: 1px solid var(--accent-red); 
-    padding-bottom: 10px; margin-bottom: 25px; text-shadow: 0 0 10px rgba(255, 0, 60, 0.4); 
+    font-size: 3.5em; color: var(--cp-yellow); font-family: 'Orbitron', sans-serif; font-weight: 900;
+    text-transform: uppercase; border-bottom: 4px solid var(--cp-red); 
+    padding-bottom: 15px; margin-bottom: 40px; 
+    letter-spacing: 1px; line-height: 1.1;
+    position: relative;
+    display: inline-block;
 }
+h1:hover {
+    animation: glitch-anim 0.3s linear infinite alternate-reverse;
+}
+
+@keyframes glitch-anim {
+    0% { text-shadow: 3px 0 var(--cp-cyan), -3px 0 var(--cp-red); transform: skew(0deg); }
+    20% { text-shadow: -3px 0 var(--cp-cyan), 3px 0 var(--cp-red); transform: skew(-5deg); }
+    40% { text-shadow: 3px 0 var(--cp-cyan), -3px 0 var(--cp-red); transform: skew(5deg); }
+    60% { text-shadow: -3px 0 var(--cp-cyan), 3px 0 var(--cp-red); transform: skew(-2deg); }
+    80% { text-shadow: 3px 0 var(--cp-cyan), -3px 0 var(--cp-red); transform: skew(2deg); }
+    100% { text-shadow: -3px 0 var(--cp-cyan), 3px 0 var(--cp-red); transform: skew(0deg); }
+}
+
 h3 { 
-    font-size: 1.4em; color: var(--accent-cyan); font-family: 'Orbitron', sans-serif; 
-    margin: 35px 0 15px 0; text-transform: uppercase; letter-spacing: 1px; 
-    border-bottom: 1px dashed var(--border-color); padding-bottom: 5px;
+    font-size: 1.6em; color: #fff; font-family: 'Orbitron', sans-serif; 
+    margin: 60px 0 25px 0; text-transform: uppercase; letter-spacing: 3px; 
+    background: linear-gradient(90deg, var(--cp-red) 0%, transparent 80%);
+    padding: 10px 15px; border-left: 5px solid var(--cp-yellow);
 }
-p, ul, ol { margin-bottom: 15px; color: #ccc; }
-ul, ol { padding-left: 25px; }
-li { margin-bottom: 8px; }
-strong { color: #fff; }
 
-/* Blocs de code & Info */
+p { margin-bottom: 25px; font-size: 1.1em; color: #ccc; }
+
+/* Listes customisées */
+ul, ol { margin-bottom: 30px; padding-left: 0; list-style: none; }
+ul li { position: relative; padding-left: 35px; margin-bottom: 15px; color: #ddd; }
+ul li::before { 
+    content: '[>]'; position: absolute; left: 0; color: var(--cp-cyan); 
+    font-family: 'Orbitron', sans-serif; font-weight: 900;
+    font-size: 1em; letter-spacing: -1px;
+}
+strong { color: var(--cp-yellow); font-weight: 700; letter-spacing: 0.5px; }
+
+/* Blocs de code */
 pre { 
-    background-color: var(--code-bg); padding: 15px; border-radius: 2px; 
-    border: 1px solid var(--accent-red); overflow-x: auto; margin-bottom: 20px; 
-    box-shadow: inset 0 0 15px rgba(255, 0, 60, 0.05); 
+    background-color: var(--code-bg); padding: 25px; 
+    border-top: 2px solid var(--cp-cyan); border-bottom: 2px solid var(--cp-cyan);
+    overflow-x: auto; margin-bottom: 30px; 
+    position: relative;
+    background-image: linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+    background-size: 100% 4px;
 }
-code { font-family: monospace; font-size: 0.9em; color: var(--accent-cyan); }
+code { 
+    font-family: 'Courier New', monospace; font-size: 0.95em; 
+    color: #fff; background: var(--cp-red); 
+    padding: 3px 8px; border-radius: 0px; 
+}
+pre code { background: transparent; padding: 0; color: var(--cp-yellow); }
 
+/* Boîtes d'Information "Hacked" */
 .info-box {
-    background-color: #120204;
-    border-left: 4px solid var(--accent-cyan);
-    border-right: 1px solid var(--accent-red);
-    border-top: 1px solid var(--accent-red);
-    border-bottom: 1px solid var(--accent-red);
-    padding: 15px; border-radius: 2px; margin: 25px 0;
-    color: #ddd;
-    box-shadow: inset 0 0 15px rgba(0, 255, 204, 0.05);
+    background-color: rgba(252, 238, 10, 0.05);
+    border-left: 6px solid var(--cp-yellow);
+    padding: 25px 30px; margin: 40px 0;
+    color: var(--text-main);
+    clip-path: polygon(0 0, calc(100% - 25px) 0, 100% 25px, 100% 100%, 0 100%);
+    position: relative;
+}
+.info-box::before {
+    content: 'WARNING //'; position: absolute; top: 5px; right: 25px; 
+    font-family: 'Orbitron', sans-serif; font-size: 0.7em; color: var(--cp-yellow); opacity: 0.5;
 }
 
-/* Images stylisées */
-.img-container { text-align: center; margin: 30px 0; }
-img { 
-    max-width: 100%; height: auto; border-radius: 2px; 
-    border: 1px solid var(--accent-red); 
-    box-shadow: 0 0 20px rgba(255, 0, 60, 0.2); 
+/* Images & Vidéos Cyberpunk */
+.img-container { text-align: center; margin: 50px 0; position: relative; }
+img, video { 
+    max-width: 100%; height: auto; 
+    clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+    border: 2px solid var(--border-color);
+    transition: all 0.3s ease;
+    filter: grayscale(20%) contrast(120%);
 }
-.img-caption { font-size: 0.9em; color: var(--accent-cyan); margin-top: 10px; font-family: 'Orbitron', sans-serif; }
-
-/* =========================================
-   📱 MODE MOBILE ET PETITS ÉCRANS
-   ========================================= */
-@media screen and (max-width: 950px) {
-    body { flex-direction: column; justify-content: flex-start; }
-    .sidebar { width: 100%; height: auto; max-height: 280px; position: relative; border-right: none; border-bottom: 2px solid var(--accent-red); padding: 15px 0; }
-    .logo { padding: 0 20px 10px 20px; }
-    .content { padding: 30px 20px; width: 100%; }
-    h1 { font-size: 1.8em; }
-    h3 { font-size: 1.2em; }
+img:hover, video:hover { 
+    filter: grayscale(0%) contrast(130%); 
+    border-color: var(--cp-cyan);
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
+}
+.img-caption { 
+    font-size: 0.9em; color: var(--cp-cyan); margin-top: 15px; 
+    font-family: 'Orbitron', sans-serif; letter-spacing: 3px; text-transform: uppercase;
 }
 
 /* === FENÊTRE POUR LE MODÈLE 3D === */
 .model-window {
-    background-color: #111111; /* Gris très foncé pour contraster avec le fond noir */
-    border: 1px solid var(--border-color); /* Bordure discrète */
-    border-top: 2px solid var(--accent-red); /* Touche Cyberpunk en haut */
-    border-radius: 4px;
-    padding: 10px;
-    margin: 40px 0;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(255, 0, 60, 0.05);
+    background-color: #000;
+    padding: 20px;
+    margin: 50px 0;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%);
+    border: 1px solid var(--border-color);
+    position: relative;
+}
+.model-window::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+    background: repeating-linear-gradient(45deg, var(--cp-red), var(--cp-red) 10px, #000 10px, #000 20px);
 }
 
 .model-window model-viewer {
     width: 100%;
-    height: 500px;
-    background-color: #1a1a1a; /* Un gris un poil plus clair pour le fond de la 3D elle-même */
-    border-radius: 2px;
+    height: 550px;
+    background-color: #050505; 
     outline: none;
+    border: 1px solid #111;
 }
 
 .model-caption {
-    text-align: center;
-    font-size: 0.9em;
-    color: var(--text-muted);
-    margin-top: 10px;
-    font-family: 'Orbitron', sans-serif;
-    letter-spacing: 1px;
+    text-align: right; font-size: 0.85em; color: var(--text-muted);
+    margin-top: 15px; font-family: 'Orbitron', sans-serif;
+    letter-spacing: 4px; text-transform: uppercase;
 }
 
+/* Animation Barre de Chargement 3D */
+@keyframes scanline { 0% { left: -50px; } 100% { left: 100%; } }
+.anim-scanline { animation: scanline 1s infinite linear; background: var(--cp-yellow) !important; }
 
-
-
-
-
-
-/* Animation de la barre de chargement 3D */
-@keyframes scanline {
-    0% { transform: translateX(-50px); }
-    100% { transform: translateX(150px); }
-}
-
-.anim-scanline {
-    animation: scanline 1.2s infinite ease-in-out;
+/* =========================================
+   📱 MODE MOBILE (HUD Rétracté)
+   ========================================= */
+@media screen and (max-width: 950px) {
+    body { flex-direction: column; background-attachment: scroll; }
+    .sidebar { 
+        width: 100%; height: auto; max-height: 400px; 
+        border-right: none; border-bottom: 4px solid var(--cp-red); 
+    }
+    .content { padding: 30px 20px; }
+    h1 { font-size: 2.2em; }
+    h3 { font-size: 1.3em; }
+    .model-window model-viewer { height: 350px; }
 }

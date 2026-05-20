@@ -1,15 +1,14 @@
-// On enferme tout le code dans une fonction isolée pour éviter les conflits de variables
 (() => {
-    // On détecte automatiquement si on est dans un sous-dossier (j'ai rajouté Main, Word et Manuel)
-    const inSubFolder = window.location.href.includes('/Slicer/') || 
-                        window.location.href.includes('/Topo/') || 
-                        window.location.href.includes('/Visage/') || 
-                        window.location.href.includes('/Musique/') ||
-                        window.location.href.includes('/Main/') ||
-                        window.location.href.includes('/Word/') ||
-                        window.location.href.includes('/Manuel/');
+    const currentUrlStr = window.location.href.toLowerCase();
 
-    // Si oui, on ajoute les "../" pour reculer, sinon on ne met rien
+    const inSubFolder = currentUrlStr.includes('/slicer/') || 
+                        currentUrlStr.includes('/topo/') || 
+                        currentUrlStr.includes('/visage/') || 
+                        currentUrlStr.includes('/musique/') ||
+                        currentUrlStr.includes('/main/') ||
+                        currentUrlStr.includes('/word/') ||
+                        currentUrlStr.includes('/manuel/');
+
     const p = inSubFolder ? '../' : '';
 
     const menuCode = `
@@ -19,7 +18,6 @@
             <p>Documentation v3.2</p>
         </div>
         <ul class="nav-links">
-
             <details>
                 <summary>Introduction</summary>
                 <ul class="sub-menu">
@@ -29,7 +27,6 @@
                     <li><a href="${p}prototypage.html">Conception & Prototypage</a></li>
                 </ul>
             </details>
-
             <details>
                 <summary>Étapes de fabrication</summary>
                 <ul class="sub-menu">
@@ -39,7 +36,6 @@
                     <li><a href="${p}fab_logiciel.html">4. Logiciel & Slicer</a></li>
                 </ul>
             </details>
-            
             <details>
                 <summary>Électronique & Shield</summary>
                 <ul class="sub-menu">
@@ -48,7 +44,6 @@
                     <li><a href="${p}elec_fab.html">3. Fabrication de la carte</a></li>
                 </ul>
             </details>
-            
             <details>
                 <summary>Conception CAO</summary>
                 <ul class="sub-menu">
@@ -64,7 +59,6 @@
                     <li><a href="${p}autres.html">Autres composants</a></li>
                 </ul>
             </details>
-            
             <details>
                 <summary>Fonctionnement des logiciels</summary>
                 <ul class="sub-menu">
@@ -75,7 +69,6 @@
                     <li><a href="${p}slicer5.html">5. Lecteur MIDI (Musique)</a></li>
                 </ul>
             </details>
-
             <details>
                 <summary>Ouvrir les Logiciels & Slicers</summary>
                 <ul class="sub-menu">
@@ -91,9 +84,29 @@
     </nav>
     `;
 
-    // On injecte ce gros bloc de code dans la page HTML
     const placeholder = document.getElementById('nav-placeholder');
     if (placeholder) {
         placeholder.innerHTML = menuCode;
+
+        const navLinks = placeholder.querySelectorAll('.nav-links a');
+        let currentUrl = new URL(window.location.href);
+        let currentPath = currentUrl.pathname.toLowerCase();
+        
+        if (currentPath.endsWith('/')) {
+            currentPath += 'index.html';
+        }
+
+        navLinks.forEach(link => {
+            let linkUrl = new URL(link.href);
+            let linkPath = linkUrl.pathname.toLowerCase();
+            
+            if (currentPath === linkPath) {
+                link.classList.add('active'); 
+                const parentDetails = link.closest('details');
+                if (parentDetails) {
+                    parentDetails.open = true;
+                }
+            }
+        });
     }
 })();
