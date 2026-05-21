@@ -26,8 +26,8 @@ axes:
       cycle: 1
       mpos_mm: 0.000             
       positive_direction: false  
-      seek_mm_per_min: 1000
-      feed_mm_per_min: 60
+      seek_mm_per_min: 600
+      feed_mm_per_min: 200
       settle_ms: 500
   y:
     steps_per_mm: 42
@@ -48,8 +48,8 @@ axes:
       cycle: 2
       mpos_mm: 0.000
       positive_direction: false   
-      seek_mm_per_min: 1000
-      feed_mm_per_min: 60
+      seek_mm_per_min: 600
+      feed_mm_per_min: 200
       settle_ms: 500
   z:
     steps_per_mm: 100
