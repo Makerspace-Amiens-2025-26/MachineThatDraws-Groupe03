@@ -1,4 +1,4 @@
-name: MachineThatsDrawsGroupe3
+name: MachineThatsDrawsGroupe3_CustomPCB
 stepping:
   engine: RMT
   idle_ms: 255
@@ -10,36 +10,36 @@ axes:
   x:
     steps_per_mm: 80
     max_rate_mm_per_min: 5000
-    acceleration_mm_per_sec2: 1000
-    max_travel_mm: 200
+    acceleration_mm_per_sec2: 2000
+    max_travel_mm: 170
     motor0:
       limit_all_pin: NO_PIN
-      limit_neg_pin: gpio.0:low:pu
-      limit_pos_pin: NO_PIN
+      limit_neg_pin: gpio.0:low:pu 
+      limit_pos_pin: NO_PIN    
       hard_limits: false
-      pulloff_mm: 5
+      pulloff_mm: 6
       standard_stepper:
         step_pin: gpio.4
         direction_pin: gpio.5
         disable_pin: NO_PIN
     homing:
       cycle: 1
-      mpos_mm: 0.000
-      positive_direction: false
+      mpos_mm: 0.000             
+      positive_direction: false  
       seek_mm_per_min: 1000
-      feed_mm_per_min: 400  
-      settle_ms: 500         
+      feed_mm_per_min: 60
+      settle_ms: 500
   y:
     steps_per_mm: 42
     max_rate_mm_per_min: 5000
-    acceleration_mm_per_sec2: 1000
-    max_travel_mm: 200
+    acceleration_mm_per_sec2: 2000
+    max_travel_mm: 140
     motor0:
       limit_all_pin: NO_PIN
       limit_neg_pin: gpio.19:low:pu
       limit_pos_pin: NO_PIN
       hard_limits: false
-      pulloff_mm: 5
+      pulloff_mm: 6
       standard_stepper:
         step_pin: gpio.7
         direction_pin: gpio.8
@@ -47,9 +47,9 @@ axes:
     homing:
       cycle: 2
       mpos_mm: 0.000
-      positive_direction: false
+      positive_direction: false   
       seek_mm_per_min: 1000
-      feed_mm_per_min: 400 
+      feed_mm_per_min: 60
       settle_ms: 500
   z:
     steps_per_mm: 100
