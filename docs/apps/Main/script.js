@@ -5,7 +5,7 @@ const CONFIG = {
     penDownCmd: "G53 G0 Z-1",  
     penDelay: 0.2,        
     bedW: 170.0,          
-    bedH: 140.0         
+    bedH: 140.0           
 };
 
 let imgOriginal, imgProcessed, pg;
@@ -315,7 +315,11 @@ ui.btns.gen.addEventListener('click', async () => {
             return totalLen >= minLen;
         });
 
-        let optimized = await optimizePathOrder(filteredSegments);
+        let currentDensity = parseFloat(ui.density.value) || 1.0;
+        let tolerance = Math.max(1.5, currentDensity * 1.5); 
+        
+        let optimized = await optimizePathOrder(filteredSegments, tolerance);
+
         if (optimized.length > 0) {
             exportGroups.push({ color: color, paths: optimized });
             optimized.forEach(path => {
@@ -596,13 +600,16 @@ function clipPaths(rawPaths) {
     return clippedSegments;
 }
 
-async function optimizePathOrder(paths) {
+async function optimizePathOrder(paths, maxLinkDist = 0.1) {
     if (paths.length === 0) return [];
     const optimized = [];
     const remaining = paths.map(p => ({ path: p, start: p[0], end: p[p.length - 1] }));
     let current = remaining.shift();
     optimized.push(current.path);
-    let currentPos = current.end, linkDistSq = 0.01, loopCount = 0;
+    
+    let currentPos = current.end;
+    let linkDistSq = maxLinkDist * maxLinkDist; 
+    let loopCount = 0;
 
     while (remaining.length > 0) {
         if (++loopCount % 200 === 0) await yieldThread(); 
@@ -647,6 +654,12 @@ function generateGCodeFromPaths(exportGroups) {
         gcodeData.push(CONFIG.penUpCmd); 
         gcodeData.push(`G0 X0 Y0 F${CONFIG.travelSpeed}`); 
         gcodeData.push(`; --- PAUSE COULEUR --- : ${colorNames[col]}`); 
+        
+        if (index > 0) {
+            gcodeData.push(`$H`); 
+            gcodeData.push(`G0 X0 Y0 F${CONFIG.travelSpeed}`); 
+        }
+
         gcodeData.push(`G4 P0.5`);
         let yAmorceStart = 5 + (index * 15), yAmorceEnd = yAmorceStart + 10; 
         gcodeData.push(`; Trait de purge pour amorcer l'encre`);
@@ -703,26 +716,41 @@ ui.btns.conn.addEventListener('click', async () => {
         ui.status.innerText = "Connecté ✅"; ui.status.style.color="#00ffcc";
         ui.btns.conn.style.display="none"; ui.btns.print.disabled=false;
         
-        const dec = new TextDecoderStream(); port.readable.pipeTo(dec.writable);
+        const dec = new TextDecoderStream(); 
+        port.readable.pipeTo(dec.writable);
         const reader = dec.readable.getReader();
-        const enc = new TextEncoderStream(); enc.readable.pipeTo(port.writable);
+        
+        const enc = new TextEncoderStream(); 
+        enc.readable.pipeTo(port.writable);
         writer = enc.writable.getWriter();
         
         let serialBuffer = "";
         (async () => { 
-            while(true) { 
-                const {value, done} = await reader.read(); 
-                if(done) break; 
-                if(value) {
-                    serialBuffer += value;
-                    let lines = serialBuffer.split('\n');
-                    serialBuffer = lines.pop(); 
-                    for (let line of lines) {
-                        line = line.trim().toLowerCase();
-                        if(line === "ok" || line.startsWith("error") || line.includes("grbl") || line.includes("[msg:")) arduinoReady = true; 
-                    }
-                } 
-            } 
+            try {
+                while(true) { 
+                    const {value, done} = await reader.read(); 
+                    if(done) break; 
+                    if(value) {
+                        serialBuffer += value;
+                        let lines = serialBuffer.split('\n');
+                        serialBuffer = lines.pop(); 
+                        for (let line of lines) {
+                            line = line.trim().toLowerCase();
+                            if(line === "ok" || line.startsWith("error") || line.includes("grbl") || line.includes("[msg:")) arduinoReady = true; 
+                        }
+                    } 
+                }
+            } catch (e) {
+                console.error("Câble débranché ou erreur Serial:", e);
+                ui.status.innerText = "Déconnecté ❌"; 
+                ui.status.style.color = "#ff4444";
+                ui.btns.conn.style.display = "block"; 
+                ui.btns.print.disabled = true;
+                isPrinting = false;
+                arduinoReady = true; 
+                ui.btns.print.innerText = "▶ LANCER";
+                port = null;
+            }
         })();
     } catch (e) { alert("Erreur USB : " + e); }
 });
@@ -744,19 +772,48 @@ ui.btns.print.addEventListener('click', async () => {
         await writer.write("\r\n");
     } else if (!wasPausedByColor) {
         let lastX = 0, lastY = 0;
+        let isPenDownAtResume = false; 
+        
         for(let i = 0; i < printIndex; i++) {
-            let parts = gcodeData[i].toUpperCase().split(" ");
+            let l = gcodeData[i].toUpperCase();
+            
+            if (l.includes("Z-1")) isPenDownAtResume = true;
+            if (l.includes("Z0")) isPenDownAtResume = false;
+            
+            let parts = l.split(" ");
             parts.forEach(p => {
                 if (p.startsWith("X")) lastX = parseFloat(p.substring(1));
                 if (p.startsWith("Y")) lastY = parseFloat(p.substring(1));
             });
         }
-        arduinoReady = false;
-        await writer.write(`${CONFIG.penUpCmd}\n`);
-        while(!arduinoReady) await yieldThread();
-        arduinoReady = false;
-        await writer.write(`G0 X${lastX.toFixed(3)} Y${lastY.toFixed(3)} F${CONFIG.travelSpeed}\n`);
-        while(!arduinoReady) await yieldThread();
+        
+        try {
+            arduinoReady = false;
+            await writer.write("G21\nG90\n"); 
+            while(!arduinoReady && isPrinting) await yieldThread();
+            
+            arduinoReady = false;
+            await writer.write(`${CONFIG.penUpCmd}\n`); 
+            while(!arduinoReady && isPrinting) await yieldThread();
+            
+            arduinoReady = false;
+            await writer.write(`G0 X${lastX.toFixed(3)} Y${lastY.toFixed(3)} F${CONFIG.travelSpeed}\n`);
+            while(!arduinoReady && isPrinting) await yieldThread();
+
+            if (isPenDownAtResume) {
+                arduinoReady = false;
+                await writer.write(`${CONFIG.penDownCmd}\n`);
+                while(!arduinoReady && isPrinting) await yieldThread();
+                
+                arduinoReady = false;
+                await writer.write(`G4 P${CONFIG.penDelay}\n`);
+                while(!arduinoReady && isPrinting) await yieldThread();
+            }
+
+        } catch(e) {
+            console.error("Erreur lors de la reprise:", e);
+            return;
+        }
     }
     
     wasPausedByColor = false;
@@ -775,12 +832,19 @@ ui.btns.print.addEventListener('click', async () => {
             ui.timeText.innerText = `⏸️ Attente : Mettez le stylo ${colorNext} puis REPRENDRE`;
             ui.timeText.style.color = "#ff9800";
             printIndex++;
+            ui.startLineInput.value = printIndex;
             wasPausedByColor = true;
             return; 
         }
         
         arduinoReady = false;
-        await writer.write(ligneAEnvoyer + "\n");
+        try {
+            await writer.write(ligneAEnvoyer + "\n");
+        } catch(e) {
+            console.error("Erreur d'écriture:", e);
+            break;
+        }
+        
         while(!arduinoReady && isPrinting) await new Promise(r => setTimeout(r, 2)); 
         
         ui.progress.style.width = ((printIndex+1)/gcodeData.length*100)+"%";

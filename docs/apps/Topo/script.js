@@ -322,19 +322,44 @@ ui.print.addEventListener('click', async () => {
         await writer.write("\r\n");
     } else {
         let lastX = 0, lastY = 0;
+        let isPenDownAtResume = false;
+
         for(let i = 0; i < printIndex; i++) {
-            let parts = gcodeData[i].toUpperCase().split(" ");
+            let l = gcodeData[i].toUpperCase();
+            
+            if (l.includes("Z-1")) isPenDownAtResume = true;
+            if (l.includes("Z0")) isPenDownAtResume = false;
+
+            let parts = l.split(" ");
             parts.forEach(p => {
                 if (p.startsWith("X")) lastX = parseFloat(p.substring(1));
                 if (p.startsWith("Y")) lastY = parseFloat(p.substring(1));
             });
         }
-        arduinoReady = false;
-        await writer.write(`${CONFIG.penUpCmd}\n`);
-        while(!arduinoReady) await new Promise(r => setTimeout(r, 10));
-        arduinoReady = false;
-        await writer.write(`G0 X${lastX.toFixed(3)} Y${lastY.toFixed(3)} F${CONFIG.travelSpeed}\n`);
-        while(!arduinoReady) await new Promise(r => setTimeout(r, 10));
+        
+        try {
+            arduinoReady = false; await writer.write("G21\nG90\n");
+            while(!arduinoReady && isPrinting) await new Promise(r => setTimeout(r, 10));
+
+            arduinoReady = false;
+            await writer.write(`${CONFIG.penUpCmd}\n`);
+            while(!arduinoReady && isPrinting) await new Promise(r => setTimeout(r, 10));
+
+            arduinoReady = false;
+            await writer.write(`G0 X${lastX.toFixed(3)} Y${lastY.toFixed(3)} F${CONFIG.travelSpeed}\n`);
+            while(!arduinoReady && isPrinting) await new Promise(r => setTimeout(r, 10));
+
+            if (isPenDownAtResume) {
+                arduinoReady = false; await writer.write(`${CONFIG.penDownCmd}\n`);
+                while(!arduinoReady && isPrinting) await new Promise(r => setTimeout(r, 10));
+                
+                arduinoReady = false; await writer.write(`G4 P${CONFIG.penDelay}\n`);
+                while(!arduinoReady && isPrinting) await new Promise(r => setTimeout(r, 10));
+            }
+        } catch (e) {
+            console.error("Erreur de reprise:", e);
+            return;
+        }
     }
     
     let startTime = Date.now();
@@ -347,8 +372,12 @@ ui.print.addEventListener('click', async () => {
         if (printIndex % 10 === 0 || printIndex === gcodeData.length - 1) {
             let pct = Math.floor(((printIndex+1) / gcodeData.length) * 100);
             ui.prog.style.width = pct + "%"; ui.pct.innerText = pct + "%";
+            
             let elapsed = (Date.now() - startTime) / 1000;
-            let remSec = Math.floor((elapsed / (printIndex+1)) * (gcodeData.length - (printIndex+1)));
+            let sessionDone = printIndex - requestedStart + 1;
+            let sessionTotal = gcodeData.length - requestedStart;
+            let remSec = Math.floor((elapsed / sessionDone) * (sessionTotal - sessionDone));
+            
             ui.time.innerText = `Reste: ${Math.floor(remSec/60)}m ${remSec%60 < 10 ? '0' : ''}${remSec%60}s`;
         }
     }

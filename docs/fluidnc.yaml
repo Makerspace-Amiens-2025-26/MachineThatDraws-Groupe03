@@ -1,0 +1,66 @@
+name: MachineThatsDrawsGroupe3
+stepping:
+  engine: RMT
+  idle_ms: 255
+  pulse_us: 4
+  dir_delay_us: 0
+  disable_delay_us: 50
+axes:
+  shared_stepper_disable_pin: gpio.6
+  x:
+    steps_per_mm: 80
+    max_rate_mm_per_min: 5000
+    acceleration_mm_per_sec2: 1000
+    max_travel_mm: 200
+    motor0:
+      limit_all_pin: NO_PIN
+      limit_neg_pin: gpio.0:low:pu
+      limit_pos_pin: NO_PIN
+      hard_limits: false
+      pulloff_mm: 5
+      standard_stepper:
+        step_pin: gpio.4
+        direction_pin: gpio.5
+        disable_pin: NO_PIN
+    homing:
+      cycle: 1
+      mpos_mm: 0.000
+      positive_direction: false
+      seek_mm_per_min: 1000
+      feed_mm_per_min: 400  
+      settle_ms: 500         
+  y:
+    steps_per_mm: 42
+    max_rate_mm_per_min: 5000
+    acceleration_mm_per_sec2: 1000
+    max_travel_mm: 200
+    motor0:
+      limit_all_pin: NO_PIN
+      limit_neg_pin: gpio.19:low:pu
+      limit_pos_pin: NO_PIN
+      hard_limits: false
+      pulloff_mm: 5
+      standard_stepper:
+        step_pin: gpio.7
+        direction_pin: gpio.8
+        disable_pin: NO_PIN
+    homing:
+      cycle: 2
+      mpos_mm: 0.000
+      positive_direction: false
+      seek_mm_per_min: 1000
+      feed_mm_per_min: 400 
+      settle_ms: 500
+  z:
+    steps_per_mm: 100
+    max_rate_mm_per_min: 5000
+    acceleration_mm_per_sec2: 1000
+    max_travel_mm: 5
+    motor0:
+      limit_all_pin: NO_PIN
+      limit_neg_pin: NO_PIN
+      limit_pos_pin: NO_PIN
+      hard_limits: false
+      pulloff_mm: 1
+      rc_servo:
+        output_pin: gpio.17
