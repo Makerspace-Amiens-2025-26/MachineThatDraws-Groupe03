@@ -17,9 +17,9 @@
             <p>Le développement de <strong>MachineThatDraws</strong> a suivi un cycle d'ingénierie complet, passant de la modélisation numérique à un premier prototype fonctionnel avant de finaliser la version définitive.</p>
 
             <h3>1. Conception Assistée par Ordinateur avec Onshape</h3>
-            <p>Pour concevoir la machine, nous avons utilisé le logiciel de CAO professionnel <strong>Onshape</strong>. Notre approche a été de concevoir la structure autour des composants standards.</p>
+            <p>Pour concevoir la machine, nous avons utilisé le logiciel de CAO professionnel <strong>Onshape</strong> permetant de travailler a plusieurs et dans le cloud. Notre approche a été de concevoir la structure autour des composants standards.</p>
             <ul>
-                <li><strong>Modélisation descendante (Top-Down) :</strong> Nous avons utilisé les modèles 3D des pièces imposées ou standards (moteurs NEMA 17, roulements, ESP32 UNO, servomoteur). Cela nous a permis de modeliser nos pièces pour les imprimées en 3D avec des tolérances parfaites, garantissant un bonne assemblage.</li>
+                <li><strong>Modélisation descendante (Top-Down) :</strong> Nous avons utilisé les modèles 3D des pièces imposées comme les (moteurs NEMA 17, roulements, ESP32 UNO, servomoteur). Cela nous a permis de modeliser nos pièces pour les imprimées en 3D avec de bonnes tolérances, garantissant un bonne assemblage.</li>
                 <li><strong>Le défi technique :</strong> La pièce la plus complexe à modéliser a été le système de <strong>supports de l'axe X</strong>. Il a fallu gérer l'alignement précis des axes, la fixation rigide du moteur, et surtout concevoir un système de pincement pour la courroie GT2. Ce système a été pensé pour que la courroie soit <strong>facilement démontable et remontable</strong>, une fonctionnalité qui était indispensable pour relâcher la tension lorsque la machine est entreposée entre deux sessions de travail avant d'avoir les tendeurs.</li>
             </ul>
             
@@ -51,8 +51,8 @@
             <h3 style="margin-top: 40px;">2. Le Premier Prototype (Semestre 1)</h3>
             <p>Notre objectif pour le premier semestre était de réaliser un modèle de validation pour tester le chassis cartésien et la chaîne logicielle (du G-Code jusqu'aux moteurs).</p>
             <ul>
-                <li><strong>Une architecture ressemblante :</strong> Visuellement, le châssis de cette première version était très proche de la version finale, validant l'utilisation des axes linéaires et des courroies.</li>
-                <li><strong>L'électronique de test :</strong> Ce prototype utilisait le combo classique <strong>Arduino Uno et CNC Shield V3</strong> pour tester le chassis et nos fonctionnalitées avant le passage à <strong>ESP32 UNO et au circuit imprimé fait maison.</strong></li>
+                <li><strong>Une architecture ressemblante :</strong> Visuellement, le châssis de cette première version était très proche de la version finale (même si en realiter bien différente), validant l'utilisation des axes linéaires et des courroies.</li>
+                <li><strong>L'électronique de test :</strong> Ce prototype utilisait le combo  <strong>Arduino Uno et CNC Shield V3</strong> pour tester le chassis et nos fonctionnalitées avant le passage à <strong>ESP32 UNO et au circuit imprimé fait maison.</strong></li>
             </ul>
 
             <div class="info-box" style="border-left-color: #dc3545; background-color: rgba(220, 53, 69, 0.1);">
@@ -61,7 +61,7 @@
             </div>
 
             <h3 style="margin-top: 40px;">3. Cycle d'Itération et Gestion des Déchets</h3>
-            <p>Le passage du prototype à la version finale n'a pas été immédiat. Il a nécessité des dizaines de micro-itérations : corriger un trou de vis d'un millimètre, ajuster une tension de courroie, ou renforcer une patte de fixation. Cela génère inévitablement une quantité importante de pièces d'essai.</p>
+            <p>Le passage du prototype à la version finale n'a pas été immédiat. Il a nécessité des dizaines d'itérations : corriger un trou de vis d'un millimètre, ou renforcer une patte de fixation. Cela génère inévitablement une quantité importante de pièces d'essai.</p>
 
             <div style="text-align: center; margin: 30px 0;">
                 <img src="../assets/img/dechet.jpg" alt="Sac rempli de dizaines de pièces de prototypes imprimées" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.6);">
@@ -76,7 +76,7 @@
             </div>
 
             <h3 style="margin-top: 40px;">4. Validation du Premier Tracé</h3>
-            <p>Malgré les défauts de la première tête d'impression, nous avons réussi à valider l'intégralité de la chaîne de commande. Après avoir configuré les pas par millimètre ($100 et $101) dans GRBL, nous avons lancé le tout premier tracé complexe.</p>
+            <p>Malgré les défauts de la première tête d'impression, nous avons réussi à valider l'intégralité de la chaîne de commande et avons pu lancer notre premier tracé complexe.</p>
 
             <div style="text-align: center; margin: 30px 0;">
                 <video controls muted poster="../assets/img/premier.jpg" style="width: 100%; aspect-ratio: 16/9; object-fit: contain; background-color: #050505; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.6);">

@@ -46,15 +46,14 @@
             <h3>1. Évolution Matérielle (Hardware)</h3>
             <p>Le prototype initial (POC) reposait sur un microcontrôleur Arduino Uno et un CNC Shield V3 standard. Pour la version finale, la machine évolue vers une solution sur-mesure :</p>
             <ul>
-                <li><strong>Le passage à l'ESP32 UNO :</strong> Remplacement de l'Arduino par un microcontrôleur ESP32. Ce choix offre beaucoup plus de mémoire, permet la transition de GRBL vers le firmware moderne <strong>FluidNC</strong>, intègre le Wi-Fi, et ouvre la possibilité d'ajouter un écran avec menu interactif.</li>
-                <li><strong>Shield de puissance "Fait Maison" :</strong> Nous avons conçu, routé et fabriqué notre propre circuit imprimé pour gérer proprement la séparation des alimentations (12V / 5V) et l'intégration des drivers moteurs ainsi que rajouter différente options comme un écran et des boutons.</li>
-                <li><strong>Dessin Multicouche (RGB) :</strong> La machine permet la réalisation de tracés complexes en couleurs. Le changement de mine du stylo s'effectue manuellement par l'utilisateur entre chaque couche.</li>
-                <li><strong>Mécanique et Matériaux techniques :</strong> Les pièces structurelles sont imprimées en PETG chargé en fibre de carbone, et les chariots utilisent des bagues auto-lubrifiantes en PETG-PTFE.</li>
-                <li><strong>Esthétique :</strong> Le cable management de la machine permet de masquer et sécuriser les fils électriques, offrant un rendu visuel net et professionnel, sans aucun câble apparent.</li>
+                <li><strong>ESP32 UNO :</strong> Remplacement de l'Arduino par un microcontrôleur ESP32. Ce choix offre beaucoup plus de mémoire, permet la transition de GRBL vers le firmware moderne <strong>FluidNC</strong>, intègre le Wi-Fi, et ouvre la possibilité d'ajouter un écran avec menu interactif.</li>
+                <li><strong>Shield sur messure :</strong> Nous avons conçu, routé et fabriqué notre propre circuit imprimé pour gérer proprement la séparation des alimentations (12V / 5V) et l'intégration des drivers moteurs ainsi que rajouter différente options comme un écran et des boutons.</li>
+                <li><strong>Dessin Multicouche (RGB) :</strong> La machine permet la réalisation de tracés complexes en couleurs. Le changement de mine du stylo s'effectue manuellement par l'utilisateur.</li>
+                <li><strong>Mécanique et Matériaux :</strong> Les pièces structurelles sont imprimées en PETG chargé en fibre de carbone, et les chariots utilisent des bagues auto-lubrifiantes en PETG-PTFE.</li>
             </ul>
 
             <h3>2. La Chaîne Logicielle (Software)</h3>
-            <p>Toute l'interface utilisateur, la génération d'art et les slicers ont été codés "from scratch" en <strong>HTML, CSS et JavaScript pur</strong>, tournant directement dans un navigateur Web. Cette suite logicielle se décline en 5 applications dédiées.</p>
+            <p>Toute l'interface utilisateur, la génération d'art et les slicers ont été fait en <strong>HTML, CSS et JavaScript</strong>, tournant directement dans un navigateur Web. Cette suite logicielle se décline en 6 applications dédiées.</p>
 
             <ul class="software-list" style="list-style-type: none; padding-left: 0;">
 
@@ -72,7 +71,7 @@
                         <img src="assets/img/slicer2.png" alt="Interface du Générateur Topographique" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
                     </div>
                     <div style="flex: 1; min-width: 300px;">
-                        <strong>2. Générateur Topo (Art Génératif) :</strong> Utilise la puissance des mathématiques (bruit de Perlin) pour générer des paysages topographiques uniques. L'utilisateur peut personnaliser le relief à l'infini en modifiant la "graine" (seed) de génération, l'espacement des lignes et la hauteur des montagnes avant d'envoyer le tracé en G-Code.
+                        <strong>2. Générateur Topo (Art Génératif) :</strong> Utilise des bruits de Perlin pour générer des paysages topographiques. L'utilisateur peut personnaliser le relief à l'infini en modifiant la "graine" (seed) de génération, l'espacement des lignes et la hauteur des montagnes avant d'envoyer le tracé en G-Code.
                     </div>
                 </li>
                 
@@ -81,7 +80,7 @@
                         <img src="assets/img/slicer3.png" alt="Interface de Studio Texte CNC" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
                     </div>
                     <div style="flex: 1; min-width: 300px;">
-                        <strong>3. Studio Texte CNC (Traitement de texte) :</strong> Un véritable éditeur vectoriel fonctionnant comme un logiciel de traitement de texte ("Word"). Il permet d'ajouter et de superposer plusieurs calques de texte, de choisir différentes polices, de gérer l'orientation, et d'ajuster finement la position (X/Y). La machine se transforme alors en traceur typographique de précision.
+                        <strong>3. Studio Texte CNC (Traitement de texte) :</strong> Une reproduction de word fonctionnant comme un logiciel de traitement de texte. Il permet d'ajouter et de superposer plusieurs calques de texte, de choisir différentes polices, de gérer l'orientation, et d'ajuster finement la position (X/Y). La machine se transforme alors en machine a écrire.
                     </div>
                 </li>
 
@@ -90,12 +89,16 @@
                         <img src="assets/img/slicer4.png" alt="Interface du Slicer Visage" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
                     </div>
                     <div style="flex: 1; min-width: 300px;">
-                        <strong>4. Slicer Visage (Portraits optimisés) :</strong> Un algorithme spécialement pensé pour la reproduction de visages et de jeux d'ombres. Son procédé de rendu est unique : les zones claires de l'image sont représentées par de simples traits droits réguliers, tandis que les zones sombres sont converties en ondes sinusoïdales (sinus). Cette variation de forme crée des effets d'ombres remarquables au stylo.
+                        <strong>4. Slicer Visage (Portraits optimisés) :</strong> Un algorithme spécialement pensé pour la reproduction de visages et de jeux d'ombres. Son procédé de rendu est unique : les zones claires de l'image sont représentées par de simples traits droits réguliers, tandis que les zones sombres sont converties en ondes sinusoïdales. Cette variation de forme crée des effets d'ombres.
                     </div>
                 </li>
 
                 <li>
                     <strong>5. Studio Musique CNC (Lecteur MIDI) :</strong> Un détournement technique et ludique de la machine. Ce module permet de charger des fichiers musicaux standards (.mid). L'interface attribue ensuite chaque piste musicale à un moteur pas-à-pas spécifique de la CNC. En vibrant à des fréquences précises, les moteurs génèrent des notes et jouent physiquement la musique.
+                </li>
+
+                <li>
+                    <strong>6. Contrôleur Manuel (Interface de contrôle) :</strong> Un panneau de contrôle manuel pour piloter la machine en temps réel. Il offre des commandes directes pour les déplacements (X/Y) avec les flèches du clavier, le contrôle de la hauteur du stylo (Z) avec espace, et la gestion de la vitesse d'exécution. Idéal pour tester et ajuster la machine.
                 </li>
             </ul>
 
