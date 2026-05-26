@@ -23,8 +23,8 @@
             <h3>1. La Gestion des Alimentations (Séparation Logique/Puissance)</h3>
             <p>Notre carte gère deux circuits d'alimentation bien distincts pour protéger l'électronique sensible des retours de courant des moteurs :</p>
             <ul>
-                <li><strong>La partie Logique (5V / 3.3V) :</strong> Le cerveau (ESP32-UNO) et les périphériques (comme le Servomoteur Z) sont alimentés directement via le shield grace a un step down.</li>
-                <li><strong>La partie Puissance (12V) :</strong> Une alimentation externe dédiée est branchée sur le connecteur J2 (GNDPWR / +12V) pour fournir le courant nécessaire aux moteurs NEMA 17.</li>
+                <li><strong>La partie Logique (3.3V) :</strong> Le cerveau (ESP32-UNO) et les signaux sont directement allimenter via l'esp32 qui converti le 12V du shield en 3.3V.</li>
+                <li><strong>La partie Puissance (12V / 5V) :</strong> Une alimentation externe dédiée est branchée sur le connecteur J2 (GNDPWR / +12V) afin de fournir le courant nécessaire aux moteurs NEMA 17. Un régulateur abaisseur de tension (step-down) permet ensuite d'alimenter en 5V certaines parties du circuit, telles que le servomoteur.</li>
             </ul>
 
             <div class="info-box" style="border-left-color: #2ea043; background-color: rgba(46, 160, 67, 0.1);">

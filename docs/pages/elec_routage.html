@@ -27,7 +27,7 @@
                 <li><strong>Empreinte ESP32 UNO:</strong> L'emprinte de l'esp32 uno est placé au centre pour pouvoir prévoir l'installation des composants.</li>
                 <li><strong>Double Drivers Moteurs (A1 & A2) :</strong> Emplacements pour drivers type A4988, avec condensateurs de filtrage (100µF) placés au plus près des broches d'alimentation pour absorber les pics de courant.</li>
                 <li><strong>Connecteurs d'alimentation :</strong> Un connecteur dédié pour l'alimentation 12V des moteurs et un port USB pour la partie logique (ESP32).</li>
-                <li><strong>Le support de carte SD :</strong> Il est placer en dessous du pcb pour gagner de la place</li>
+                <li><strong>Le support de carte SD :</strong> Il est placer en dessous du pcb pour gagner de la place et facilité le rootage</li>
             </ul>
 
             <h3>2. Stratégie de Routage Technique</h3>
@@ -36,7 +36,7 @@
                 <li><strong>Gestion de la puissance :</strong> Les pistes transportant le 12V (en rouge large) ont été dimensionnées pour supporter l'ampérage des moteurs sans chauffer ni provoquer de chute de tension.</li>
                 <li><strong>Plan de masse (GND) :</strong> Utilisation de larges zones de cuivre pour minimiser les parasites électromagnétiques (EMI) générés par les commutations rapides des moteurs.</li>
                 <li><strong>Double couche optimisée :</strong> Les signaux logiques transitent majoritairement par la couche inférieure (bleue) pour éviter de croiser les lignes de puissance et réduire les interférences.</li>
-                <li><strong>Protection :</strong> Intégration d'un fusible (F1) et de diodes de protection pour sécuriser l'électronique contre les inversions de polarité ou les surcharges.</li>
+                <li><strong>Protection :</strong> Intégration d'un fusible (F1) pour sécuriser l'électronique contre les inversions de polarité ou les surcharges.</li>
             </ul>
 
             <div class="info-box">
