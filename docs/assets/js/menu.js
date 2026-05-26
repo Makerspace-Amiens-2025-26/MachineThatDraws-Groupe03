@@ -14,7 +14,7 @@
     <nav class="sidebar">
         <div class="logo">
             <h2>Machine That Draws</h2>
-            <p>Documentation v3.6</p>
+            <p>Documentation</p>
         </div>
         <ul class="nav-links">
             <details>
