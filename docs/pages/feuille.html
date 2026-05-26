@@ -14,12 +14,12 @@
         
         <section id="cao-feuille">
             <h1>La Surface de Dessin (Feuille)</h1>
-            <p>La surface de dessin est l'interface directe entre la machine et l'œuvre finale. Elle a été pensée pour maintenir le papier fermement en place tout en offrant un support parfaitement plat pour la pointe du stylo.</p>
+            <p>La surface de dessin est l'interface directe entre la machine et le dessin finale. Elle a été pensée pour maintenir le papier fermement en place tout en offrant un support parfaitement plat pour la pointe du stylo.</p>
 
 
                 <div class="model-window" style="width: 100%; height: 500px; background: #1a1a1a; border: 1px solid #111; border-top: 2px solid #ff003c; border-radius: 5px; overflow: hidden; margin: 30px 0; display: flex; flex-direction: column;">
                 <model-viewer 
-                    src="../assets/models/Feuille.gltf" 
+                    src="../assets/models/Feille.gltf" 
                     camera-controls 
                     auto-rotate
                     shadow-intensity="1"
@@ -47,7 +47,6 @@
             <p>Le support a été dimensionné pour accueillir confortablement des feuilles au format standard <strong>A4</strong>. Cependant, la zone de dessin réelle est définie par les limites mécaniques de nos axes X et Y :</p>
             <ul>
                 <li><strong>Surface utile maximale :</strong> <code>170 x 140 mm</code>.</li>
-                <li>Cette limitation est donnée au firmware GRBL (paramètres $130 et $131) ainsi que dans notre Slicer Web pour éviter tout crash physique de la tête d'impression contre les bords.</li>
             </ul>
 
             <h3>2. Maintien de la feuille (Les cales 3D)</h3>

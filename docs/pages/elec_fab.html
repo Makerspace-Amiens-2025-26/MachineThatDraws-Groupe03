@@ -62,6 +62,17 @@
                 </li>
             </ul>
 
+            <h3>3. Améliorations Proposées</h3>
+            <p>Malgrès que notre PCB actuel soit pleinement fonctionnel et réponde aux exigences du cahier des charges si nous devions le refaire il serait différent :</p>
+
+            <ul>
+                <li><strong>Rapprochement des condensateurs de découplage :</strong> Sur notre routage initial, les condensateurs étaient un peu trop éloignés. Si on devait le refaire, nous placerions les condensateurs de filtrage au plus près des broches <code style="color: #ff003c; background: #111; padding: 2px 6px; border-radius: 3px;">VMOT</code> et <code style="color: #ff003c; background: #111; padding: 2px 6px; border-radius: 3px;">GND</code> des drivers de moteurs. Cela permet d'absorber efficacement les pics de courant et de réduire drastiquement le bruit électromagnétique sur la carte.</li>
+                <li><strong>Inversion du bornier BAU et du fusible :</strong> Dans l'architecture actuelle, l'ordre des composants de protection n'est pas optimal. Il serait préférable d'inverser la position du bornier du Bouton d'Arrêt d'Urgence (BAU) et du fusible de protection. Placer le fusible en amont (au plus près de l'entrée de l'alimentation) permet de protéger l'intégralité du circuit, y compris le câblage du BAU, en cas de court-circuit.</li>
+                <li><strong>Intégration de pins pour capteurs :</strong> Nous ajouterions des *pin headers* dédiés à la connexion de capteurs de fin de course ce qui a été rajouter apres avoir souder la carte a cause d'un oublie.</li>
+                <li><strong>Optimisation des empreintes (Pads) :</strong> Pour faciliter la soudure manuelle au fer, nous agrandirions légèrement les pastilles des composants passifs et des connecteurs afin de permettre une meilleure répartition de la chaleur et de l'étain.</li>
+                <li><strong>Sérigraphie plus détaillée :</strong> Nous ajouterions plus d'indications textuelles directement sur le vernis de la carte (polarité des condensateurs, noms exacts des broches des moteurs et des capteurs) pour faciliter le câblage sans avoir à consulter le schéma technique sur ordinateur.</li>
+            </ul>
+
         </section>
     </main>
 
