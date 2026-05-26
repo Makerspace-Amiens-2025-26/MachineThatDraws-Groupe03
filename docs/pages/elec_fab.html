@@ -11,15 +11,16 @@
     <main class="content">
         <section id="fab-pcb">
             <h1>Fabrication et soudure</h1>
-            <p>En cour</p>
+            
+            <p>Cette section détaille la réalisation du circuit imprimé (PCB) sur-mesure de notre MachineThatDraws. Conçu pour accueillir l'ESP32 UNO et remplacer le shield standard de notre prototype, ce PCB a été commandé auprès d'un fabricant professionnel avant d'être intégralement assemblé et soudé à la main par notre équipe.</p>
 
-                <div class="model-window" style="width: 100%; height: 500px; background: #1a1a1a; border: 1px solid #111; border-top: 2px solid #ff003c; border-radius: 5px; overflow: hidden; margin: 30px 0; display: flex; flex-direction: column;">
+            <div class="model-window" style="width: 100%; height: 500px; background: #1a1a1a; border: 1px solid #111; border-top: 2px solid #ff003c; border-radius: 5px; overflow: hidden; margin: 30px 0; display: flex; flex-direction: column;">
                 <model-viewer 
-                    src="../assets/models/PCB-MTD2.glb" 
+                    src="../assets/models/PCB-MTD2.gltf" 
                     camera-controls 
                     auto-rotate
                     shadow-intensity="1"
-                    orientation="deg 50deg 0deg" 
+                    orientation="180deg -70deg 0deg" 
                     exposure="0.3"
                     tone-mapping="commerce"        
                     shadow-intensity="2"
@@ -34,9 +35,32 @@
                     </div>
                 </model-viewer>
                 <div class="model-caption" style="background: #111; border-top: 1px solid #222; font-size: 0.9em; color: #888; padding: 12px; font-family: 'Rajdhani', sans-serif; text-align: center; letter-spacing: 1px;">
-                    ▶ Modèle 3D interactif du PCB
+                    ▶ Modèle 3D interactif du PCB avant soudure
                 </div>
             </div>
+
+            <h3>1. Assemblage et Soudure Manuelle</h3>
+            <p>Une fois la carte nue réceptionnée, l'équipe a procédé au soudage manuel de l'ensemble des composants au fer à souder. Pour garantir un assemblage propre et éviter d'endommager les puces, l'ordre de montage suivant a été respecté :</p>
+            <ul>
+                <li><strong>Composants CMS et passifs :</strong> Soudure en priorité des composants les plus bas et les plus petits (résistances, petits condensateurs) pour conserver un accès facile.</li>
+                <li><strong>Connectique et Supports :</strong> Soudure des <em>pin headers</em> (supports femelles) pour accueillir l'ESP32 et les drivers moteurs de façon amovible. Cela évite de les griller avec la chaleur du fer et permet de les remplacer facilement en cas de panne.</li>
+                <li><strong>Composants de puissance :</strong> Ajout final des borniers à vis robustes pour sécuriser l'alimentation électrique (12V et 5V) de la machine.</li>
+            </ul>
+
+            <h3>2. Rendu Final et Tests</h3>
+            <p>Après l'assemblage complet, les tensions et les continuités ont été rigoureusement testées au multimètre pour écarter tout risque de court-circuit avant la première mise sous tension.</p>
+
+            <ul class="software-list" style="list-style-type: none; padding-left: 0; margin-top: 20px;">
+                <li style="margin-bottom: 40px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                    <div style="flex: 0 0 400px; max-width: 100%;">
+                        <img src="../assets/img/souder.png" alt="Photographie du PCB final assemblé" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <strong>La carte contrôleur achevée :</strong><br><br>
+                        Sur ce résultat final, le microcontrôleur ESP32 et les drivers moteurs sont parfaitement intégrés. Le câblage est propre, les alimentations sont séparées efficacement, et la carte est prête à être connectée aux moteurs pas-à-pas et au système de levage du stylo (Z) de la Machine That Draws.
+                    </div>
+                </li>
+            </ul>
 
         </section>
     </main>

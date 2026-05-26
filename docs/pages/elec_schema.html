@@ -23,12 +23,12 @@
             <h3>1. La Gestion des Alimentations (Séparation Logique/Puissance)</h3>
             <p>Notre carte gère deux circuits d'alimentation bien distincts pour protéger l'électronique sensible des retours de courant des moteurs :</p>
             <ul>
-                <li><strong>La partie Logique (5V / 3.3V) :</strong> Le cerveau (ESP32-UNO) et les périphériques (comme le Servomoteur Z) sont alimentés directement via la connexion USB reliée au PC.</li>
+                <li><strong>La partie Logique (5V / 3.3V) :</strong> Le cerveau (ESP32-UNO) et les périphériques (comme le Servomoteur Z) sont alimentés directement via le shield grace a un step down.</li>
                 <li><strong>La partie Puissance (12V) :</strong> Une alimentation externe dédiée est branchée sur le connecteur J2 (GNDPWR / +12V) pour fournir le courant nécessaire aux moteurs NEMA 17.</li>
             </ul>
 
             <div class="info-box" style="border-left-color: #2ea043; background-color: rgba(46, 160, 67, 0.1);">
-                <strong>🛡️ Sécurités intégrées :</strong> Sur la ligne de puissance 12V, nous avons placé un <strong>Fusible de 3A (F1)</strong>. De plus, chaque driver A4988 est protégé par un <strong>condensateur de découplage de 100µF (C1 et C2)</strong> placé au plus près des broches VMOT/GND pour absorber les pics de tension (Effet LC) lors de la mise sous tension.
+                <strong>Sécurités intégrées :</strong> Sur la ligne de puissance 12V, nous avons placé un <strong>Fusible de 5A </strong>. De plus, chaque driver A4988 est protégé par un <strong>condensateur de découplage de 100µF (C1 et C2)</strong> placé au plus près des broches VMOT/GND pour absorber les pics de tension (Effet LC) lors de la mise sous tension.
             </div>
 
             <h3>2. Commande des Moteurs (Drivers A4988)</h3>

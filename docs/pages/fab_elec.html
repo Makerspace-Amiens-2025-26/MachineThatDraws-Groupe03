@@ -36,13 +36,13 @@
             </div>
 
             <h3 style="margin-top: 40px;">3. Les Sécurités : Capteurs de fin de course</h3>
-            <p>La machine est équipée de <strong>capteurs de fin de course (Endstops)</strong> mécaniques. Câblés sur le shield, ils permettent à la machine de réaliser son "Homing" ($H dans GRBL). Lors du démarrage, la machine vient palper ces capteurs pour trouver physiquement son point zéro (0,0) exact. C'est indispensable pour assurer la répétabilité des dessins.</p>
+            <p>La machine est équipée de <strong>capteurs de fin de course (Endstops)</strong> mécaniques. Ils permettent à la machine de réaliser son "Homing". Lors du démarrage, la machine vient palper ces capteurs pour trouver physiquement son point zéro (0,0) exact. C'est indispensable pour assurer la répétabilité des dessins et de pas essayer de sortir de la zone de dessin.</p>
 
             <h3 style="margin-top: 40px;">4. Le réglage critique : La puissance des drivers</h3>
             <p>Avant d'envoyer la première commande de mouvement, il a fallu régler le courant envoyé aux moteurs NEMA 17 pour éviter qu'ils ne surchauffent ou, à l'inverse, qu'ils ne manquent de force (perte de pas).</p>
             <ul>
-                <li><strong>Le réglage de la VREF :</strong> À l'aide d'un petit tournevis en céramique et d'un multimètre, nous avons ajusté le minuscule potentiomètre présent sur chaque driver A4988 à 0.7V.</li>
-                <li><strong>Courant cible :</strong> Les drivers ont été calibrés pour délivrer <strong>1 Ampère (1A)</strong> par phase aux moteurs. Ce réglage offre un couple (force) largement suffisant pour mouvoir les chariots tout en maintenant les moteurs et l'électronique à une température de fonctionnement optimale.</li>
+                <li><strong>Le réglage de la VREF :</strong> À l'aide d'un petit tournevis en céramique et d'un multimètre, nous avons ajusté le minuscule potentiomètre présent sur chaque driver A4988 à 0.35V.</li>
+                <li><strong>Courant cible :</strong> Les drivers ont été calibrés pour délivrer <strong>2 Ampère (2A)</strong> par phase aux moteurs. Ce réglage offre un couple (force) largement suffisant pour mouvoir les chariots tout en maintenant les moteurs et l'électronique à une température de fonctionnement optimale.</li>
             </ul>
 
         </section>
