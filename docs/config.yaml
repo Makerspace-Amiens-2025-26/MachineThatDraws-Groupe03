@@ -6,7 +6,9 @@ stepping:
   dir_delay_us: 0
   disable_delay_us: 50
 axes:
+  
   shared_stepper_disable_pin: gpio.6
+  homing_runs: 1
   x:
     steps_per_mm: 80
     max_rate_mm_per_min: 5000
@@ -24,7 +26,7 @@ axes:
         disable_pin: NO_PIN
     homing:
       cycle: 1
-      mpos_mm: 0.000             
+      mpos_mm: 170          
       positive_direction: false  
       seek_mm_per_min: 600
       feed_mm_per_min: 200
@@ -46,11 +48,11 @@ axes:
         disable_pin: NO_PIN
     homing:
       cycle: 2
-      mpos_mm: 0.000
-      positive_direction: false   
-      seek_mm_per_min: 600
+      mpos_mm: 140
+      positive_direction: false
+      seek_mm_per_min: 1000
       feed_mm_per_min: 200
-      settle_ms: 500
+      settle_ms: 250
   z:
     steps_per_mm: 100
     max_rate_mm_per_min: 5000
