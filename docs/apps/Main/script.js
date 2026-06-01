@@ -1,11 +1,11 @@
 const CONFIG = {
-    feedRate: 1500,       
-    travelSpeed: 2000,    
+    feedRate: 3000,       
+    travelSpeed: 4000,    
     penUpCmd: "G53 G0 Z0",        
     penDownCmd: "G53 G0 Z-1",  
     penDelay: 0.2,        
-    bedW: 170.0,          
-    bedH: 140.0           
+    bedW: 170,          
+    bedH: 140           
 };
 
 let imgOriginal, imgProcessed, pg;
