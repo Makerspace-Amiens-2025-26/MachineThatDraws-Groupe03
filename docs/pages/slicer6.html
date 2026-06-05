@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc | Fonctionnement Contrôleur Manuel</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+    <div id="nav-placeholder"></div>
+    <main class="content">
+        
+        <section id="controleur-manuel">
+            <h1>Module 6 : Le Contrôleur Manuel</h1>
+            <p>Le <strong>Contrôleur Manuel</strong> est l'interface de diagnostic et de pilotage en temps réel de la <em>MachineThatDraws</em>. Il permet de se connecter directement à la machine via l'API Web Serial, de vérifier le bon fonctionnement des axes (X, Y) et du stylo (Z), et de réaliser des tests de vitesse pour affiner les futurs réglages de la machine.</p>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <img src="../assets/img/interface6.png" alt="Interface du Contrôleur Manuel" style="max-width: 100%; height: auto; border-radius: 12px; border: 1px solid #ff003c; box-shadow: 0 8px 24px rgba(255,0,60,0.2);">
+            </div>
+
+            <h3>1. Communication Web Serial Directe</h3>
+            <p>Ce module exploite l'API du navigateur pour établir un pont série direct (à 115200 bauds) avec le microcontrôleur de la machine. Finis les logiciels intermédiaires lourds : un simple clic sur le bouton de connexion ouvre le flux de données. Dès la liaison établie, le système envoie immédiatement une commande de sécurité pour lever le stylo afin d'éviter tout accident sur le papier.</p>
+
+            <h3>2. Raccourcis et Ergonomie</h3>
+            <p>Pour une manipulation rapide et intuitive, l'interface est entièrement contrôlable au clavier :</p>
+            <ul>
+                <li><strong>Flèches directionnelles (⬆️⬇️⬅️➡️) :</strong> Déplacent la machine sur les axes X et Y en fonction de la distance (ex: 10 mm) et de la vitesse paramétrées à l'écran.</li>
+                <li><strong>Barre d'Espace :</strong> Agit comme un interrupteur instantané pour monter ou descendre le stylo.</li>
+            </ul>
+
+            <h3>3. Les Fonctions Clés</h3>
+            <p>Le panneau de contrôle regroupe les actions essentielles pour préparer la machine avant un dessin :</p>
+            <ul>
+                <li><strong>Déplacements :</strong> Permettent de bouger manuellement la tête de la machine pour réaliser différents tests.</li>
+                <li><strong>Gestion Z (Stylo) :</strong> Contrôle direct du mécanisme de levage pour faire des tests.</li>
+            </ul>
+        </section>
+
+    </main>
+    
+    <script src="../assets/js/menu.js"></script>
+</body>
+</html>

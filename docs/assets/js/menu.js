@@ -66,6 +66,7 @@
                     <li><a href="${p}pages/slicer3.html">3. Machine a écrire</a></li>
                     <li><a href="${p}pages/slicer4.html">4. Slicer Portraits (V2)</a></li>
                     <li><a href="${p}pages/slicer5.html">5. Lecteur MIDI (Musique)</a></li>
+                    <li><a href="${p}pages/slicer6.html">6. Manuel</a></li>
                 </ul>
             </details>
             <details>
