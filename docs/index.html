@@ -47,13 +47,13 @@
             <p>Le prototype initial (POC) reposait sur un microcontrôleur Arduino Uno et un CNC Shield V3 standard. Pour la version finale, la machine évolue vers une solution sur-mesure :</p>
             <ul>
                 <li><strong>ESP32 UNO :</strong> Remplacement de l'Arduino par un microcontrôleur ESP32. Ce choix offre beaucoup plus de mémoire, permet la transition de GRBL vers le firmware moderne <strong>FluidNC</strong>, intègre le Wi-Fi, et ouvre la possibilité d'ajouter un écran avec menu interactif.</li>
-                <li><strong>Shield sur messure :</strong> Nous avons conçu, routé et fabriqué notre propre circuit imprimé pour gérer proprement la séparation des alimentations (12V / 5V) et l'intégration des drivers moteurs ainsi que rajouter différente options comme un écran et des boutons.</li>
+                <li><strong>Shield sur-mesure :</strong> Nous avons conçu, routé et fabriqué notre propre circuit imprimé pour gérer proprement la séparation des alimentations (12V / 5V) et l'intégration des drivers moteurs ainsi que rajouter différentes options comme un écran et des boutons.</li>
                 <li><strong>Dessin Multicouche (RGB) :</strong> La machine permet la réalisation de tracés complexes en couleurs. Le changement de mine du stylo s'effectue manuellement par l'utilisateur.</li>
                 <li><strong>Mécanique et Matériaux :</strong> Les pièces structurelles sont imprimées en PETG chargé en fibre de carbone, et les chariots utilisent des bagues auto-lubrifiantes en PETG-PTFE.</li>
             </ul>
 
             <h3>2. La Chaîne Logicielle (Software)</h3>
-            <p>Toute l'interface utilisateur, la génération d'art et les slicers ont été fait en <strong>HTML, CSS et JavaScript</strong>, tournant directement dans un navigateur Web. Cette suite logicielle se décline en 6 applications dédiées.</p>
+            <p>Toute l'interface utilisateur, la génération d'art et les slicers ont été faits en <strong>HTML, CSS et JavaScript</strong>, tournant directement dans un navigateur Web. Cette suite logicielle se décline en 6 applications dédiées.</p>
 
             <ul class="software-list" style="list-style-type: none; padding-left: 0;">
 
@@ -80,7 +80,7 @@
                         <img src="assets/img/slicer3.png" alt="Interface de Studio Texte CNC" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
                     </div>
                     <div style="flex: 1; min-width: 300px;">
-                        <strong>3. Studio Texte CNC (Traitement de texte) :</strong> Une reproduction de word fonctionnant comme un logiciel de traitement de texte. Il permet d'ajouter et de superposer plusieurs calques de texte, de choisir différentes polices, de gérer l'orientation, et d'ajuster finement la position (X/Y). La machine se transforme alors en machine a écrire.
+                        <strong>3. Studio Texte CNC (Traitement de texte) :</strong> Une reproduction de Word fonctionnant comme un logiciel de traitement de texte. Il permet d'ajouter et de superposer plusieurs calques de texte, de choisir différentes polices, de gérer l'orientation, et d'ajuster finement la position (X/Y). La machine se transforme alors en machine à écrire.
                     </div>
                 </li>
 
@@ -93,26 +93,38 @@
                     </div>
                 </li>
 
-                <li>
+                <li style="margin-bottom: 20px;">
                     <strong>5. Studio Musique CNC (Lecteur MIDI) :</strong> Un détournement technique et ludique de la machine. Ce module permet de charger des fichiers musicaux standards (.mid). L'interface attribue ensuite chaque piste musicale à un moteur pas-à-pas spécifique de la CNC. En vibrant à des fréquences précises, les moteurs génèrent des notes et jouent physiquement la musique.
                 </li>
 
-                <li>
-                    <strong>6. Contrôleur Manuel (Interface de contrôle) :</strong> Un panneau de contrôle manuel pour piloter la machine en temps réel. Il offre des commandes directes pour les déplacements (X/Y) avec les flèches du clavier, le contrôle de la hauteur du stylo (Z) avec espace, et la gestion de la vitesse d'exécution. Idéal pour tester et ajuster la machine.
+                <li style="margin-bottom: 20px;">
+                    <strong>6. Contrôleur Manuel (Interface de contrôle) :</strong> Un panneau de contrôle manuel pour piloter la machine en temps réel. Il offre des commandes directes pour les déplacements (X/Y) avec les flèches du clavier, le contrôle de la hauteur du stylo (Z) avec espace, et la réalisation de tests de vitesse pour affiner les futurs réglages de la machine.
                 </li>
             </ul>
 
-            <div class="video-presentation" style="margin-top: 60px; margin-bottom: 40px; padding: 20px; background: #1a1a1a; border: 1px solid #222; border-top: 2px solid #ff003c; border-radius: 8px; text-align: center;">
+            <div class="video-presentation" style="margin-top: 60px; margin-bottom: 30px; padding: 20px; background: #1a1a1a; border: 1px solid #222; border-top: 2px solid #ff003c; border-radius: 8px; text-align: center;">
                 <h3 style="margin-top: 0; margin-bottom: 20px; font-family: 'Orbitron', sans-serif; color: white;">🎬 Présentation du projet en 1 minute</h3>
                 
                 <video controls style="width: 100%; max-width: 800px; border-radius: 5px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); background: #000;">
-                    <source src="assets/video/Groupe3MachineThatDraws.mp4" type="video/mp4">
-                    <source src="assets/img/videofin.png" type="video/webm">
+                    <source src="assets/video/presentation.mp4" type="video/mp4">
+                    <source src="assets/video/presentation.webm" type="video/webm">
                     Désolé, votre navigateur ne supporte pas la lecture de vidéos intégrées.
                 </video>
                 
                 <p style="font-size: 0.9em; color: #888; margin-top: 15px; font-family: 'Rajdhani', sans-serif;">
                     Découvrez MachineThatDraws en action.
+                </p>
+            </div>
+
+            <div class="project-poster" style="margin-top: 30px; margin-bottom: 40px; padding: 20px; background: #1a1a1a; border: 1px solid #222; border-top: 2px solid #ff003c; border-radius: 8px; text-align: center;">
+                <h3 style="margin-top: 0; margin-bottom: 20px; font-family: 'Orbitron', sans-serif; color: white;">📋 Poster de présentation du projet</h3>
+                
+                <a href="assets/img/poster.png" target="_blank" title="Ouvrir le poster en grand">
+                    <img src="assets/img/poster.png" alt="Poster du projet MachineThatDraws" style="width: 100%; max-width: 800px; border-radius: 5px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 1px solid #30363d; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.01)'" onmouseout="this.style.transform='scale(1)'">
+                </a>
+                
+                <p style="font-size: 0.9em; color: #888; margin-top: 15px; font-family: 'Rajdhani', sans-serif;">
+                    Cliquez sur l'image pour l'ouvrir en grand dans un nouvel onglet.
                 </p>
             </div>
 
@@ -123,3 +135,4 @@
     <script type="module" src="assets/js/model-viewer.min.js"></script>
 </body>
 </html>
+
