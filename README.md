@@ -52,6 +52,9 @@ Un algorithme spécifique pour le portrait. Simule les ombres d'un visage en mod
 ### 5. Studio Musique CNC (Lecteur MIDI)
 Détourne la fonction première de la machine pour lui faire jouer de la musique ! Convertit des fichiers `.mid` en fréquences de rotation pour faire "chanter" les moteurs pas-à-pas tout en gérant un algorithme de rebond balistique pour rester dans les limites du plateau.
 
+### 6. Manuel
+Il permet de contrôler la machine manuellement avec les flèches du clavier et la barre d'espace. Grâce à lui, nous pouvons régler la vitesse idéale pour la machine.
+
 ---
 
 ##  Comment l'utiliser ?
